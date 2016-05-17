@@ -1,10 +1,15 @@
-SPOOL-Schema
+COALA Intellectual Property Specification
 ============
 
 # Abstract
 
 
 # Introduction
+
+This section provides context to the following COALA Intelectual Property Specification. It explains technological
+concepts that can be used to model a generic, extensible protocol to manage digital rights.
+They are described briefly, to give the reader a comprehensive overview of the field. To understand them in their full
+spectrum, we advise the reader to study them further on their own. For each section sources on the topic are given.
 
 
 ## The LCC's ten targets
@@ -108,7 +113,7 @@ unidirectional, as can be seen in the attached figure:
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging the concepts of the
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) with [JSON](https://tools.ietf.org/html/rfc7159).
-Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to schemas
+Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to schemata 
 in an ontology.
 
 
@@ -131,7 +136,7 @@ February 1987. For a machine that is lacking the intuition and _context_ of a hu
 difficult.
 
 JSON-LD solves this problem by introducing the concept of a "context" into JSON documents. On a high level, this allows
-to link data to already defined schemas.
+to link data to already defined schemata.
 In order to include "context" into a JSON-object a key called `@context`, needs to be included that defines or
 references the schema of the underlying data. Using JSON-LD to define our previously mentioned example, it would look
 like this:
@@ -224,7 +229,7 @@ It features great examples and is easy to read. :+1:*
 
 **Sources:**
 
-- [W3C Recommendation: JSON Linked Data 1.0](https://www.w3.org/TR/json-ld/)
+- [W3C Recommendation: JSON Linked Data 1.0](https://www.w3.org/TR/json-ld/), May 2016
 - [Wikipedia: JSON-LD](https://en.wikipedia.org/w/index.php?title=JSON-LD&oldid=715712992), May 2016
 - [Codeship: JSON-LD: Building Meaningful Data APIs](http://blog.codeship.com/json-ld-building-meaningful-data-apis/),
   May 2016
@@ -232,16 +237,19 @@ It features great examples and is easy to read. :+1:*
 
 ## schema.org
 
-schema.org is a collaborative initiative with the mission to create, maintain and promote schemas for structured data on
+schema.org is a collaborative initiative with the mission to create, maintain and promote schemata for structured data on
 the Internet. It's vocabulary is defined as an ontology, connecting different concepts using links. It can be
 used with different encodings, including RDFa, Microdata and _JSON-LD_.
-Interestingly, schema.org includes the following data models that could be helpful in defining a digital intellectual property
-specification based on LCC's RRM/EM:
+
+### Available Schemas
+
+Schema.org includes the following schemata that could be helpful in defining a digital intellectual property
+specification based on LCC's EM/RRM:
 
 
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be member of an
-  `Organization`
+  `Organization`)
 - [schema.org/CreativeWork](http://schema.org/CreativeWork): See LCC RRM `Creation`
     - [schema.org/Article](http://schema.org/Article)
     - [schema.org/Blog](http://schema.org/Blog)
@@ -257,13 +265,78 @@ specification based on LCC's RRM/EM:
     - [schema.org/MusicComposition](http://schema.org/MusicComposition)
     - [schema.org/Painting](http://schema.org/Painting)
     - [schema.org/Photograph](http://schema.org/Photograph)
+    - [schema.org/SoftwareApplication](http://schema.org/SoftwareApplication)
+    - [schema.org/Thesis](http://schema.org/Thesis)
     - [schema.org/VisualArtwork](http://schema.org/VisualArtwork)
+- [schema.org/Action](http://schema.org/Action)
+    - [schema.org/AssessAction](http://schema.org/AssessAction): See LCC RRM `Assertion`
+        - [schema.org/ReviewAction](http://schema.org/ReviewAction)
+        - [schema.org/ReactAction](http://schema.org/ReactAction)
+            - [schema.org/AgreeAction](http://schema.org/AgreeAction)
+            - [schema.org/DisagreeAction](http://schema.org/DisagreeAction)
+    - [schema.org/TradeAction](http://schema.org/TradeAction)
+        - [schema.org/BuyAction](http://schema.org/BuyAction)
+        - [schema.org/SellAction](http://schema.org/SellAction)
+        - [schema.org/RentAction](http://schema.org/RentAction)
+    - [schema.org/TransferAction](http://schema.org/TransferAction)
+- [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
 
-*A full list of all core schema.org data models can be found [here](https://schema.org/docs/full.html)*
+*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html)*
 
+
+### Extensibility of schema.org
+
+As it is the goal of this specification to convert LCC's RRM to a linked data ontology, using JSON-LD and schema.org, we
+need to be able to model the seven main LCC RRM entities: Party, Creation, Place, Right, RightsAssignment, Assertion,
+RightsConflict using schema.org and JSON-LD.
+While enumerating schema.org's schemata in the previous section, for schemata that have similarities to the LCC's
+definition we already marked them. For clarity though, we're listing them in this section again to also highlight what
+schema.org **doesn't** provide yet:
+
+
+**What schema.org helps us with:**
+
+
+- **LCC Party:** [schema.org/Organization](http://schema.org/Organization) and [schema.org/Person](http://schema.org/Person)
+- **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its subschemata could be used
+- **LCC Place:** [schema.org/Place](http://schema.org/Place)
+- **LCC Assertion:** [schema.org/AssessAction](http://schema.org/AssessAction)
+
+
+**What schema.org _doesn't_ help us with (yet?):**
+
+
+- **LCC Right**
+- **LCC RightsAssignment**
+- **LCC RightsConflict**
+
+
+So even though schema.org already helps us by defining some of the LCC models some do not even exist at all (specificatlly
+Rights, RightsAssignment and RightsConflict). Although, this seems like a problem at first, it is not. schema.org's
+schemata are easily extensible. schema.org [even encourages](http://schema.org/docs/extension.html) subclassing their 'core'
+schemata into so called 'hosted' and 'external' extensions. In general, there are three types of schemata on schema.org:
+
+
+- **Core:** A basic vocabulary for describing the kind of entities the most common web applications need
+- **Hosted:** Subclassed models from Core that have their own namespace (e.g. http://health-lifesci.schema.org/) and
+  were reviewed by the schema.org community. Hosted extensions should be application-agnostic
+- **External:** Subclassed models from Core/Hosted that do have an application-specific namespace (e.g.
+  http://schema.bigchaindb.com). External extensions may be application-specific
+
+
+Applied to the contents of this specification, this would mean that application-agnostic schemata (so everything contained
+in LCC RRM) would ideally become a Hosted extension, while application-specific schemata (data models that are specific for
+a certain copyright society or in our case ascribe.io) would become External schemata.
+Fortunately, using schema.org in this way it also complies with rule five and six of the ten LCC targets for the rights
+data network, which say:
+
+- Rule 5: Links between identifiers are system agnostic and need to be authorized by participating consortiums
+- Rule 6: Meta data is system agnostic and its schema has to be authorized by participating parties or consortiums
 
 
 **Sources:**
 
-- [Schema.org](http://schema.org)
+- [Schema.org](http://schema.org), May 2016
+- [Schema.org: Full Hierarchy](http://schema.org/docs/full.html), May 2016
+- [Schema.org: Schema.org Extension](http://schema.org/docs/extension.html), May 2016
