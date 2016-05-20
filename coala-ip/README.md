@@ -1,24 +1,38 @@
 COALA Intellectual Property Specification
 ============
 
-# Abstract
+## Abstract
 
 
-# Introduction
+## Introduction
 
-This section provides context to the following COALA Intelectual Property Specification. It explains technological
+This section provides context to the following COALA Intellectual Property Specification. It explains technological
 concepts that can be used to model a generic, extensible protocol to manage digital rights.
 They are described briefly, to give the reader a comprehensive overview of the field. To understand them in their full
 spectrum, we advise the reader to study them further on their own. For each section sources on the topic are given.
 
 
-## The LCC's ten targets
+### The LCC Framework
+
+The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework) is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/) (short form: LCC)
+to unify digital rights data management. The Framework's key documents are:
 
 
-The [Linked Content Coalition](http://linkedcontentcoalition.org/)'s goal is to enable the widest possible access to
-appropriate rights information and the automation to rights trading, independent of commercial or free use.
-As a general guidance to fulfill their goals, they released a document, called "[Ten targets for the rights data
-network](http://doi.org/10.1000/290)" that is composed of the following ten goals:
+- [Ten targets for the rights data network](http://doi.org/10.1000/290)
+- [The LCC Entity Model](http://doi.org/10.1000/285)
+- [The LCC Rights Reference Model](http://doi.org/10.1000/284)
+- [The LCC Principles of identification](http://doi.org/10.1000/287), May 2016
+
+
+In this introducing section, we'll go over each document summarizing their contents briefly to give context and
+attribution for the following specification.
+
+
+#### The LCC's ten targets
+
+The LCC's goal is to enable the widest possible access to appropriate rights information and the automation to rights
+trading, independent of commercial or free use. As a general guidance to fulfill their goals, they released a document,
+called "[Ten targets for the rights data network](http://doi.org/10.1000/290)" that is composed of the following ten goals:
 
 1. Every Party has a unique global identifier
 2. Every Creation as a unique global identifier
@@ -40,7 +54,7 @@ For more in-depth information about the goals of the LCC, find the attached link
 - [LCC: Ten targets for the rights data network](http://doi.org/10.1000/290), May 2016
 
 
-## The LCC Entity Model
+#### The LCC Entity Model
 
 *Note that knowing the definition of the LCC Entity Model is not vital for understand the contents of this
 specification. The LCC Entity Model is a meta-model the LCC defined to model their actual ontology - the LCC Rights
@@ -63,7 +77,9 @@ In the LCC EM specification, all five of these attributes are represented as mod
 they make up the actual `Entity` model. An `Entity` itself is linked to other `Entities` bidirectionally, as can be seen
 in the attached figure:
 
+
 ![](media/f1.png)
+
 
 The `Entity` model's attributes are deliberately chosen to be generic so that more complex data models like the LCC RRM can be
 built on top. For in-depth information follow the link to the PDF provided in the beginning of this section.
@@ -74,7 +90,7 @@ built on top. For in-depth information follow the link to the PDF provided in th
 - [LCC: Entity Model](http://doi.org/10.1000/285), May 2016
 
 
-## The LCC Rights Reference Model
+#### The LCC Rights Reference Model
 
 The [LCC Rights Reference Model](http://doi.org/10.1000/284) is a formal definition for representing intellectual property
 rights digitally. The LCC RRM document is written as a specification for an abstract logical data model, that is built
@@ -101,6 +117,7 @@ has hence no significant value.*
 As these seven entities are supposed to be building blocks of a global digital rights ontology, they are linked
 unidirectional, as can be seen in the attached figure:
 
+
 ![](media/f2.png)
 
 
@@ -109,15 +126,32 @@ unidirectional, as can be seen in the attached figure:
 - [LCC: Rights Reference Model](http://doi.org/10.1000/284), May 2016
 
 
-## JSON Linked Data
+#### The LCC Principles of identification
+
+- TODO:
+    - Summarize briefly (as done in the other sections) what the document talks about, without going into to much detail
+
+
+**Sources:**
+
+- [LCC: Principles of identification](http://doi.org/10.1000/287), May 2016
+
+
+### The semantic web
+
+- TODO:
+    - For what is it useful
+    - How does RDF look like
+    - How does RDF schema look like
+    - How does OWL look like
+
+
+#### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging the concepts of the
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) with [JSON](https://tools.ietf.org/html/rfc7159).
-Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to schemata 
+Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to schemata
 in an ontology.
-
-
-### Example
 
 Lets assume we have the following set of data:
 
@@ -126,13 +160,13 @@ Lets assume we have the following set of data:
 {
     "givenName": "Andy",
     "familyName": "Warhol",
-    "birthDate": "1987-02-22"
+    "birthDate": "1928-08-06"
 }
 ```
 
 
-Now, for a human it's obvious that this set of data is about a person named "Andy Warhol" who was born on the 22th
-February 1987. For a machine that is lacking the intuition and _context_ of a human, resolving this representation is rather
+Now, for a human it's obvious that this set of data is about a person named "Andy Warhol" who was born on the 6th
+August 1928. For a machine that is lacking the intuition and _context_ of a human, resolving this representation is rather
 difficult.
 
 JSON-LD solves this problem by introducing the concept of a "context" into JSON documents. On a high level, this allows
@@ -147,7 +181,7 @@ like this:
     "@context": "http://schema.org/Person",
     "givenName": "Andy",
     "familyName": "Warhol",
-    "birthDate": "1987-02-22"
+    "birthDate": "1928-08-06"
 }
 ```
 
@@ -196,7 +230,7 @@ To give a practical example, this is how our previously defined set of data woul
     ],
     "http://schema.org/birthDay": [
         {
-            "@value": "1987-02-22"
+            "@value": "1928-08-06"
         }
     ],
 }
@@ -217,7 +251,7 @@ define the most basic types (like string, boolean, number), the parser can then 
 validate each occurrence of `@value`.
 
 
-### Final thoughts
+##### Final thoughts
 
 With this example, we've just shown you the tip of the ice berg.
 JSON-LD has tremendous powers (Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all kinds of crazy things.
@@ -235,13 +269,21 @@ It features great examples and is easy to read. :+1:*
   May 2016
 
 
-## schema.org
+#### schema.org
+
+- TODOs in this section:
+    - Just describing schema.org is I think way to narrow here. This section should be about linked data on the world
+      wide web in general. schema.org is just a regular player when it comes to linked data and RDF. Hell, there are even
+      search engines that users can lookup schemas (http://wiki.dbpedia.org/). Obviously mention schema.org as a
+      prefered source though.
+
 
 schema.org is a collaborative initiative with the mission to create, maintain and promote schemata for structured data on
 the Internet. It's vocabulary is defined as an ontology, connecting different concepts using links. It can be
 used with different encodings, including RDFa, Microdata and _JSON-LD_.
 
-### Available Schemas
+
+##### Available Schemas
 
 Schema.org includes the following schemata that could be helpful in defining a digital intellectual property
 specification based on LCC's EM/RRM:
@@ -285,7 +327,7 @@ specification based on LCC's EM/RRM:
 *A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html)*
 
 
-### Extensibility of schema.org
+##### Extensibility of schema.org
 
 As it is the goal of this specification to convert LCC's RRM to a linked data ontology, using JSON-LD and schema.org, we
 need to be able to model the seven main LCC RRM entities: Party, Creation, Place, Right, RightsAssignment, Assertion,
@@ -340,3 +382,267 @@ data network, which say:
 - [Schema.org](http://schema.org), May 2016
 - [Schema.org: Full Hierarchy](http://schema.org/docs/full.html), May 2016
 - [Schema.org: Schema.org Extension](http://schema.org/docs/extension.html), May 2016
+
+
+### TBD: IPLD
+
+- TODO: Figure out if using IPLD in this spec already makes sense.
+  Probable answer is: yes, since it's basically a registry for blobs
+
+
+## Modeling LCC RRM using JSON-LD and schema.org
+
+In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD and schema.org. In other
+words, we'll go over each model description given in the LCC Rights Reference Model document and discuss how the
+respective model can be translated into JSON-LD.
+
+
+### The LCC Party Model
+
+A recommendation of the LCC is that the Party model must be able to represent any class of party, meaning:
+
+
+- a rightsholder
+- a licensor
+- a administrator
+- a user
+- or any other participant doing something related to a right.
+
+
+In the LCC RRM document a party has to have the following properties:
+
+
+- **PartyType:** Defines whether the party is an individual or a group of individuals
+- **DateOfBirth:** Only if PartyType == 'lcc:Individual'
+- **DateOfDeath:** Only if PartyType == 'lcc:Individual'
+
+
+Additionally, a Party can have the following outgoing references to respective other entities:
+
+
+- a self-referencing link (one-to-many relationship)
+- a link to a Place (one-to-many relationship)
+
+
+Visualized the LCC Party model looks like this:
+
+
+![](media/lccrrmparty.png)
+
+
+Another feature of the LCC RRM Party model is that it must only have a `DateOfBirth` and a `DateOfDeath` when its `PartyType`
+is `lcc:Individual`. Other features are that it may have are self-referencing links as well as links to LCC RRM Places.
+Note that using the property `PartyType` an LCC RRM Party can both represent an individual as well as an organization.
+
+
+#### Proposed Transformation
+
+*As a side note: In this chapter, we describe the transformation of the LCC RRM Party model to a JSON-LD Person and/or Organization
+very literal, as we want to provide reasoning for individual steps of the transformation. Note, that this will just be
+the case for this chapter, as in essence the rationale for transforming other models is fairly similar.*
+
+schema.org defines already both a [schema.org/Person](http://schema.org/Person) as well as a [schema.org/Organization](http://schema.org/Organization).
+Hence, there is no need to define both concepts as a single model and differentiate using `PartyType`.
+To value Separation on Concerns, lets first transform the LCC RRM Party model with `PartyType == 'lcc:Individual'`, then
+apply the discovered results to `PartyType == 'lcc:Organization'`.
+
+
+##### Transform LCC RRM Party to RDF Person
+
+Using the minimum number of properties the LCC RRM describes, a `PartyType == 'lcc:Individual'` LCC RRM Party in JSON-LD using
+schema.org's Person could look like this:
+
+
+```javascript
+{
+    "@context": {
+        "@vocab": "http://schema.org/",
+        "DateOfBirth": "birthDate",
+        "DateOfDeath": "deathDate"
+    },
+    "@type": "Person",
+    "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
+    "DateOfBirth": "1928-08-06",
+    "DateOfDeath": "1987-02-22",
+}
+```
+
+
+Now, obviously mapping `birthDate` and `deathDate` of schema.org's Person to LCC's `DayOfBirth` and `DayOfDeath` doesn't
+make a lot of sense. Neither do they comply with the way JSON is usually formated (e.g. first letter is lower case), nor is
+it necessary to reinvent the wheel on top of schema.org (by for example coming up with new names for properties). So for
+simplicity purposes, we simply get rid of the so called JSON-LD-'Aliasing', using the properties schema.org provides us with:
+
+
+```javascript
+{
+    "@context": "http://schema.org/",
+    "@type": "Person",
+    "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
+    "birthDate": "1928-08-06",
+    "deathDate": "1987-02-22",
+}
+```
+
+
+Now, we used Andy Warhol's Wikipedia page as his Party ID (`@id`). Considering that fact that all we need to provide is
+a resolvable URI, a JSON-LD parser will validate this without complaining.
+Ideally though, `@id` is a reflection of the data itself, showing a JSON-LD parser where this set of data is actually
+resolvable on the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not exactly return the given data,
+we'll have to do something about this.
+
+First off, lets look at some requirements various involved parties have given:
+
+
+**JSON-LD:**
+
+
+- an `@id`'s value must be represented as an [Internationalized Resource Identifier](https://tools.ietf.org/html/rfc3987) (short form: IRI), either absolute or relative
+
+
+**LCC's ten targets for the rights data network:**
+
+
+- A Party's ID should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
+- A Party's ID should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
+
+
+**LCC's Principles of identification:**
+
+
+- A Party should have at least one persistent unique public ID that is both human- and machine-readable
+- Has a Party multiple public IDs, then there should be a way that enables one identifier to be automatically 'translated' to
+  another
+- A Party's ID may have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A)
+- A Party's ID should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation
+- A Party ID's characters or elements have no intended meaning that could lead to misinterpretation by humans
+- A Party ID's characters or elements include no information about the Party itself or its registration date
+- **TODO: There are even more requirements in this document that should be listed here!**
+
+
+As we're proposing this practical specification based on the LCC Framework and JSON-LD with the background of saving all
+linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of requirements:
+
+
+- Elements of the Party's ID may represent the public part of an asymmetric cryptographic key pair
+    - The public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+- A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptography key pair
+
+
+As the combination of these requirements do not exist as a coherent system as of now, we'll just pretend for the sake of
+completeness that there is in fact a system that fulfills them all.
+Hence for all following examples, we'll use an imaginary identity service that acts as a registry for the LCC RRM Party
+data. It:
+
+
+- lets users issue an identity that can be resolved to JSON-LD using [Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html)
+- lets users attach the public part of their key pairs to their identity.
+
+
+Notable services for this type of use case could be:
+
+- https://pgp.mit.edu/
+- https://keybase.io/
+- https://ipfs.io/
+- a public instance of https://www.bigchaindb.com/
+
+
+Preferably, a decentralized, non-profit service is chosen.
+Going back to the example mentioned earlier, complying with the requirements would mean that we'd have to replace the `@id`
+of the data set representing the Party of Andy Warhol ideally with an URI pointing to his identity page. In addition, we're
+also introducing a new property called `publicKey` for signing linked data published by a LCC RRM Party:
+
+
+```javascript
+{
+    "@context": {
+        "@vocab": "http://schema.org/",
+        "publicKey": "Text",
+        "birthDate": "birthDate",
+        "deathDate": "deathDate",
+        "givenName": "givenName",
+        "familyName": "familyName"
+    },
+    "@type": "http://linkedcontentcoalition.com/Identity",
+    "@id": "https://identityservice.com/identities/14XgsoWd47KLJa6Ehu62j7Mugq38zX5umt",
+    "publicKey": "0493e2f8fb9f6ca3d34e0e39f223447d01a81b538c6b41349c167b20b8656136b5ccedba62f2fe4158c8e57caeb2c6aa85bb91f5c5b6cd2f5d95c9bee3aea098f6",
+    "givenName": "Andy",
+    "familyName": "Warhol",
+    "birthDate": "1928-08-06",
+    "deathDate": "1987-02-22"
+}
+```
+
+Note that we chose the property name `publicKey` here intentionally, as public parts of key pairs usually contain enough
+information themselves for a key-parser to identify what kind of encryption was being used.
+
+- TODO: Find good enough sources to prove this. If not, we'll need to either have to introduce a `publicKeyType` or call each
+  key directly by its name: `ECDSApublicKey`
+
+Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party Model. As mentioned previously,
+there can be a one-to-many relationship from a LCC RRM Party to other LCC RRM Parties as well as a one-to-many relationship
+between a LCC RRM Party and LCC RRM Places. Now, when studying the LCC RRM document, it becomes clear that theoretically
+these requirements need to be fulfilled, as there could be use cases where:
+
+
+- multiple Parties share a relationship (e.g. Party A and Party B created Creation C)
+- Parties might provide Places as a meta data (think: their home location, a contact place or a billing address)
+- multiple Parties may be bundled to an Organization
+
+
+Hence, in this context, it makes sense to define these relationships as one-to-many relationship.
+Using RDF and JSON-LD however, explicitly defining a one-to-many relationship doesn't make a lot of sense. Links need
+to be named and usually express a very specific logical fact in the ontology. While it means that theoretically these
+relationships would still be possible, usually in JSON-LD they're extended as needed, adjusting either the JSON-LD
+object itself or its underlying RDF implementation.
+
+To give some examples, say we want to specify a Person's home addresses. What we can do in this case is just use [schema.org/Person](http://schema.org/Person)'s
+`homeLocation` and specify either [schema.org/Place](http://schema.org/Place)s or [schema.org/ContactPoint](http://schema.org/ContactPoint)s.
+As another example, imagine we'd like to specify that Party A is a parent of Party B. This could be useful when trying
+to express that usage rights of an creation are transferred after the death of Party B, to the heir, Party A.
+Fortunately, schema.org's Person again has us covered. A [schema.org/Person](http://schema.org/Person) has a property `parent`
+(accepting values of type `Person) that maps perfectly.
+
+Now, imagine we wanted to define a relation, schema.org's Person doesn't provide us with yet. What we would need to do is
+extend schema.org's Person defining our own RDF and then host it as either a "hosted" or "external" extension of schema.org (See
+more about this in the previous section called: "Extensibility of schema.org").
+
+Now that we figured out all the specialities surrounding the transformation of a LCC RRM model into JSON-LD,
+defining an Organization is straight forward.
+
+
+##### Transform LCC RRM Party to RDF Organization
+
+In essence, a LCC RRM Party of `PartyType == lcc:Organization` is a group of individuals represented by a single entity.
+Using the minimum number of properties the LCC RRM document describes, a LCC RRM Party of `PartyType == lcc:Organization` in
+JSON-LD using schema.org's Organization could look like this:
+
+
+```javascript
+{
+    "@context": "http://schema.org/",
+    "@type": "Organization",
+    "@id": "http://identityservice.com/organizations/w3c",
+    "name": "World Wide Web Consortium",
+    "founder": {
+        "@type": "http://linkedcontentcoalition.com/Identity",
+        "@id": "https://identityservice.com/identities/12bS2BTF4j8kkmNqoyQRwzKy76EXQWRVWJ",
+        "givenName": "Tim",
+        "familyName": "Berners-Lee"
+    },
+    "member": [
+        {
+            "@type": "http://linkedcontentcoalition.com/Identity",
+            "@id": "https://identityservice.com/identities/152xhUAJBGEht9Jwerv1omFV82xaRcyzHH",
+        },
+        {
+            "@type": "http://linkedcontentcoalition.com/Identity",
+            "@id": "https://identityservice.com/identities/1Je5tHHkHcs1ioLZmiBFSuyiXdwd76xf4D",
+        },
+        {
+            "@type": "http://linkedcontentcoalition.com/Identity",
+            "@id": "https://identityservice.com/identities/1QDtDjNgBx6242VakTTkFMn5HmkibzrsR8",
+        }
+    ]
+}
+```
