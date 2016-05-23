@@ -1,6 +1,34 @@
 COALA Intellectual Property Specification
 ============
 
+
+Contributors to this document:
+
+- Tim Daubenschuetz: <tim.daubenschuetz@gmail.com, tim@ascribe.io>
+
+
+## PLEASE READ THIS SECTION BEFORE READING THE DOCUMENT
+
+This document is a work in progress! Some sections contain the key word "TODO" + a description on what is expected to be
+written there. To everyone reading this: Feel free to take the time to conduct research in this area to write the
+section yourself.
+
+If your section contains information from external documents, please make sure to link to the
+appropriate sources.
+
+If your section contains lots of knowledge about a field that wasn't mentioned yet, please take the time to define the
+field briefly to give the readers of this document a chance to on-board easily.
+
+This document has a soft characters-per-line limit of 120 characters (Note that by including links, only the descriptor
+counts). Please respect while writing.
+
+As human beings are capable to recognize patterns easily, make sure to follow the other (here not explicitly mentioned)
+text formating patterns as close as possible.
+
+
+Thank you very much!
+
+
 ## Abstract
 
 
@@ -17,14 +45,13 @@ spectrum, we advise the reader to study them further on their own. For each sect
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework) is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/) (short form: LCC)
 to unify digital rights data management. The Framework's key documents are:
 
-
 - [Ten targets for the rights data network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
 - [The LCC Rights Reference Model](http://doi.org/10.1000/284)
 - [The LCC Principles of identification](http://doi.org/10.1000/287), May 2016
 
 
-In this introducing section, we'll go over each document summarizing their contents briefly to give context and
+In this introductory section, we'll go over each document summarizing their contents briefly to give context and
 attribution for the following specification.
 
 
@@ -65,7 +92,6 @@ The [LCC Entity Model](http://doi.org/10.1000/285) (short form: LCC EM) is a gen
 (short form: LCC RRM).
 In a nutshell, the LCC Entity Model specification defines a model called `Entity` that is composed of five attribute types:
 
-
 - **Category:** Categorizes the Entity (e.g. Language=iso3166-1a2:EN ("English"))
 - **Descriptor:** Names the Entity (e.g. Name="Andy Warhol")
 - **Quantity:** Quantifies the Entity (e.g. Height=20cm)
@@ -95,7 +121,6 @@ built on top. For in-depth information follow the link to the PDF provided in th
 The [LCC Rights Reference Model](http://doi.org/10.1000/284) is a formal definition for representing intellectual property
 rights digitally. The LCC RRM document is written as a specification for an abstract logical data model, that is built
 on top of the LCC EM and is composed of the following seven entities:
-
 
 - **Party:** A Person or an organization (e.g. "Andy Warhol")
 - **Creation:** Something created by a Party (e.g. "32 Campbell's Soup Cans")
@@ -205,7 +230,6 @@ hence a JSON-LD parser is capable to map them automatically and then execute val
 
 For more clarity, let's see how a JSON-LD parser would look at this example:
 
-
 1. `GET http://schema.org/Person`
 2. For each of the user-defined keys, check if they map to the keys provided in the schema
     2.1 If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls this an
@@ -288,7 +312,6 @@ used with different encodings, including RDFa, Microdata and _JSON-LD_.
 Schema.org includes the following schemata that could be helpful in defining a digital intellectual property
 specification based on LCC's EM/RRM:
 
-
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be member of an
   `Organization`)
@@ -339,7 +362,6 @@ schema.org **doesn't** provide yet:
 
 **What schema.org helps us with:**
 
-
 - **LCC Party:** [schema.org/Organization](http://schema.org/Organization) and [schema.org/Person](http://schema.org/Person)
 - **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its subschemata could be used
 - **LCC Place:** [schema.org/Place](http://schema.org/Place)
@@ -347,7 +369,6 @@ schema.org **doesn't** provide yet:
 
 
 **What schema.org _doesn't_ help us with (yet?):**
-
 
 - **LCC Right**
 - **LCC RightsAssignment**
@@ -358,7 +379,6 @@ So even though schema.org already helps us by defining some of the LCC models so
 Rights, RightsAssignment and RightsConflict). Although, this seems like a problem at first, it is not. schema.org's
 schemata are easily extensible. schema.org [even encourages](http://schema.org/docs/extension.html) subclassing their 'core'
 schemata into so called 'hosted' and 'external' extensions. In general, there are three types of schemata on schema.org:
-
 
 - **Core:** A basic vocabulary for describing the kind of entities the most common web applications need
 - **Hosted:** Subclassed models from Core that have their own namespace (e.g. http://health-lifesci.schema.org/) and
@@ -384,23 +404,106 @@ data network, which say:
 - [Schema.org: Schema.org Extension](http://schema.org/docs/extension.html), May 2016
 
 
-### TBD: IPLD
+### TBD: IPLD or only IPFS?
 
-- TODO: Figure out if using IPLD in this spec already makes sense.
-  Probable answer is: yes, since it's basically a registry for blobs
+- TODO: Figure out if using IPLD and IPFS in this spec already makes sense.
+  Probable answer is: yes, since IPFS basically a registry for blobs. IPLD, not so sure as it's basically linked data on
+  ipfs, which wouldn't help to much in terms of registries
 
 
-## Modeling LCC RRM using JSON-LD and schema.org
+### The Web of Trust
+
+- TODO: Explain briefly
+- Point to initiatives going on
+- https://github.com/WebOfTrustInfo/rebooting-the-web-of-trust
+- http://xmlns.com/wot/0.1/
+- http://www.weboftrust.info/
+
+
+## Modeling LCC RRM using Linked Data
 
 In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD and schema.org. In other
 words, we'll go over each model description given in the LCC Rights Reference Model document and discuss how the
 respective model can be translated into JSON-LD.
 
 
+### General Approach
+
+In this section, we describe abstractly how to get from a LCC RRM model to a RDF-compatible JSON-LD model.
+As mentioned earlier already, with its document "[LCC: Entity Model](http://doi.org/10.1000/285)", the defined a nice
+generic model to base their actual Rights Reference Model on.
+What this document in essence describes, is how to implement a data model that is fully extendable using a multitude of
+linked entities. Using an RDF-based data structure in turn, means that defining a base data structure for
+linking entities is not necessary anymore, as this is what RDF is all about already.
+What this leaves us with is that in order to successfully redefine the LCC Rights Reference Model, what we're left to do
+is:
+
+- Identify RDF schemata that map to respective entities defined in the LCC RRM specification
+    - If appropriate RDF schemata are not available:
+        - Compose own RDF types from multiple RDF schemata
+        - Define own RDF schemata
+- Define how entities are identified and resolved
+- Resolve mismatches between the LCC RRM lingo and RDF schemata
+
+
+### The LCC Place Model
+
+In the LCC Framework, a Place describes a localizable or virtual place. Understandably, it has the following property:
+
+- **PlaceType:** Defining the type of Place
+    - `lcc:LocalizablePlace`: A Place in the universe that can be described using spatial coordinates
+    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located
+
+
+In addition, a Place can have the following outgoing reference to respective other entities:
+
+- a self-referencing link (one-to-many)
+
+
+Visualized the LCC RRM Place looks like this:
+
+
+![](media/lccrrmplace.png)
+
+
+#### Proposed Transformation
+
+Compared to schema.org's definition of a Place, the LCC RRM Place both describes a physical as well as a virtual Place.
+In this specification though, we need to separate the two concepts explicitly upfront, to avoid confusions further in
+the transformation process.
+
+For further reference, a:
+
+- **LLC RRM Place or Place** will be used to describe a localizable Place, meaning a Place in the universe that can be
+  described using spatial coordinates
+- **Universal Resource Identifier** will be used to describe a virtual place at which a resource may be located
+
+
+This implies that a LCC RRM Place of `PlaceType == lcc:LocalizablePlace` will be transformed to a RDF Place, while a
+LCC RRM Place of `PlaceType == lcc:VirtualPlace` will just be URIs in documents, linking in between data sets.
+
+Using schema.org's Place, a transformation is straight forward (example taken from schema.org):
+
+
+```javascript
+{
+    "@context": "http://schema.org",
+    "@type": "Place",
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.75",
+        "longitude": "73.98"
+    },
+    "name": "Empire State Building"
+}
+```
+
+Using the special `containsPlace` property, self-referencing links to other Places are possible.
+
+
 ### The LCC Party Model
 
 A recommendation of the LCC is that the Party model must be able to represent any class of party, meaning:
-
 
 - a rightsholder
 - a licensor
@@ -411,14 +514,12 @@ A recommendation of the LCC is that the Party model must be able to represent an
 
 In the LCC RRM document a party has to have the following properties:
 
-
 - **PartyType:** Defines whether the party is an individual or a group of individuals
 - **DateOfBirth:** Only if PartyType == 'lcc:Individual'
 - **DateOfDeath:** Only if PartyType == 'lcc:Individual'
 
 
 Additionally, a Party can have the following outgoing references to respective other entities:
-
 
 - a self-referencing link (one-to-many relationship)
 - a link to a Place (one-to-many relationship)
@@ -438,13 +539,13 @@ Note that using the property `PartyType` an LCC RRM Party can both represent an 
 #### Proposed Transformation
 
 *As a side note: In this chapter, we describe the transformation of the LCC RRM Party model to a JSON-LD Person and/or Organization
-very literal, as we want to provide reasoning for individual steps of the transformation. Note, that this will just be
+very literally, as we want to provide reasoning for individual steps of the transformation. Note, that this will just be
 the case for this chapter, as in essence the rationale for transforming other models is fairly similar.*
 
 schema.org defines already both a [schema.org/Person](http://schema.org/Person) as well as a [schema.org/Organization](http://schema.org/Organization).
-Hence, there is no need to define both concepts as a single model and differentiate using `PartyType`.
-To value Separation on Concerns, lets first transform the LCC RRM Party model with `PartyType == 'lcc:Individual'`, then
-apply the discovered results to `PartyType == 'lcc:Organization'`.
+Hence, there is no need to define both concepts as a single model and differentiate using `PartyType`. To value Separation of
+Concerns, lets first transform the LCC RRM Party model with `PartyType == 'lcc:Individual'`, then apply the discovered results
+to `PartyType == 'lcc:Organization'`.
 
 
 ##### Transform LCC RRM Party to RDF Person
@@ -488,7 +589,7 @@ simplicity purposes, we simply get rid of the so called JSON-LD-'Aliasing', usin
 Now, we used Andy Warhol's Wikipedia page as his Party ID (`@id`). Considering that fact that all we need to provide is
 a resolvable URI, a JSON-LD parser will validate this without complaining.
 Ideally though, `@id` is a reflection of the data itself, showing a JSON-LD parser where this set of data is actually
-resolvable on the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not exactly return the given data,
+resolvable within the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not exactly return the given data,
 we'll have to do something about this.
 
 First off, lets look at some requirements various involved parties have given:
@@ -496,19 +597,16 @@ First off, lets look at some requirements various involved parties have given:
 
 **JSON-LD:**
 
-
 - an `@id`'s value must be represented as an [Internationalized Resource Identifier](https://tools.ietf.org/html/rfc3987) (short form: IRI), either absolute or relative
 
 
 **LCC's ten targets for the rights data network:**
-
 
 - A Party's ID should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
 - A Party's ID should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
 
 
 **LCC's Principles of identification:**
-
 
 - A Party should have at least one persistent unique public ID that is both human- and machine-readable
 - Has a Party multiple public IDs, then there should be a way that enables one identifier to be automatically 'translated' to
@@ -523,9 +621,8 @@ First off, lets look at some requirements various involved parties have given:
 As we're proposing this practical specification based on the LCC Framework and JSON-LD with the background of saving all
 linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of requirements:
 
-
 - Elements of the Party's ID may represent the public part of an asymmetric cryptographic key pair
-    - The public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+    - If so, the public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
 - A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptography key pair
 
 
@@ -533,7 +630,6 @@ As the combination of these requirements do not exist as a coherent system as of
 completeness that there is in fact a system that fulfills them all.
 Hence for all following examples, we'll use an imaginary identity service that acts as a registry for the LCC RRM Party
 data. It:
-
 
 - lets users issue an identity that can be resolved to JSON-LD using [Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html)
 - lets users attach the public part of their key pairs to their identity.
@@ -549,15 +645,13 @@ Notable services for this type of use case could be:
 
 Preferably, a decentralized, non-profit service is chosen.
 Going back to the example mentioned earlier, complying with the requirements would mean that we'd have to replace the `@id`
-of the data set representing the Party of Andy Warhol ideally with an URI pointing to his identity page. In addition, we're
-also introducing a new property called `publicKey` for signing linked data published by a LCC RRM Party:
+of the data set representing the Party of Andy Warhol ideally with an URI pointing to his identity page.
 
 
 ```javascript
 {
     "@context": {
         "@vocab": "http://schema.org/",
-        "publicKey": "Text",
         "birthDate": "birthDate",
         "deathDate": "deathDate",
         "givenName": "givenName",
@@ -565,7 +659,6 @@ also introducing a new property called `publicKey` for signing linked data publi
     },
     "@type": "http://linkedcontentcoalition.com/Identity",
     "@id": "https://identityservice.com/identities/14XgsoWd47KLJa6Ehu62j7Mugq38zX5umt",
-    "publicKey": "0493e2f8fb9f6ca3d34e0e39f223447d01a81b538c6b41349c167b20b8656136b5ccedba62f2fe4158c8e57caeb2c6aa85bb91f5c5b6cd2f5d95c9bee3aea098f6",
     "givenName": "Andy",
     "familyName": "Warhol",
     "birthDate": "1928-08-06",
@@ -573,17 +666,44 @@ also introducing a new property called `publicKey` for signing linked data publi
 }
 ```
 
-Note that we chose the property name `publicKey` here intentionally, as public parts of key pairs usually contain enough
-information themselves for a key-parser to identify what kind of encryption was being used.
 
-- TODO: Find good enough sources to prove this. If not, we'll need to either have to introduce a `publicKeyType` or call each
-  key directly by its name: `ECDSApublicKey`
+As lots of the users' data will be saved on public ledgers - meaning the user is required to sign the data they're submitting -
+we'll need to make sure to map their cryptographical identity to their registered identity.
+Luckily, the [Friend of a Friend Project](http://www.foaf-project.org/) has us covered already by providing [an RDF
+schema for signing RDF documents using Public Key Cryptography](http://xmlns.com/wot/0.1/), called Web of Trust RDF.
+Including this Ontology into our identity schema, it could look like this:
+
+
+```javascript
+{
+    "@context": {
+        "schema": "http://schema.org/",
+        "wot": "http://xmlns.com/wot/0.1",
+    },
+    "@type": "http://linkedcontentcoalition.com/Identity",
+    "@id": "https://identityservice.com/identities/14XgsoWd47KLJa6Ehu62j7Mugq38zX5umt",
+    "schema:givenName": "Andy",
+    "schema:familyName": "Warhol",
+    "schema:birthDate": "1928-08-06",
+    "schema:deathDate": "1987-02-22",
+    "wot:hasKey": {
+        "@type": "wot:PubKey",
+        "pubkeyAddress": "https://ipfs.io/ipfs/Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
+        "fingerprint": "CE3097A2A1015D28A0AA643AA3DB3EBEFFEAD7E0",
+        "length": 2048,
+        "identity": {
+            "@type": "wot:User",
+            "name": "Andy Warhol (This is just a dummy key for demonstration purposes!)"
+        }
+    }
+}
+```
+
 
 Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party Model. As mentioned previously,
 there can be a one-to-many relationship from a LCC RRM Party to other LCC RRM Parties as well as a one-to-many relationship
 between a LCC RRM Party and LCC RRM Places. Now, when studying the LCC RRM document, it becomes clear that theoretically
 these requirements need to be fulfilled, as there could be use cases where:
-
 
 - multiple Parties share a relationship (e.g. Party A and Party B created Creation C)
 - Parties might provide Places as a meta data (think: their home location, a contact place or a billing address)
@@ -627,8 +747,6 @@ JSON-LD using schema.org's Organization could look like this:
     "founder": {
         "@type": "http://linkedcontentcoalition.com/Identity",
         "@id": "https://identityservice.com/identities/12bS2BTF4j8kkmNqoyQRwzKy76EXQWRVWJ",
-        "givenName": "Tim",
-        "familyName": "Berners-Lee"
     },
     "member": [
         {
@@ -646,3 +764,144 @@ JSON-LD using schema.org's Organization could look like this:
     ]
 }
 ```
+
+- TODO: This needs a lot of specing out. How can members of an organization collectively sign something they're
+  submitting? Is there a single public key address assigned to an organization or does the organization just bundle
+  members that act like they were in an organization but act independently?
+
+
+### The LCC Creation Model
+
+A LCC RRM Creation model describes something directly or indirectly made by human beings. According to the
+specification, it has only a single required property:
+
+- **CreationMode:** Can take the values `lcc:Manifestation` or `lcc:Work`
+    - `lcc:Manifestation`: A perceivable Creation
+    - `lcc:Work`: A distinct, abstract Creation whose existence is revealed through one or more manifestations
+
+
+Additionally, a Creation can have the following outgoing references to respective other entities:
+
+- a self referencing link (one-to-many)
+- a link to a Place (one-to-many)
+- a link to a Party (one-to-many)
+
+
+Visualized, the LCC RRM Creation Model looks like this:
+
+
+![](media/lccrrmcreation.png)
+
+
+#### Proposed Transformation
+
+As mentioned in an earlier section already, schema.org covers the use case of Creation quite closely already. Not only
+is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork) quite extensive already, there is a
+multitude of subtypes which are useful for defining specifics about a creation (e.g. [schema.org/Book](http://schema.org/Book)).
+Using schema.org to define an LCC RRM Creation model (more specifically: a book) in JSON-LD could look like this
+(example taken from schema.org)
+
+
+```javascript
+{
+    "@context": "http://schema.org",
+    "@id": "#trilogy",
+    "@type": "Book", <-- Is a subtype of CreativeWork
+    "hasPart": [
+        {
+            "@id": "#book3",
+            "@type": [
+                "Book",
+                "PublicationVolume"
+            ],
+            "name": "The Return of the King",
+            "datePublished": "20-10-1955",
+            "locationCreated": "http://dbpedia.org/page/United_Kingdom",
+            "isPartOf": "#trilogy",
+            "inLanguage": "en",
+            "volumeNumber": "3",
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"  <-- points to Tolkien's registered identity
+        },
+        {
+            "@id": "#book2",
+            "@type": [
+                "Book",
+                "PublicationVolume"
+            ],
+            "name": "The Two Towers",
+            "datePublished": "11-11-1954",
+            "locationCreated": "http://dbpedia.org/page/United_Kingdom",
+            "isPartOf": "#trilogy",
+            "inLanguage": "en",
+            "volumeNumber": "2",
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+        },
+        {
+            "@id": "#book1",
+            "@type": [
+                "Book",
+                "PublicationVolume"
+            ],
+            "name": "The Fellowship of the Ring",
+            "datePublished": "29-07-1954",
+            "locationCreated": "http://dbpedia.org/page/United_Kingdom",
+            "isPartOf": "#trilogy",
+            "inLanguage": "en",
+            "volumeNumber": "1",
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+        }
+    ],
+    "name": "Lord of the Rings",
+    "inLanguage": "en",
+    "genre": "fictional",
+    "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+}
+```
+
+
+In this case, the LCC RRM Creation with `CreationMode == lcc:Work` would be the outer object, abstractly grouping a set
+of LCC RRM Creations with `CreationMode == lcc:Manifestation`. A special property in this case is `hasPart`, which
+allows reflectively linking to other Creations. As well as `locationCreated` a predicate specific to schema.org that
+accepts a [schema.org/Place](http://schema.org/Place). By looking closely at it's like to dbpedia, we can conclude that
+even though dbpedia itself defines `country` as its own type but features schema.org's Place as a possible type, which
+is why the link we've provided is valid.
+
+As this example should be sufficient for showing how straight forward the transformation of an LCC RRM Creation model to
+a RDF-based model is, we can continue with transforming the LCC RRM Place.
+
+
+### The LCC Right Model
+#### Proposed Transformation
+
+
+### The LCC RightsAssignment Model
+#### Proposed Transformation
+
+
+### The LCC Assertion Model
+#### Proposed Transformation
+
+
+### The LCC RightsConflict Model
+#### Proposed Transformation
+
+
+## Blockchainify Linked Data
+
+- TODO:
+    - Briefly: What is a blockchain
+    - By blockchaining every set of linked data of an ontology, a simple claim system is established
+    - By requiring the signature of every set of linked data submitted to a blockchain, data is linked to the submitters
+      identity. Since the submitter's identity has a certain trust in the ontology, the submitter transfers the trust of
+      himself + the trust all people that signed his key gave him onto the data he has submitted
+
+      - e.g. I claim that I am Andy Warhol and I've created 32 Campbell's Soup Cans
+      Well guess, what - Nobody signed by freshly created identity. Also, Andy Warhol is not alive anymore. Sure I can
+      submit this information to the blockchain and show to the world on ascribe that I'm the creator, but everyone will
+      be able to tell that I'm very likely NOT Andy Warhol and that 32 Campbell's Soup Cans is NOT my creation
+    - Super difficult question: When pointing to data that is not on a blockchain, what to do then? Discard? Allow it
+      (but careful because data from outside is subject to change)
+        - Imagine identities would be stored on a non blockchain. Using the given definition for a Creation, I'd go
+          ahead and link it to the identity that is maybe stored on me.tim.com also exposing my public key. Now imagine
+          someone gets access to tim.com and just changes my public key to a public key they they private key. Can they
+          then make valid claims in my name?
