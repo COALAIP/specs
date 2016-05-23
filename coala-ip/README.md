@@ -4,7 +4,7 @@ COALA Intellectual Property Specification
 
 Contributors to this document:
 
-- Tim Daubenschuetz: <tim.daubenschuetz@gmail.com, tim@ascribe.io>
+- Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
 
 
 ## PLEASE READ THIS SECTION BEFORE READING THE DOCUMENT
@@ -24,6 +24,12 @@ counts). Please respect while writing.
 
 As human beings are capable to recognize patterns easily, make sure to follow the other (here not explicitly mentioned)
 text formating patterns as close as possible.
+
+As an overall metric for this document:
+    - Think practical
+    - Think in technologies
+    - Don't reinvent the wheel, take what's out there already and if so, give proper attribution
+    - Write as if you had to implement this spec next week!
 
 
 Thank you very much!
@@ -128,7 +134,8 @@ on top of the LCC EM and is composed of the following seven entities:
 - **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g. "Andy Warhol controls all
   rights to 32 Campbell's Soup Cans")
 - **RightsAssignment:** A decision as a result of which a Right comes into existence (e.g. "According to the 1976 US
-  Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup Cans")
+  Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup Cans", but also "I, Andy Warhol declare that
+  "32 Campbell's Soup Cans" shall be published under the CreativeCommons free use license")
 - **Assertion:** A claim made about the substance of a Right (e.g. "I, the Museum of Modern Art, New York, claim that
   Andy Warhol is the righteous creator of 32 Campbell's Soup Cans")
 - **RightsConflict:** A statement of disagreement over a Right (e.g. "I, Malory, claim that Andy Warhol is NOT the
@@ -871,6 +878,47 @@ a RDF-based model is, we can continue with transforming the LCC RRM Place.
 
 
 ### The LCC Right Model
+
+In the LCC RRM document, the Right model is by far the most interconnected. A minimum set of required properties
+includes:
+
+- **RightType:** The type of the Right (e.g. all uses, copy, play, stream, license, copyright, administration,
+  lcc:RightSet - a container grouping Rights)
+- **ToolType:** The type of medium that must be employed in exercising the Right (e.g. only watch on mobile phone)
+- **MaterialType:** The type of material that may be employed in execising the right (e.g. a type of cover material for
+  a book - as a rule of thumb: brush:tool as paint:material)
+- **ValidContextType:** A type of context in which the Right must be exercised (e.g. in flight, in public, commercial
+  use, academic research)
+- **IsExclusive:** Indicating wether the Right is exclusive to the Rightsholder (e.g. true, false)
+- **PercentageShare:** The percentage share of the Rights controlled (e.g. 100%, 51%)
+- **NumberOfUses:** The number of uses permitted by the Right (e.g. 3 uses, 5 uses, unlimited uses?)
+- **ValidPeriod:** The period during which the Right is valid. (e.g. 2015-2016)
+
+
+TODO: Note that the LCC RRM specification features three more properties which are not included for the following reasons:
+
+- **HostCreationType:** Unclear what it is and if it's necessary in the world of RDF
+- **OutputCreationType:** Uncleare what it is
+- **Territory:** Described in the document as a base type (e.g. string). Should be linked to a Place though.
+
+
+In addition, a LCC RRM Right can have the following outgoing references to respective other entities:
+
+- a self-referencing link (one-to-many)
+- a link to a Party (one-to-many)
+- a link to a Creation (one-to-many)
+- a link to a Place (one-to-many)
+- a link to a RightsAssignment (one-to-many)
+- a link to a Assertion (one-to-many)
+- a link to a RightsConflict (one-to-many)
+
+
+Visualized, the LCC RRM Rights model looks like this:
+
+
+![](media/lccrrmright.png)
+
+
 #### Proposed Transformation
 
 
