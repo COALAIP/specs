@@ -26,6 +26,7 @@ As human beings are capable to recognize patterns easily, make sure to follow th
 text formating patterns as close as possible.
 
 As an overall metric for this document:
+
     - Think practical
     - Think in technologies
     - Don't reinvent the wheel, take what's out there already and if so, give proper attribution
@@ -35,7 +36,17 @@ As an overall metric for this document:
 Thank you very much!
 
 
+## Table of Contents
+
+- TODO:
+    - link to the individual headlines in a tree structure
+
+
 ## Abstract
+
+- TODO:
+    - tell the reader what this document is about and most importantly why they should care about the problem and
+      read/implement this specification
 
 
 ## Introduction
@@ -49,12 +60,12 @@ spectrum, we advise the reader to study them further on their own. For each sect
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework) is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/) (short form: LCC)
-to unify digital rights data management. The Framework's key documents are:
+to unify digital rights data management. The framework's key documents are:
 
 - [Ten targets for the rights data network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
 - [The LCC Rights Reference Model](http://doi.org/10.1000/284)
-- [The LCC Principles of identification](http://doi.org/10.1000/287), May 2016
+- [The LCC Principles of identification](http://doi.org/10.1000/287)
 
 
 In this introductory section, we'll go over each document summarizing their contents briefly to give context and
@@ -354,7 +365,7 @@ specification based on LCC's EM/RRM:
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
 
-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html)*
+*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
 ##### Extensibility of schema.org
@@ -427,7 +438,7 @@ data network, which say:
 - http://www.weboftrust.info/
 
 
-## Modeling LCC RRM using Linked Data
+## Remodeling the LCC RRM using Linked Data
 
 In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD and schema.org. In other
 words, we'll go over each model description given in the LCC Rights Reference Model document and discuss how the
@@ -923,14 +934,29 @@ Visualized, the LCC RRM Rights model looks like this:
 
 
 ### The LCC RightsAssignment Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+
+
 #### Proposed Transformation
 
 
 ### The LCC Assertion Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+
+
 #### Proposed Transformation
 
 
 ### The LCC RightsConflict Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+
+
 #### Proposed Transformation
 
 
@@ -953,3 +979,5 @@ Visualized, the LCC RRM Rights model looks like this:
           ahead and link it to the identity that is maybe stored on me.tim.com also exposing my public key. Now imagine
           someone gets access to tim.com and just changes my public key to a public key they they private key. Can they
           then make valid claims in my name?
+    - When saving data into an immutable ledger, do we even need a RightsAssignment? A RightsAssignment could just be
+      the transfer of a (divided) Right (very much like the SPOOL protocol)
