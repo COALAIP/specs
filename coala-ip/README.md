@@ -26,6 +26,7 @@ As human beings are capable to recognize patterns easily, make sure to follow th
 text formating patterns as close as possible.
 
 As an overall metric for this document:
+
     - Think practical
     - Think in technologies
     - Don't reinvent the wheel, take what's out there already and if so, give proper attribution
@@ -35,7 +36,22 @@ As an overall metric for this document:
 Thank you very much!
 
 
+## General TODOs:
+
+- In some cases synonyms for lingo was used. Remove all occurrences
+
+
+## Table of Contents
+
+- TODO:
+    - link to the individual headlines in a tree structure
+
+
 ## Abstract
+
+- TODO:
+    - tell the reader what this document is about and most importantly why they should care about the problem and
+      read/implement this specification
 
 
 ## Introduction
@@ -49,12 +65,12 @@ spectrum, we advise the reader to study them further on their own. For each sect
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework) is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/) (short form: LCC)
-to unify digital rights data management. The Framework's key documents are:
+to unify digital rights data management. The framework's key documents are:
 
 - [Ten targets for the rights data network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
 - [The LCC Rights Reference Model](http://doi.org/10.1000/284)
-- [The LCC Principles of identification](http://doi.org/10.1000/287), May 2016
+- [The LCC Principles of identification](http://doi.org/10.1000/287)
 
 
 In this introductory section, we'll go over each document summarizing their contents briefly to give context and
@@ -354,7 +370,7 @@ specification based on LCC's EM/RRM:
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
 
-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html)*
+*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
 ##### Extensibility of schema.org
@@ -427,7 +443,7 @@ data network, which say:
 - http://www.weboftrust.info/
 
 
-## Modeling LCC RRM using Linked Data
+## Remodeling the LCC RRM using Linked Data
 
 In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD and schema.org. In other
 words, we'll go over each model description given in the LCC Rights Reference Model document and discuss how the
@@ -827,7 +843,8 @@ Using schema.org to define an LCC RRM Creation model (more specifically: a book)
             "isPartOf": "#trilogy",
             "inLanguage": "en",
             "volumeNumber": "3",
-            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"  <-- points to Tolkien's registered identity
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS",
+            "copyrightHolder": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
         },
         {
             "@id": "#book2",
@@ -841,7 +858,8 @@ Using schema.org to define an LCC RRM Creation model (more specifically: a book)
             "isPartOf": "#trilogy",
             "inLanguage": "en",
             "volumeNumber": "2",
-            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS",
+            "copyrightHolder": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
         },
         {
             "@id": "#book1",
@@ -855,15 +873,19 @@ Using schema.org to define an LCC RRM Creation model (more specifically: a book)
             "isPartOf": "#trilogy",
             "inLanguage": "en",
             "volumeNumber": "1",
-            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+            "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS",
+            "copyrightHolder": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
         }
     ],
     "name": "Lord of the Rings",
     "inLanguage": "en",
     "genre": "fictional",
-    "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
+    "author": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS",
+    "copyrightHolder": "https://identityservice.com/identities/1CUd9hYE768sMp2CmNNnAZuVmeBGmAGDMS"
 }
 ```
+
+- TODO: We need to include how "fingerprinting" could play a role in linking different manifestions of a work together.
 
 
 In this case, the LCC RRM Creation with `CreationMode == lcc:Work` would be the outer object, abstractly grouping a set
@@ -873,8 +895,13 @@ accepts a [schema.org/Place](http://schema.org/Place). By looking closely at it'
 even though dbpedia itself defines `country` as its own type but features schema.org's Place as a possible type, which
 is why the link we've provided is valid.
 
+Note that we also defined a `copyrightHolder` in this case, which can be according to schema.org a Person or
+Organization. Additionally, schema.org's Book schema also lets us define `license`, which in this case we'd like to
+avoid. Licensing of Creation should strictly be handled using the LCC RRM Right, hence including licensing information
+in the LCC RRM Creation must be ignored.
+
 As this example should be sufficient for showing how straight forward the transformation of an LCC RRM Creation model to
-a RDF-based model is, we can continue with transforming the LCC RRM Place.
+a RDF-based model is, we can continue with transforming the LCC RRM Right.
 
 
 ### The LCC Right Model
@@ -919,18 +946,137 @@ Visualized, the LCC RRM Rights model looks like this:
 ![](media/lccrrmright.png)
 
 
+##### Additional Types of Rights
+
+The LCC Rights Reference Model additionally specifies three types of LCC RRM Rights that each implement non-trivial
+functionality:
+
+- **SourceRight:** A Right from which another Right is derived (This allows to create for (unneccesary?)
+  Right-ontologies
+- **SuperSededRight:** A Right that is rendered invalid by another Right
+- **RightSet:** A collection of Rights all bundeled under a single Right
+
+
+For putting Rights onto a global registry, handling a RightSet poses a problem. Essentially, the transfer of multiple
+assets on a decentralized ledger cannot be guaranteed and especially not synchronized.
+
+- TODO: Tim: I talked to Dimi about this, and we were trying to figure this out with cryptoconditions, but it seems that at
+  this stage it is not possible.
+
+
+Both a SourceRight, as well as a SuperSeededRight would easily be represented using an ontology, but would still
+complicate ownership logic on a blockchain greatly, which is why we've decided to leave them out of this specification.
+
+
+##### The Notion of Ownership
+
+As can be drawn from the LCC RRM specification, a LCC RRM Right is LCC RRM Party-specific. In a sense that, imagine
+digital creators would like to distribute rights to a multitude of interested LCC RRM Parties. The following steps would
+be required:
+
+1. Register their Party as described in a previous sections
+2. Register their Creation as described in a previous section and like it to their Party ID
+3. Register a number of Rights, tailored towards the interested Party
+4. Register a RightAssignment to assign the Rights to the interested Parties
+
+
+What this implies is that while Parties and Creations (there are exceptions: Copyright transfer) are strictly limited
+to the act of registration, a LCC RRM Right actually has properties of ownership, allowing it to be transferred (via
+a LCC RRM RightsAssignment) from one LCC RRM Party to another.
+
+Furthermore, a LCC RRM Creation is not limited to a single LCC RRM Right. In fact, there can be as many LCC RRM Rights
+attached to a Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though, note
+that a LCC RRM Right that has for example a CreativeCommons license attached to it cannot be transferred, as the LCC RRM
+Creation is then owned collectively by everyone under the terms the license states. Still there could be other LCC RRM Rights
+attached to that LCC RRM Creation defining additional rights (additional as in: rights that grand more freedom in the usage
+of the LCC RRM Creation than everybody already has with the CreativeCommons license).
+
+
 #### Proposed Transformation
+
+Transforming the LCC RRM Rights model poses some challenges:
+
+- A LCC RRM Right object can both represent copyright as well as licensing information
+- In the LCC RRM specification, a LCC RRM Right can be a SourceRight, SuperSeededRight as well as a RightSet.
+
+
+In order to allow for Rights to be atomicly transferrable units, we hence decided to ignore these requirements for now
+and purely focus on the right being a transferrable container for specific licensing information.
+
+Since we weren't able to find an appropriate RDF schema to model the LCC RRM Right, we're proposing a schema that
+consolidates the requirements given in:
+
+- [LCC: Rights Reference Model](http://doi.org/10.1000/284)
+- [W3C: Open Digital Rights Language](https://www.w3.org/TR/odrl/)
+- [W3C: Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/)
+
+
+```javascript
+{
+    "@context": {
+        "creation": "http://creativecommons.org/ns#Work"
+    },
+    "@type": "Right",
+    "@id": "...",
+    "creation": "http://...",
+    "license": "http://..."
+
+```
+
+
+As can be seen, a LCC RRM Right is basically just a link between a creation and a license. In fact, this modeling could
+even be simplified using Creative Commons Rights Expression Language (short form: ccREL) without aliasing.
+
+
+```javascript
+{
+    "@context": "http://creativecommons.org/ns#",
+    "@type": "License",
+    "@id": "URL where work/LCC RRM Creation is located",
+    "license": "http://..."
+
+```
+
+
+Even it doesn't seem like it, in both examples, the `license` property can point to any license that exists and not only
+licenses by Creative Commons. In fact, Creative Commons probably should have generalized their ccREL more and then build
+a Creative Commons-specific RDF schema on top of it. Instead they chose to do it the opposite way.
+
+Another point to be discussed in this section is why none of the recommended properties described in the LCC RRM were
+used in the proposed transformation. The answer to this is that all the listed properties can also be expressed in a
+custom legal contract that is linked to in the LCC RRM Right model. In essence, the few keywords mentioned outline words
+that are clarified in a license for a machine to be interpretable.
+As they are though way to less to give a machine an understanding of what the human-readable license is about, only
+including a few didn't make any sense to us. When the time is ready, of couse human and machine readable licenses could
+be linked in the LCC RRM Right model. For now though, it is not a priority.
 
 
 ### The LCC RightsAssignment Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+    - In fact, we just explain the RightsAssignment model, the proposed transformation is a tranfer on a distributed
+      ledger or schema.org's transferaction
+
+
 #### Proposed Transformation
 
 
 ### The LCC Assertion Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+
+
 #### Proposed Transformation
 
 
 ### The LCC RightsConflict Model
+
+TODO:
+    - See other introductory sections of LCC models. Use same structure to describe the model
+
+
 #### Proposed Transformation
 
 
@@ -953,3 +1099,5 @@ Visualized, the LCC RRM Rights model looks like this:
           ahead and link it to the identity that is maybe stored on me.tim.com also exposing my public key. Now imagine
           someone gets access to tim.com and just changes my public key to a public key they they private key. Can they
           then make valid claims in my name?
+    - When saving data into an immutable ledger, do we even need a RightsAssignment? A RightsAssignment could just be
+      the transfer of a (divided) Right (very much like the SPOOL protocol)
