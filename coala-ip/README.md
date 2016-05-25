@@ -105,14 +105,14 @@ For more in-depth information about the goals of the LCC, find the attached link
 
 #### The LCC Entity Model
 
-*Note that knowing the definition of the LCC Entity Model is not vital for understand the contents of this
-specification. The LCC Entity Model is a meta-model the LCC defined to model their actual ontology - the LCC Rights
+*Note that knowing the definition of the LCC Entity model is not vital for understand the contents of this
+specification. The LCC Entity model is a meta-model the LCC defined to model their actual ontology - the LCC Rights
 Reference Model.*
 
 The [LCC Entity Model](http://doi.org/10.1000/285) (short form: LCC EM) is a generic meta data model used by the LCC as a
 "building block" to define more specific data models like the [LCC Rights Reference Model](http://doi.org/10.1000/284)
 (short form: LCC RRM).
-In a nutshell, the LCC Entity Model specification defines a model called `Entity` that is composed of five attribute types:
+In a nutshell, the LCC Entity model specification defines a model called `Entity` that is composed of five attribute types:
 
 - **Category:** Categorizes the Entity (e.g. Language=iso3166-1a2:EN ("English"))
 - **Descriptor:** Names the Entity (e.g. Name="Andy Warhol")
@@ -723,7 +723,7 @@ Including this Ontology into our identity schema, it could look like this:
 ```
 
 
-Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party Model. As mentioned previously,
+Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party model. As mentioned previously,
 there can be a one-to-many relationship from a LCC RRM Party to other LCC RRM Parties as well as a one-to-many relationship
 between a LCC RRM Party and LCC RRM Places. Now, when studying the LCC RRM document, it becomes clear that theoretically
 these requirements need to be fulfilled, as there could be use cases where:
@@ -810,7 +810,7 @@ Additionally, a Creation can have the following outgoing references to respectiv
 - a link to a Party (one-to-many)
 
 
-Visualized, the LCC RRM Creation Model looks like this:
+Visualized, the LCC RRM Creation model looks like this:
 
 
 ![](media/lccrrmcreation.png)
@@ -1042,24 +1042,75 @@ Even it doesn't seem like it, in both examples, the `license` property can point
 licenses by Creative Commons. In fact, Creative Commons probably should have generalized their ccREL more and then build
 a Creative Commons-specific RDF schema on top of it. Instead they chose to do it the opposite way.
 
+Since license are usually documents with pages of text, intended for humans to read,
+pointing to a license must be done by using technology that allows for content addressing (e.g. IPFS).
+
 Another point to be discussed in this section is why none of the recommended properties described in the LCC RRM were
 used in the proposed transformation. The answer to this is that all the listed properties can also be expressed in a
 custom legal contract that is linked to in the LCC RRM Right model. In essence, the few keywords mentioned outline words
 that are clarified in a license for a machine to be interpretable.
 As they are though way to less to give a machine an understanding of what the human-readable license is about, only
-including a few didn't make any sense to us. When the time is ready, of couse human and machine readable licenses could
+including a few didn't make any sense to us. When the time is ready, of course human and machine readable licenses could
 be linked in the LCC RRM Right model. For now though, it is not a priority.
 
 
 ### The LCC RightsAssignment Model
 
-TODO:
-    - See other introductory sections of LCC models. Use same structure to describe the model
-    - In fact, we just explain the RightsAssignment model, the proposed transformation is a tranfer on a distributed
-      ledger or schema.org's transferaction
+According to the LCC RRM specification a LCC RRM RightsAssignment describes an event. A LCC RRM RightsAssignment can
+have the following types (property name: `RightsAssignment`):
+
+- **RightsLaw:** Representing a law by which rights come into existence (e.g. the US Copyright Act of 1976)
+- **RightsPolicy:** Representing an event by which a Party assigns rights to another Party without requiring an
+  agreement of the later (e.g. security level for user access of a computer system)
+- **RightsAgreement:** Representing an agreement between to Parties over a right (e.g. a license, a publishing
+  agreement, ...)
+
+
+In addition, the LCC recommends the RightsAssignment to have three statuses (property name: `RightsAssignmentStatus`):
+
+- `lcc:Offer`: An open RightAssignment the Assignee can accept or reject
+- `lcc:Request`: A request of an Assigner to an Assignee to register a specific RightsAssignment
+- `lcc:Executed`: A actual transfer of a LCC RRM Right from a Party to another Party
+
+
+The LCC RRM RightsAssignment has the following outgoing references:
+
+- a link to a LCC RRM Party (one-to-many)
+- a link to a LCC RRM Right (one-to-many)
+
+
+Visualized, the LCC RRM RightsAssignment model looks like this:
+
+
+![](media/lccrrmcreation.png)
 
 
 #### Proposed Transformation
+
+An appropriate transformation for the LCC RRM RightsAssignment model could potentially be found by looking at schemata
+for asset transfers. As this specification's scope is to make digital rights manageable on an immutable ledger though,
+we're not interested in defining this type of schema, as we think a immutable ledger must have this operation already
+build in from the start. Furthermore, we decided to leave out any complexities that could be introduced having
+RightsAssignment types. A RightsAssignment will have a single type that corresponds to the type `RightsAssignment` and
+for now only one `RightsAssignmentStatus` that is of value `lcc:Executed`.
+
+A concern we'd like to address however, is the concept of assigning rights using more specific legal terms. What this is
+enabling is that in a RightsAssignment a specific contract for a transfer of rights can be specified.
+
+As said before, by assuming that every immutable ledger implements the concept of asset transfer, a minimal transformed
+LCC RRM RightsAssignment would look like this (this represent the payload of the ledger-specific transfer):
+
+
+```javascript
+{
+   "rdf:contract": "link to IPFS"
+}
+```
+
+- TODO: There is probably a better way to phrase this. I mean, who knows what a cryptocondition is...
+
+Now obviously, this contract is executed by default as soon as a RightsAssignment is made. However, an immutable ledger
+could fall back on escrow mechanisms using cryptographical conditions to represent a state of acceptance or rejection.
 
 
 ### The LCC Assertion Model
@@ -1101,3 +1152,23 @@ TODO:
           then make valid claims in my name?
     - When saving data into an immutable ledger, do we even need a RightsAssignment? A RightsAssignment could just be
       the transfer of a (divided) Right (very much like the SPOOL protocol)
+
+    - Updated opinion: A RightsAssignment is a transfer on a ledger. It can contain contract data, a cryptocondition
+      could be used to model an accept/reject state for example
+
+
+## Future
+
+This specification outlined how the LCC Framework can be used to define an RDF ontology on top of immutable data stores
+to manage digital rights. As the goal is to make rights modeling an open international standard and implement the
+outcome there is a number of events that need to follow this specification, which are outlined here in sequential order:
+
+
+- Define a working RDF schema based on this specification
+- Include or build open source communities around it
+- Using the RDF schema, implement this specification
+- Identify a standards commite to send this to
+- Take the RDF schema, take the proposed transformations here and put them in a format of a standard proposal
+
+
+Thanks for reading!
