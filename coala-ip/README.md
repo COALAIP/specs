@@ -39,6 +39,8 @@ Thank you very much!
 ## General TODOs:
 
 - In some cases synonyms for lingo was used. Remove all occurrences
+- When releasing this document to the public, write an introductory section explaining what COALA is, why this document
+  matters, what is left to do, what are COALA's general goals are and so on...
 
 
 ## Table of Contents
@@ -1082,7 +1084,7 @@ The LCC RRM RightsAssignment has the following outgoing references:
 Visualized, the LCC RRM RightsAssignment model looks like this:
 
 
-![](media/lccrrmcreation.png)
+![](media/lccrrmrightsassignment.png)
 
 
 #### Proposed Transformation
@@ -1099,6 +1101,8 @@ enabling is that in a RightsAssignment a specific contract for a transfer of rig
 
 As said before, by assuming that every immutable ledger implements the concept of asset transfer, a minimal transformed
 LCC RRM RightsAssignment would look like this (this represent the payload of the ledger-specific transfer):
+
+- TODO: Define this as JSON-LD
 
 
 ```javascript
