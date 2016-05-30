@@ -39,6 +39,8 @@ Thank you very much!
 ## General TODOs:
 
 - In some cases synonyms for lingo was used. Remove all occurrences
+- When releasing this document to the public, write an introductory section explaining what COALA is, why this document
+  matters, what is left to do, what are COALA's general goals are and so on...
 
 
 ## Table of Contents
@@ -174,7 +176,7 @@ unidirectional, as can be seen in the attached figure:
 - [LCC: Rights Reference Model](http://doi.org/10.1000/284), May 2016
 
 
-#### The LCC Principles of identification
+#### The LCC Principles of Identification
 
 - TODO:
     - Summarize briefly (as done in the other sections) what the document talks about, without going into to much detail
@@ -185,20 +187,79 @@ unidirectional, as can be seen in the attached figure:
 - [LCC: Principles of identification](http://doi.org/10.1000/287), May 2016
 
 
-### The semantic web
+### The Semantic Web
 
-- TODO:
-    - For what is it useful
-    - How does RDF look like
-    - How does RDF schema look like
-    - How does OWL look like
+The Web is a universal place for sharing information globally. In most cases, this is done by human beings publishing
+information in a human-readable way (say for example as an HTML page). While human-readable information is theoretically
+possible to be read by machines, the task in practice is rather challenging and inefficient.
+Think of an HTML page containing tabular data about the population of a country. Simply identifying that the first
+column of the table is describing "the name of the country" and using that name to merge the data with other table's data
+to establish new information is incredible difficult for a machine.
+Additionally, reasoning about information that can be derived from such a table is nearly impossible for a machine,
+without the necessary context given.
+
+Hence, converting data into schemata that have semantic meaning to both humans as well as machine is really valuable for
+the Web to advance. One technique to do so is called Resource Description Framework. It is briefly described in the
+following section.
+
+
+**Sources:**
+
+- A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval, 2009
+
+
+#### Resource Description Framework
+
+[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) is a framework for describing
+entities on the Web. Since it is using the generalization of the Universal Resource Location (short form: URL), the
+Universal Resource Identifier (short form: URI) as a scheme to address resources, it is exceptionally interoperatable
+and extensible.
+
+RDF's core data structure is a graph-based data model. This is achieved by constructing subsets of a graph with a set of
+triples, each consisting of a **subject**, **predicate** and an **object**. A single set of triples is already an RDF
+graph. Visualized a simple RDF graph could look like this:
+
+
+![](media/rdfgraph.png)
+
+
+Since RDF is mainly used on the World Wide Web, what this means in practice is that each element of a graph is
+represented as a URI pointing to a resource that gives further meaning to the relationship of the graph. As an example
+mentioned in the [Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/) (short form: ccREL) W3C submission:
+
+
+![](media/rdfexample.png)
+
+
+In the example given in the figure above licensing information about Lawrence Lessig's blog is stated in a
+machine-readable way. Mapped to the RDF-graph visualization given before, we can say that Lessig's blog is the
+*subject*, to the *predicate* that it is licensed under the Creative Commons Attribution 3.0 license, the *object*.
+In this case, ccREL is a schema provided by Creative Commons that allows defining context for machines on how to
+interpret licensing information for documents on the web. ccREL itself is implemented using RDF Schema, which is
+basically a vocabulary for describing properties and classes of RDF resources. By making usage of the [Web Ontology
+Language](https://www.w3.org/TR/owl-features/) (short form: OWL), concepts from other RDF schemata can be included in a domain-specific RDF schema creating
+a global ontology of semantically structured data.
+
+Since RDF itself is more a concept, it's implementations vary - especially in terms of used data structures. Embedded
+RDF in HTML pages, as well as the more puristic RDF/XML are likely one of the more popular spin offs. In 2014 with a
+new version of RDF coming up (RDF 1.1), a new RDF compatible data structure was submitted called JSON-LD.
+In essence, it fits some of the concepts of the semantic web (linked data to be specific) into the [Javascript Object
+Notation](https://tools.ietf.org/html/rfc7159) (short form: JSON), which makes it much more approachable than comparable
+implementations falling back on the much heavier syntax of XML for example. Since we're intending to port the LCC'
+Rights Reference Model specification to RDF using JSON-LD, the next section will highlight some of its main features.
+
+
+**Sources:**
+
+- [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/), May 2016
+- [W3C: Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/), May 2016
 
 
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging the concepts of the
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) with [JSON](https://tools.ietf.org/html/rfc7159).
-Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to schemata
+Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to RDF schemata
 in an ontology.
 
 Lets assume we have the following set of data:
@@ -284,7 +345,7 @@ To give a practical example, this is how our previously defined set of data woul
 ```
 
 
-So essentially, what we end up with is a much more verbose form of our set of data. In fact, the JSON-LD specification
+What we end up with is a much more verbose form of our set of data. In fact, the JSON-LD specification
 gives certain forms names. The form that is shown above is called _expanded_ form, as it was expanded using Person's
 schema.org definition defined in `@context`.
 The form in the example we gave earlier (where we defined `@context`) is called _compacted_ form.
@@ -375,9 +436,8 @@ specification based on LCC's EM/RRM:
 
 ##### Extensibility of schema.org
 
-As it is the goal of this specification to convert LCC's RRM to a linked data ontology, using JSON-LD and schema.org, we
-need to be able to model the seven main LCC RRM entities: Party, Creation, Place, Right, RightsAssignment, Assertion,
-RightsConflict using schema.org and JSON-LD.
+As it is the goal of this specification to convert LCC's RRM to a linked data ontology, we need to be able to model
+the seven main LCC RRM entities: Party, Creation, Place, Right, RightsAssignment, Assertion, RightsConflict.
 While enumerating schema.org's schemata in the previous section, for schemata that have similarities to the LCC's
 definition we already marked them. For clarity though, we're listing them in this section again to also highlight what
 schema.org **doesn't** provide yet:
@@ -412,7 +472,7 @@ schemata into so called 'hosted' and 'external' extensions. In general, there ar
 
 Applied to the contents of this specification, this would mean that application-agnostic schemata (so everything contained
 in LCC RRM) would ideally become a Hosted extension, while application-specific schemata (data models that are specific for
-a certain copyright society or in our case ascribe.io) would become External schemata.
+a certain applications or services) would become External schemata.
 Fortunately, using schema.org in this way it also complies with rule five and six of the ten LCC targets for the rights
 data network, which say:
 
@@ -1082,7 +1142,7 @@ The LCC RRM RightsAssignment has the following outgoing references:
 Visualized, the LCC RRM RightsAssignment model looks like this:
 
 
-![](media/lccrrmcreation.png)
+![](media/lccrrmrightsassignment.png)
 
 
 #### Proposed Transformation
@@ -1099,6 +1159,8 @@ enabling is that in a RightsAssignment a specific contract for a transfer of rig
 
 As said before, by assuming that every immutable ledger implements the concept of asset transfer, a minimal transformed
 LCC RRM RightsAssignment would look like this (this represent the payload of the ledger-specific transfer):
+
+- TODO: Define this as JSON-LD
 
 
 ```javascript
