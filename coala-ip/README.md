@@ -708,21 +708,20 @@ In summary, IPLD is a promising new technology. This section aims to discuss bot
 
 ## Remodeling the LCC RRM using Linked Data
 
-In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD and schema.org. In other
+In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD, IPLD and schema.org. In other
 words, we'll go over each model description given in the LCC Rights Reference Model document and discuss how the
-respective model can be translated into JSON-LD.
+respective model can be translated into Linked Data.
 
 
 ### General Approach
 
-In this section, we describe abstractly how to get from a LCC RRM model to a RDF-compatible JSON-LD model.
-As mentioned earlier already, with its document "[LCC: Entity Model](http://doi.org/10.1000/285)", the defined a nice
-generic model to base their actual Rights Reference Model on.
-What this document in essence describes, is how to implement a data model that is fully extendable using a multitude of
-linked entities. Using an RDF-based data structure in turn, means that defining a base data structure for
-linking entities is not necessary anymore, as this is what RDF is all about already.
-What this leaves us with is that in order to successfully redefine the LCC Rights Reference Model, what we're left to do
-is:
+The section abstractly describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD model. As mentioned
+earlier already, with their document "[LCC: Entity Model](http://doi.org/10.1000/285)", they defined a generic model
+to base their actual Rights Reference Model on. What this document in essence describes, is how to implement a data model
+that is fully extendable using a multitude of linked entities. Using an RDF-based data structure in turn, means that
+defining a base data structure for linking entities is not necessary anymore, as this is what RDF is all about already.
+What this leaves us with is that in order to successfully redefine the LCC Rights Reference Model, what we're left to
+are the following steps:
 
 - Identify RDF schemata that map to respective entities defined in the LCC RRM specification
     - If appropriate RDF schemata are not available:
@@ -734,11 +733,11 @@ is:
 
 ### The LCC Place Model
 
-In the LCC Framework, a Place describes a localizable or virtual place. Understandably, it has the following property:
+In the LCC Framework, a Place describes a localizable or virtual place. It has the following property:
 
-- **PlaceType:** Defining the type of Place
+- **PlaceType:** Defining the type of a Place
     - `lcc:LocalizablePlace`: A Place in the universe that can be described using spatial coordinates
-    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located
+    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located under
 
 
 In addition, a Place can have the following outgoing reference to respective other entities:
@@ -756,27 +755,41 @@ Visualized the LCC RRM Place looks like this:
 
 Compared to schema.org's definition of a Place, the LCC RRM Place both describes a physical as well as a virtual Place.
 In this specification though, we need to separate the two concepts explicitly upfront, to avoid confusions further in
-the transformation process.
+the transformation process. Neither a URI, nor a IPLD merkle-link is able to represent a physical location which is why
+in the context of this specification, they're links pointing to resources while the LCC Place model will solely be used
+to point to a physical place.
 
 For further reference, a:
 
 - **LLC RRM Place or Place** will be used to describe a localizable Place, meaning a Place in the universe that can be
   described using spatial coordinates
-- **Universal Resource Identifier** will be used to describe a virtual place at which a resource may be located
+- **Universal Resource Identifier** or **IPLD merkle-link** will be used to describe a virtual place at which a resource
+  may be located under
 
 
 This implies that a LCC RRM Place of `PlaceType == lcc:LocalizablePlace` will be transformed to a RDF Place, while a
-LCC RRM Place of `PlaceType == lcc:VirtualPlace` will just be URIs in documents, linking in between data sets.
+LCC RRM Place of `PlaceType == lcc:VirtualPlace` will just be URIs or hashes in documents, linking in between data sets.
 
 Using schema.org's Place, a transformation is straight forward (example taken from schema.org):
 
 
 ```javascript
+// JSON-LD version
 {
-    "@context": "http://schema.org",
-    "@type": "Place",
+    "@type": "http://schema.org/Place",
     "geo": {
-        "@type": "GeoCoordinates",
+        "@type": "http://schema.org/GeoCoordinates",
+        "latitude": "40.75",
+        "longitude": "73.98"
+    },
+    "name": "Empire State Building"
+}
+
+// IPLD version
+{
+    "@type": { "/": "<hash pointing to RDF-Schema of Place>" },
+    "geo": {
+        "@type": { "/": "<hash pointing to RDF-Schema of GeoCoordinates>" },
         "latitude": "40.75",
         "longitude": "73.98"
     },
