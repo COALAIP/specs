@@ -539,7 +539,7 @@ The following sections give a brief overview of the functionality of IPLD. We ch
 example as a [comprehensible specification of IPLD](https://github.com/ipfs/specs/tree/master/ipld) exists already.
 
 
-#### Creation of Linked Objects
+##### Creation of Linked Objects
 
 There are a multitude of technical aspects to consider before using IPLD. This section will just give a brief overview
 over its functionality. As always, links at the end of this section will point to further readings.
