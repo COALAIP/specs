@@ -41,6 +41,8 @@ Thank you very much!
 - In some cases synonyms for lingo was used. Remove all occurrences
 - When releasing this document to the public, write an introductory section explaining what COALA is, why this document
   matters, what is left to do, what are COALA's general goals are and so on...
+- Sometimes this document references internally to other sections ("as seen in the above section", ...). Using relative
+  links, we should point to the sections, we're writing about
 
 
 ## Table of Contents
@@ -686,6 +688,27 @@ In summary, IPLD is a promising new technology. This section aims to discuss bot
     - Opinionated CBOR serialization
 
 
+#### Compatibility of IPLD and JSON-LD
+
+Even though the naming and concept of IPLD was inspired by JSON-LD, the two concepts have disjoint sets of
+functionality. This section highlights how much JSON-LD is possible with IPLD.
+
+
+#### Self-identifying JSON-LD objects
+
+As mentioned in one of the previous sections about JSON-LD already, a JSON-LD object can have a self-identifying link
+that is added to the object using the `@id` property. This means that a JSON-LD object itself is able to express where
+it's located at.
+The like is true with IPLD. By complying to a canonicalized representation of CBOR and by multihashing this
+representation, an IPLD object itself is also able to express where it can be resolved within the Internet - it's simply
+Content-Addressing -, even though it cannot express the location it is stored under.
+Trying to combine these two concepts however, is not possible since the `@id` JSON-LD identifier would need to be
+replaced with the multihash of its object (itself containing that hash). The amount of processing required to solve this
+task would be incredible, which would render the identification of objects incredibly inefficient economically speaking,
+which is why a JSON-LD object using IPLD links cannot self-identify using the `@id` property. As mentioned though, this
+is not a problem as objects generally identify themselves in the world of Content-Addressing.
+
+
 **Sources:**
 
 - [IPLD Specification Draft](https://github.com/ipfs/specs/tree/master/ipld), June 2016
@@ -774,7 +797,7 @@ Using schema.org's Place, a transformation is straight forward (example taken fr
 
 
 ```javascript
-// JSON-LD version
+// In JSON-LD
 {
     "@type": "http://schema.org/Place",
     "geo": {
@@ -785,7 +808,7 @@ Using schema.org's Place, a transformation is straight forward (example taken fr
     "name": "Empire State Building"
 }
 
-// IPLD version
+// In IPLD
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Place>" },
     "geo": {
@@ -814,8 +837,8 @@ A recommendation of the LCC is that the Party model must be able to represent an
 In the LCC RRM document a party has to have the following properties:
 
 - **PartyType:** Defines whether the party is an individual or a group of individuals
-- **DateOfBirth:** Only if PartyType == 'lcc:Individual'
-- **DateOfDeath:** Only if PartyType == 'lcc:Individual'
+- **DateOfBirth:** Only if `PartyType == 'lcc:Individual'`
+- **DateOfDeath:** Only if `PartyType == 'lcc:Individual'`
 
 
 Additionally, a Party can have the following outgoing references to respective other entities:
@@ -831,14 +854,14 @@ Visualized the LCC Party model looks like this:
 
 
 Another feature of the LCC RRM Party model is that it must only have a `DateOfBirth` and a `DateOfDeath` when its `PartyType`
-is `lcc:Individual`. Other features are that it may have are self-referencing links as well as links to LCC RRM Places.
-Note that using the property `PartyType` an LCC RRM Party can both represent an individual as well as an organization.
+is `lcc:Individual`. Other features are that it may have self-referencing links as well as links to LCC RRM Places. Note
+that using the property `PartyType` an LCC RRM Party can both represent an individual as well as an organization.
 
 
 #### Proposed Transformation
 
-*As a side note: In this chapter, we describe the transformation of the LCC RRM Party model to a JSON-LD Person and/or Organization
-very literally, as we want to provide reasoning for individual steps of the transformation. Note, that this will just be
+*Side note: In this chapter, we describe the transformation of the LCC RRM Party model to a JSON-LD/IPLD Person and/or
+Organization very literally, as we want to provide reasoning for individual steps of the transformation. This will just be
 the case for this chapter, as in essence the rationale for transforming other models is fairly similar.*
 
 schema.org defines already both a [schema.org/Person](http://schema.org/Person) as well as a [schema.org/Organization](http://schema.org/Organization).
@@ -849,19 +872,29 @@ to `PartyType == 'lcc:Organization'`.
 
 ##### Transform LCC RRM Party to RDF Person
 
-Using the minimum number of properties the LCC RRM describes, a `PartyType == 'lcc:Individual'` LCC RRM Party in JSON-LD using
-schema.org's Person could look like this:
+Using the minimum number of properties the LCC RRM describes, a `PartyType == 'lcc:Individual'` LCC RRM Party in JSON-LD/IPLD
+using schema.org's Person could look like this:
 
 
 ```javascript
+// In JSON-LD
 {
     "@context": {
-        "@vocab": "http://schema.org/",
-        "DateOfBirth": "birthDate",
-        "DateOfDeath": "deathDate"
+        "DateOfBirth": "http://schema.org/birthDate",
+        "DateOfDeath": "http://schema.org/deathDate"
     },
-    "@type": "Person",
-    "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
+    "@type": "http://schema.org/Person",
+    "DateOfBirth": "1928-08-06",
+    "DateOfDeath": "1987-02-22",
+}
+
+// In IPLD
+{
+    "@context": {
+        "DateOfBirth": { "/": "<hash pointing to RDF-Schema of birthDate>" },
+        "DateOfDeath": { "/": "<hash pointing to RDF-Schema of deathDate>" },
+    },
+    "@type": { "/": "<hash pointing to RDF-Schema of Person>" },
     "DateOfBirth": "1928-08-06",
     "DateOfDeath": "1987-02-22",
 }
@@ -871,13 +904,21 @@ schema.org's Person could look like this:
 Now, obviously mapping `birthDate` and `deathDate` of schema.org's Person to LCC's `DayOfBirth` and `DayOfDeath` doesn't
 make a lot of sense. Neither do they comply with the way JSON is usually formated (e.g. first letter is lower case), nor is
 it necessary to reinvent the wheel on top of schema.org (by for example coming up with new names for properties). So for
-simplicity purposes, we simply get rid of the so called JSON-LD-'Aliasing', using the properties schema.org provides us with:
+simplicity purposes we simply get rid of the so called JSON-LD-'Aliasing', using the properties schema.org provides us with:
 
 
 ```javascript
+// In JSON-LD
 {
-    "@context": "http://schema.org/",
-    "@type": "Person",
+    "@type": "http://schema.org/Person",
+    "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
+    "birthDate": "1928-08-06",
+    "deathDate": "1987-02-22",
+}
+
+// In IPLD
+{
+    "@type": { "/": "<hash pointing to RDF-Schema of Person>" },
     "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
     "birthDate": "1928-08-06",
     "deathDate": "1987-02-22",
@@ -885,11 +926,11 @@ simplicity purposes, we simply get rid of the so called JSON-LD-'Aliasing', usin
 ```
 
 
-Now, we used Andy Warhol's Wikipedia page as his Party ID (`@id`). Considering that fact that all we need to provide is
-a resolvable URI, a JSON-LD parser will validate this without complaining.
-Ideally though, `@id` is a reflection of the data itself, showing a JSON-LD parser where this set of data is actually
-resolvable within the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not exactly return the given data,
-we'll have to do something about this.
+In the example, we used Andy Warhol's Wikipedia page as his Party identifier (`@id`). Considering that fact that all
+we need to provide is a resolvable URI or an IPLD merkle-link, a JSON-LD parser will validate this without complaining.
+Ideally though, `@id` is a pointing to a location of the data itself, showing a JSON-LD parser where its resolvable within
+the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not return the given data, we'll have to do something
+about this.
 
 First off, lets look at some requirements various involved parties have given:
 
@@ -901,36 +942,43 @@ First off, lets look at some requirements various involved parties have given:
 
 **LCC's ten targets for the rights data network:**
 
-- A Party's ID should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
-- A Party's ID should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
+- A Party's identifier should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
 
 
 **LCC's Principles of identification:**
 
-- A Party should have at least one persistent unique public ID that is both human- and machine-readable
-- Has a Party multiple public IDs, then there should be a way that enables one identifier to be automatically 'translated' to
+- A Party should have at least one persistent unique public identifier that is both human- and machine-readable
+- Has a Party multiple public identifiers, then there should be a way that enables one identifier to be automatically 'translated' to
   another
-- A Party's ID may have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A)
-- A Party's ID should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation
-- A Party ID's characters or elements have no intended meaning that could lead to misinterpretation by humans
-- A Party ID's characters or elements include no information about the Party itself or its registration date
+- A Party's identifier may have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A)
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation
+- A Party identifier's characters or elements have no intended meaning that could lead to misinterpretation by humans
+- A Party identifier's characters or elements include no information about the Party itself or its registration date
 - **TODO: There are even more requirements in this document that should be listed here!**
 
 
-As we're proposing this practical specification based on the LCC Framework and JSON-LD with the background of saving all
-linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of requirements:
+**Interplanetary Linked Data:**
 
-- Elements of the Party's ID may represent the public part of an asymmetric cryptographic key pair
+- Any object is addressable using its [multihashed](https://github.com/jbenet/multihash) value (encoded in base58) value (encoded in base58)
+    - By using multihash (and later "multibase" - prefixing base-encoding functions) different hash functions can
+      interoperate and stay upgradeable
+
+
+As we're proposing this practical specification based on the LCC Framework, JSON-LD and IPLD with the background of saving
+all linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of requirements:
+
+- Elements of the Party's identifier may represent the public part of an asymmetric cryptographic key pair
     - If so, the public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
-- A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptography key pair
+- A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptographic key pair
 
 
-As the combination of these requirements do not exist as a coherent system as of now, we'll just pretend for the sake of
-completeness that there is in fact a system that fulfills them all.
+As the combination of these requirements do not exist as a coherent system yet, we'll just pretend for the sake of completeness
+that there is in fact a system that fulfills them all.
 Hence for all following examples, we'll use an imaginary identity service that acts as a registry for the LCC RRM Party
 data. It:
 
-- lets users issue an identity that can be resolved to JSON-LD using [Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html)
+- lets users issue an identity that can be resolved using JSON-LD ([Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html) ) or IPLD
 - lets users attach the public part of their key pairs to their identity.
 
 
@@ -939,23 +987,18 @@ Notable services for this type of use case could be:
 - https://pgp.mit.edu/
 - https://keybase.io/
 - https://ipfs.io/
-- a public instance of https://www.bigchaindb.com/
+- https://ipdb.foundation/
 
 
 Preferably, a decentralized, non-profit service is chosen.
-Going back to the example mentioned earlier, complying with the requirements would mean that we'd have to replace the `@id`
-of the data set representing the Party of Andy Warhol ideally with an URI pointing to his identity page.
+Going back to the previous example and following the Linked Data JSON-LD approach would mean that we'd have to replace the
+`@id` of the data set representing the Party of Andy Warhol ideally with an URI pointing to the data set itself - being
+stored on an identity service:
 
 
 ```javascript
+// In JSON-LD
 {
-    "@context": {
-        "@vocab": "http://schema.org/",
-        "birthDate": "birthDate",
-        "deathDate": "deathDate",
-        "givenName": "givenName",
-        "familyName": "familyName"
-    },
     "@type": "http://linkedcontentcoalition.com/Identity",
     "@id": "https://identityservice.com/identities/14XgsoWd47KLJa6Ehu62j7Mugq38zX5umt",
     "givenName": "Andy",
@@ -966,37 +1009,31 @@ of the data set representing the Party of Andy Warhol ideally with an URI pointi
 ```
 
 
-As lots of the users' data will be saved on public ledgers - meaning the user is required to sign the data they're submitting -
-we'll need to make sure to map their cryptographical identity to their registered identity.
-Luckily, the [Friend of a Friend Project](http://www.foaf-project.org/) has us covered already by providing [an RDF
-schema for signing RDF documents using Public Key Cryptography](http://xmlns.com/wot/0.1/), called Web of Trust RDF.
-Including this Ontology into our identity schema, it could look like this:
+Using IPLD in contrast, any object can identify itself by being hashed, which means an `@id` property isn't necessary:
+
 
 
 ```javascript
+// In IPLD
 {
-    "@context": {
-        "schema": "http://schema.org/",
-        "wot": "http://xmlns.com/wot/0.1",
-    },
-    "@type": "http://linkedcontentcoalition.com/Identity",
-    "@id": "https://identityservice.com/identities/14XgsoWd47KLJa6Ehu62j7Mugq38zX5umt",
-    "schema:givenName": "Andy",
-    "schema:familyName": "Warhol",
-    "schema:birthDate": "1928-08-06",
-    "schema:deathDate": "1987-02-22",
-    "wot:hasKey": {
-        "@type": "wot:PubKey",
-        "pubkeyAddress": "https://ipfs.io/ipfs/Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
-        "fingerprint": "CE3097A2A1015D28A0AA643AA3DB3EBEFFEAD7E0",
-        "length": 2048,
-        "identity": {
-            "@type": "wot:User",
-            "name": "Andy Warhol (This is just a dummy key for demonstration purposes!)"
-        }
-    }
+    "@type": { "/": "<hash pointing to RDF-Schema of Identity>" },
+    "givenName": "Andy",
+    "familyName": "Warhol",
+    "birthDate": "1928-08-06",
+    "deathDate": "1987-02-22"
 }
 ```
+
+
+As lots of the users' data will be saved on public ledgers - meaning the user is required to sign the meta data they're
+submitting - we'll need to make sure to map their cryptographical identity to their registered identity.
+Luckily, the [Friend of a Friend Project](http://www.foaf-project.org/) has us covered already by providing [an RDF
+ontology for signing RDF documents using Public Key Cryptography](http://xmlns.com/wot/0.1/), called Web of Trust RDF.
+Integrating this ontology into our identity model, it could look like this:
+
+- TODO:
+    - Give an code example how WOT could look like in an immutable ledger
+    - Make sure that the *immutability* is not violated, the WOT ontology as of now only work with mutability
 
 
 Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party model. As mentioned previously,
@@ -1009,25 +1046,27 @@ these requirements need to be fulfilled, as there could be use cases where:
 - multiple Parties may be bundled to an Organization
 
 
-Hence, in this context, it makes sense to define these relationships as one-to-many relationship.
-Using RDF and JSON-LD however, explicitly defining a one-to-many relationship doesn't make a lot of sense. Links need
-to be named and usually express a very specific logical fact in the ontology. While it means that theoretically these
-relationships would still be possible, usually in JSON-LD they're extended as needed, adjusting either the JSON-LD
-object itself or its underlying RDF implementation.
+Hence, in this context, it makes sense to define these relationships as a one-to-many relationship.
+Using RDF and JSON-LD however, explicitly defining a one-to-many relationship doesn't work out. Links need to be named
+and usually express a very specific logical fact in the ontology. While it means that theoretically these relationships
+would still be possible, usually in JSON-LD they're extended as needed, adjusting either the JSON-LD object itself or its
+underlying RDF implementation.
 
-To give some examples, say we want to specify a Person's home addresses. What we can do in this case is just use [schema.org/Person](http://schema.org/Person)'s
+To give some examples: say we want to specify a Person's home addresses. What we can do in this case is just use [schema.org/Person](http://schema.org/Person)'s
 `homeLocation` and specify either [schema.org/Place](http://schema.org/Place)s or [schema.org/ContactPoint](http://schema.org/ContactPoint)s.
+and express the link using a named property on Person that points to a location or hash where that object can be
+resolved.
 As another example, imagine we'd like to specify that Party A is a parent of Party B. This could be useful when trying
-to express that usage rights of an creation are transferred after the death of Party B, to the heir, Party A.
-Fortunately, schema.org's Person again has us covered. A [schema.org/Person](http://schema.org/Person) has a property `parent`
+to express that usage rights of a Creation are transferred after the death of Party B, to the heir, Party A. Fortunately,
+schema.org's Person has us covered again. A [schema.org/Person](http://schema.org/Person) has a property `parent`
 (accepting values of type `Person) that maps perfectly.
 
-Now, imagine we wanted to define a relation, schema.org's Person doesn't provide us with yet. What we would need to do is
-extend schema.org's Person defining our own RDF and then host it as either a "hosted" or "external" extension of schema.org (See
-more about this in the previous section called: "Extensibility of schema.org").
+Now, assume we wanted to define a relation, schema.org's Person doesn't provide us with yet. What we would need to do is
+extend schema.org's Person defining our own RDF schema and then host it somewhere resolveable within the Internet (IPFS,
+BigchainDB, a self-hosted webserver, ...).
 
-Now that we figured out all the specialities surrounding the transformation of a LCC RRM model into JSON-LD,
-defining an Organization is straight forward.
+Since we've now covered all the edge cases of converting a Person to a RDF schema identity, we can now proceed
+transforming the `PartyType === lcc:Organization`.
 
 
 ##### Transform LCC RRM Party to RDF Organization
@@ -1038,6 +1077,7 @@ JSON-LD using schema.org's Organization could look like this:
 
 
 ```javascript
+// In JSON-LD
 {
     "@context": "http://schema.org/",
     "@type": "Organization",
@@ -1064,6 +1104,7 @@ JSON-LD using schema.org's Organization could look like this:
 }
 ```
 
+- TODO: Also define how the object would look like in IPLD
 - TODO: This needs a lot of specing out. How can members of an organization collectively sign something they're
   submitting? Is there a single public key address assigned to an organization or does the organization just bundle
   members that act like they were in an organization but act independently?
