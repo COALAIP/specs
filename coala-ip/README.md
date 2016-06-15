@@ -522,29 +522,27 @@ In addition, we have a set of data describing this person's work:
 
 As of now, both objects are not linked to each other, meaning there is no way to tell that Andy Warhol is the author of
 "32 Campbell's Soup Cans". Now, we could use the already introduced Linked Data approach using JSON-LD. We'd have to
-make both of the objects resolvable within the Internet, add `@id`s to their body as well as an `author` property on the
-creation pointing a location the author object is resolvable.
+make both of the objects resolvable within the Internet, add `@id`s to their bodys as well as an `author` property to the
+creation pointing to a location where the person object is resolvable.
 
-The problem with this solution is though that we'd have to trust the hosts that make these object resolvable. While
+The problem with this solution is though that we'd have to trust the hosts that make these objects resolvable. While
 they'd return the correct objects at first, they'd be free to make any changes to the objects at any point, potentially
-allowing exploitation of the system. Since there is no way for resolving actors to integrity-check the object they're
-requesting, a host could return arbitrary data unnoticed at any time. Additionally, internal linking within objects, as
-well as internal linking from URIs turns out to be challenging using Linked Data protocols like JSON-LD. Hence in the
-next section, we're exploring a technology called Interplanetary Linked Data that promises to solve these problems.
+allowing for the exploitation of the system. Since there is no way for resolving actors to integrity-check the object
+they're requesting, a host could return arbitrary data unnoticed at any time.
+Additionally, internal linking within objects, as well as internal linking from URIs turns out to be challenging using
+Linked Data protocols like JSON-LD. Hence in the next section, we're exploring a technology called Interplanetary Linked
+Data that promises to solve these problems.
 
 
 #### IPLD by Example
 
 The following sections give a brief overview of the functionality of IPLD. We chose to demonstrate the technology by
-example as a [comprehensible specification of IPLD](https://github.com/ipfs/specs/tree/master/ipld) exists already.
+demonstration as a [comprehensible specification of IPLD](https://github.com/ipfs/specs/tree/master/ipld) exists already.
 
 
 ##### Creation of Linked Objects
 
-There are a multitude of technical aspects to consider before using IPLD. This section will just give a brief overview
-over its functionality. As always, links at the end of this section will point to further readings.
-
-Using the two object presented in the example of the previous section, we'd have to perform the following steps to
+Using the two objects presented in the example of the previous section, we have to perform the following steps to
 link them using IPLD:
 
 1. Serialize the person's object to a canonical form of [Concise Binary Object Representation](http://cbor.io/) (short form: CBOR)
@@ -577,13 +575,13 @@ Out[4]: 'QmRinxtytQFizqBbcRfJ3i1ts617W8AA8xt53DsPGTfisC'
 ```
 
 
-Multihash is a protocol for differentiating outputs from various well-established cryptographic hash functions. What
-this means is that every hash generated with multihash contains a hexadecimal prefix, symbolizing which hash function has
+[Multihash](https://github.com/jbenet/multihash) is a protocol for differentiating outputs from various well-established cryptographic hash functions. What
+this means is that every hash generated with multihash contains a [hexadecimal prefix](https://github.com/jbenet/multihash#table-for-multihash-v100-rc-semver), symbolizing which hash function has
 been used for generating it. This is great since hash functions will often need to be upgraded. Additionally, it allows for
-multiple hash functions to coexist within/cross applications.
+multiple hash functions to coexist within/across applications.
 
-Now, since we have converted the object representing the person to an IPLD object and since we also have its hash, we can
-link the creation to its author.
+Now, since we have converted the person object to an IPLD object and since we also have its hash, we can link the creation
+to its author.
 
 
 3. Link the creation object to its creator using the base58 hash representation of the person
@@ -628,7 +626,7 @@ Out[6]: b"\xa4fauthor\xd9\x01\x02x.QmRinxtytQFizqBbcRfJ3i1ts617W8AA8xt53DsPGTfis
 ```
 
 
-This case is special, in that the merkle-link contained in `creation` is being replaced and serialized using an [unsigned
+This case is special, in that the merkle-link contained in `creation` is being replaced and serialized using an [unassigned
 CBOR tag (258)](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml), to make the link retrievable more easily
 when deserializing the object later on.
 
@@ -644,10 +642,10 @@ Out[7]: 'QmfMLNLyJZgvSPkNMvsJspRby2oqP6hWZ8Nd2PvKLhudmK'
 
 ##### Retrieval of Linked Objects
 
-Let's assume that we've put these objects into some kind of database - actually let's just pretend it's IPFS for now, their
-identifiers being the hashes we've created. What this allows us to do now, is using so called "merkle-paths", to resolve
-an object within IPFS using its hash, but also dereference all its connecting edges by following the objects merkle-links.
-Given the example above, `author` of the creation can be found using this merkle-path:
+To further explore IPLD, let's assume that we've put these objects into some kind of database - actually let's just pretend it's
+IPFS for now, their identifiers being the hashes we've created. What this allows us to do now, is using so called "merkle-paths",
+to resolve any object within IPFS using its hash, but also dereference all its connecting edges by following the objects merkle-
+links. Given the example above, the `author` of the creation can be found using this merkle-path:
 
 
 ```python
@@ -661,8 +659,8 @@ Out [8]:
 
 As can be seen, both merkle-links (meaning hashes of objects) as well as an objects' properties can be used to traverse
 the IPLD object. For addressing a network addresses format called [multiaddr](https://github.com/jbenet/multiaddr) is being used. This allows for the
-construction of protocol-overarching paths to resources. This means that an IPLD object, resolvable on IPFS could point
-to an IPLD object resolvable within other ledgers like BigchainDB, Bitcoin, ....
+construction of protocol-overarching paths to resources. Meaning that an IPLD object, resolvable on IPFS could point to an IPLD
+object resolvable within other ledgers like BigchainDB, Bitcoin, ....
 
 
 #### Evaluation of IPLD
