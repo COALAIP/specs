@@ -691,8 +691,12 @@ In summary, IPLD is a promising new technology. This section aims to discuss bot
 **Sources:**
 
 - [IPLD Specification Draft](https://github.com/ipfs/specs/tree/master/ipld), June 2016
+- [IPLD Python Reference Implementation](https://github.com/bigchaindb/py-ipld), June 2016
 - [Multihash Specification](https://github.com/jbenet/multihash), June 2016
+- [Multiaddr Specification](https://github.com/jbenet/multiaddr), June 2016
+- [Interledger: Crypto-Conditions](https://interledger.org/five-bells-condition/spec.html), June 2016
 - [Concise Binary Object Representation](http://cbor.io/), June 2016
+- [IANA: CBOR Tags Registry](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml), June 2016
 
 
 ### The Web of Trust
