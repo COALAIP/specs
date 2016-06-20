@@ -1272,7 +1272,7 @@ includes:
   a book - as a rule of thumb: brush:tool as paint:material)
 - **ValidContextType:** A type of context in which the Right must be exercised (e.g. in flight, in public, commercial
   use, academic research)
-- **IsExclusive:** Indicating wether the Right is exclusive to the Rightsholder (e.g. true, false)
+- **IsExclusive:** Indicating whether the Right is exclusive to the Rightsholder (e.g. true, false)
 - **PercentageShare:** The percentage share of the Rights controlled (e.g. 100%, 51%)
 - **NumberOfUses:** The number of uses permitted by the Right (e.g. 3 uses, 5 uses, unlimited uses?)
 - **ValidPeriod:** The period during which the Right is valid. (e.g. 2015-2016)
@@ -1304,12 +1304,11 @@ Visualized, the LCC RRM Rights model looks like this:
 
 ##### Additional Types of Rights
 
-The LCC Rights Reference Model additionally specifies three types of LCC RRM Rights that each implement non-trivial
+Additionally, The LCC Rights Reference Model specifies three types of LCC RRM Rights that each implement special
 functionality:
 
-- **SourceRight:** A Right from which another Right is derived (This allows to create for (unneccesary?)
-  Right-ontologies
-- **SuperSededRight:** A Right that is rendered invalid by another Right
+- **SourceRight:** A Right from which another Right is derived
+- **SuperSededRight:** A Right to render referenced Right invalid
 - **RightSet:** A collection of Rights all bundeled under a single Right
 
 
@@ -1326,38 +1325,44 @@ complicate ownership logic on a blockchain greatly, which is why we've decided t
 
 ##### The Notion of Ownership
 
-As can be drawn from the LCC RRM specification, a LCC RRM Right is LCC RRM Party-specific. In a sense that, imagine
-digital creators would like to distribute rights to a multitude of interested LCC RRM Parties. The following steps would
-be required:
+As can be drawn from the LCC RRM specification, a LCC RRM Right is LCC RRM Party-specific. In a sense that, a Right is
+always specific to the Party it's provided for. Assume digital creators would like to distribute rights to a multitude
+of interested LCC RRM Parties. The following steps would be required:
 
-1. Register their Party as described in a previous sections
-2. Register their Creation as described in a previous section and like it to their Party ID
-3. Register a number of Rights, tailored towards the interested Party
+1. Register their Party on a global registry as described in a previous sections
+2. Register their Creation on a global registry as described in a previous section and link it to their Party identifier
+3. Register a number of Rights on a global registry, tailored towards the interested Party
 4. Register a RightAssignment to assign the Rights to the interested Parties
 
 
-What this implies is that while Parties and Creations (there are exceptions: Copyright transfer) are strictly limited
-to the act of registration, a LCC RRM Right actually has properties of ownership, allowing it to be transferred (via
-a LCC RRM RightsAssignment) from one LCC RRM Party to another.
+What this implies is that while the actions to perform on Parties and Creations (there is one exception: a Copyright transfer)
+are strictly limited to the act of registration, a LCC RRM Right actually has properties of ownership, allowing it to be
+transferred (via a LCC RRM RightsAssignment) from one LCC RRM Party to another.
 
 Furthermore, a LCC RRM Creation is not limited to a single LCC RRM Right. In fact, there can be as many LCC RRM Rights
-attached to a Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though, note
-that a LCC RRM Right that has for example a CreativeCommons license attached to it cannot be transferred, as the LCC RRM
-Creation is then owned collectively by everyone under the terms the license states. Still there could be other LCC RRM Rights
-attached to that LCC RRM Creation defining additional rights (additional as in: rights that grand more freedom in the usage
-of the LCC RRM Creation than everybody already has with the CreativeCommons license).
+attached to a Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though some
+edge cases need to be considered:
+
+1. If specific software licenses are attached to a Right (e.g CreativeCommons, MIT, Apache, GPL), then this means that
+   the Right expresses a licensing agreement between the issuer of the Right and the commons, meaning that an arbitrary
+   transfer (or RightsAssignment) to an Individual/Organization must not take place. To handle this edge case, it is
+   planed to have a special Identity symbolizing the commons, a Right can transferred to in this case. Additionally,
+   once a Creation has been licensed under such license, Rights with licenses that conflict with a commons license must
+   not be issued.
+
+- TODO: Maybe there are more edge cases?
 
 
 #### Proposed Transformation
 
-Transforming the LCC RRM Rights model poses some challenges:
+Transforming the LCC RRM Rights model poses some challenges. According to the LCC RRM specification:
 
 - A LCC RRM Right object can both represent copyright as well as licensing information
-- In the LCC RRM specification, a LCC RRM Right can be a SourceRight, SuperSeededRight as well as a RightSet.
+- A LCC RRM Right can be a SourceRight, SuperSeededRight as well as a RightSet.
 
 
-In order to allow for Rights to be atomicly transferrable units, we hence decided to ignore these requirements for now
-and purely focus on the right being a transferrable container for specific licensing information.
+In order to allow for Rights to be atomicly transferrable units, we hence decided to ignore the latter requirement for now
+and purely focus on the Right being a transferrable container for specific licensing information.
 
 Since we weren't able to find an appropriate RDF schema to model the LCC RRM Right, we're proposing a schema that
 consolidates the requirements given in:
@@ -1368,38 +1373,31 @@ consolidates the requirements given in:
 
 
 ```javascript
+// A Right object in JSON-LD
 {
-    "@context": {
-        "creation": "http://creativecommons.org/ns#Work"
-    },
-    "@type": "Right",
-    "@id": "...",
-    "creation": "http://...",
-    "license": "http://..."
-
+    "@type": "http://coalaip.schema/Right",
+    "@id": "<URI pointing to this object>",
+    "creation": "<URI pointing to the Creation object>",
+    "license": "<URI pointing to a License on an immutable ledger>"
+}
 ```
 
 
-As can be seen, a LCC RRM Right is basically just a link between a creation and a license. In fact, this modeling could
-even be simplified using Creative Commons Rights Expression Language (short form: ccREL) without aliasing.
+As can be seen, a LCC RRM Right is basically just a link between a creation and a license. Since license are usually
+documents with pages of text, intended for humans to read, pointing to a license must be done by using technology
+that doesn't allow the content behind a link to be altered (e.g. an immutable ledger or by using links that implement
+Content-Addressing). Hence, an implementation in IPLD is favored:
 
 
 ```javascript
+// A Right object in IPLD
 {
-    "@context": "http://creativecommons.org/ns#",
-    "@type": "License",
-    "@id": "URL where work/LCC RRM Creation is located",
-    "license": "http://..."
-
+    "@type": { "/": "<hash pointing to RDF-Schema of Right>" },
+    "creation": { "/": "<hash pointing to the Creation>" },
+    "license": { "/": "<hash pointing to the License>" },
+}
 ```
 
-
-Even it doesn't seem like it, in both examples, the `license` property can point to any license that exists and not only
-licenses by Creative Commons. In fact, Creative Commons probably should have generalized their ccREL more and then build
-a Creative Commons-specific RDF schema on top of it. Instead they chose to do it the opposite way.
-
-Since license are usually documents with pages of text, intended for humans to read,
-pointing to a license must be done by using technology that allows for content addressing (e.g. IPFS).
 
 Another point to be discussed in this section is why none of the recommended properties described in the LCC RRM were
 used in the proposed transformation. The answer to this is that all the listed properties can also be expressed in a
