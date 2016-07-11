@@ -7,7 +7,18 @@ Contributors to this document:
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
 
 
-## PLEASE READ THIS SECTION BEFORE READING THE DOCUMENT
+## THIS DOCUMENT IS WAY TO LONG! I DON'T HAVE TIME FOR ALL OF THIS!
+
+We've got you covered. There are two presentations you can choose from that will explain COALA IP to you.
+
+- [COALA IP presentation extended](presentations/COALA%20IP%20-%20long.pdf)
+- [COALA IP presentation extended](presentations/COALA%20IP%20-%20short.pdf)
+
+If you have any questions, suggestions or feedback please be vocal about it and make sure to tell us.
+Thank you!
+
+
+## PLEASE READ THIS SECTION BEFORE READING/EDITING THE DOCUMENT
 
 This document is a work in progress! Some sections contain the key word "TODO" + a description on what is expected to be
 written there. To everyone reading this: Feel free to take the time to conduct research in this area to write the
@@ -538,7 +549,7 @@ Data that promises to solve these problems.
 
 #### IPLD by Example
 
-The following sections give a brief overview of the functionality of IPLD. We chose to demonstrate the technology by
+The following sections give a brief overview of the functionality of IPLD. We choose to demonstrate the technology by
 demonstration as a [comprehensible specification of IPLD](https://github.com/ipfs/specs/tree/master/ipld) exists already.
 
 
@@ -764,6 +775,14 @@ author be fairly attributed and compensated.
 As rightsholder information would be ubiquitously accessible, allowing rights users to acquire rights, involved players
 in the system would be incentivized to create more elaborate fingerprinting mechanisms, increasing transparency in the
 system further.
+
+
+### The Interledger Protocol
+
+- TODO:
+    - This section should briefly explain what Interledger and the Interledger Protocol is about and how COALA IP could
+      potentially use it for leverage
+    - Basic same formalities as in all the sections before apply.
 
 
 ## Remodeling the LCC RRM using Linked Data
