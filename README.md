@@ -1276,13 +1276,17 @@ includes:
 - **PercentageShare:** The percentage share of the Rights controlled (e.g. 100%, 51%)
 - **NumberOfUses:** The number of uses permitted by the Right (e.g. 3 uses, 5 uses, unlimited uses?)
 - **ValidPeriod:** The period during which the Right is valid. (e.g. 2015-2016)
+- **Territory:** A place where a Right is allowed to be exercised (e.g. North America)
 
 
-TODO: Note that the LCC RRM specification features three more properties which are not included for the following reasons:
+TODO: Note that the LCC RRM specification features a couple more properties which were not included for the following reasons:
 
 - **HostCreationType:** Unclear what it is and if it's necessary in the world of RDF
-- **OutputCreationType:** Uncleare what it is
-- **Territory:** Described in the document as a base type (e.g. string). Should be linked to a Place though.
+- **OutputCreationType:** Unclear what it is
+- **ToolType:** The type of medium that must be employed in exercising the Right (e.g. only watch on mobile phone) - not
+  sure if this is necessary
+- **MaterialType:** The type of material that may be employed in execising the right (e.g. a type of cover material for
+  - not sure if this is necessary
 
 
 In addition, a LCC RRM Right can have the following outgoing references to respective other entities:
@@ -1304,34 +1308,35 @@ Visualized, the LCC RRM Rights model looks like this:
 
 ##### Additional Types of Rights
 
-Additionally, The LCC Rights Reference Model specifies three types of LCC RRM Rights that each implement special
+Additionally, the LCC Rights Reference Model specifies three types of LCC RRM Rights that each implement special
 functionality:
 
 - **SourceRight:** A Right from which another Right is derived
-- **SuperSededRight:** A Right to render referenced Right invalid
-- **RightSet:** A collection of Rights all bundeled under a single Right
+- **SuperSededRight:** A Right to render a referenced Right invalid
+- **RightSet:** A collection of Rights all bundled under a single Right
 
 
-For putting Rights onto a global registry, handling a RightSet poses a problem. Essentially, the transfer of multiple
-assets on a decentralized ledger cannot be guaranteed and especially not synchronized.
+For putting Rights onto a global registry, handling a RightSet poses a problem. Essentially, the concurrent transfer of
+multiple assets on a decentralized ledger cannot be guaranteed and especially not synchronized.
 
 - TODO: Tim: I talked to Dimi about this, and we were trying to figure this out with cryptoconditions, but it seems that at
   this stage it is not possible.
 
 
-Both a SourceRight, as well as a SuperSeededRight would easily be represented using an ontology, but would still
-complicate ownership logic on a blockchain greatly, which is why we've decided to leave them out of this specification.
+Both a SourceRight, as well as a SuperSeededRight could easily be represented using an ontology, but would still
+complicate ownership logic on an immutable ledger greatly, which is why we've decided to leave them out of this specification
+for now.
 
 
 ##### The Notion of Ownership
 
 As can be drawn from the LCC RRM specification, a LCC RRM Right is LCC RRM Party-specific. In a sense that, a Right is
-always specific to the Party it's provided for. Assume digital creators would like to distribute rights to a multitude
-of interested LCC RRM Parties. The following steps would be required:
+always specific to the Party it's provided for. Assuming that digital creators would like to distribute their rights to
+a multitude of interested LCC RRM Parties, the following steps would be required:
 
-1. Register their Party on a global registry as described in a previous sections
+1. Register their Party identifier on a global registry as described in previous sections
 2. Register their Creation on a global registry as described in a previous section and link it to their Party identifier
-3. Register a number of Rights on a global registry, tailored towards the interested Party
+3. Register a number of Rights on a global registry, tailored to the interested Party
 4. Register a RightAssignment to assign the Rights to the interested Parties
 
 
@@ -1340,17 +1345,16 @@ are strictly limited to the act of registration, a LCC RRM Right actually has pr
 transferred (via a LCC RRM RightsAssignment) from one LCC RRM Party to another.
 
 Furthermore, a LCC RRM Creation is not limited to a single LCC RRM Right. In fact, there can be as many LCC RRM Rights
-attached to a Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though some
-edge cases need to be considered:
+attached to a LCC RRM Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though, some
+edge cases must be considered:
 
-1. If specific software licenses are attached to a Right (e.g CreativeCommons, MIT, Apache, GPL), then this means that
-   the Right expresses a licensing agreement between the issuer of the Right and the commons, meaning that an arbitrary
-   transfer (or RightsAssignment) to an Individual/Organization must not take place. To handle this edge case, it is
-   planed to have a special Identity symbolizing the commons, a Right can transferred to in this case. Additionally,
-   once a Creation has been licensed under such license, Rights with licenses that conflict with a commons license must
-   not be issued.
+1. Specific software licenseses imply an agreement between the issuer of the Right and the commons, meaning that an
+   arbitrary transfer (also called RightsAssignment) to an Individual or Organization must not take place. To handle the
+   edge case of giving permissions to literally everyone, it is planed to have special Identities symbolizing the
+   commons a Right can be transferred to in this case. Additionally, once a Creation has been licensed under such license,
+   Rights with licenses that conflict with a "commons license" must not be issued.
 
-- TODO: Maybe there are more edge cases?
+- TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
 
 
 #### Proposed Transformation
@@ -1361,7 +1365,7 @@ Transforming the LCC RRM Rights model poses some challenges. According to the LC
 - A LCC RRM Right can be a SourceRight, SuperSeededRight as well as a RightSet.
 
 
-In order to allow for Rights to be atomicly transferrable units, we hence decided to ignore the latter requirement for now
+In order to allow for Rights to be atomicly transferrable units, we decided to ignore the latter requirement for now
 and purely focus on the Right being a transferrable container for specific licensing information.
 
 Since we weren't able to find an appropriate RDF schema to model the LCC RRM Right, we're proposing a schema that
@@ -1377,14 +1381,22 @@ consolidates the requirements given in:
 {
     "@type": "http://coalaip.schema/Right",
     "@id": "<URI pointing to this object>",
-    "creation": "<URI pointing to the Creation object>",
-    "license": "<URI pointing to a License on an immutable ledger>"
+    "usages": "all|copy|play|stream|...",
+    "territory": "<URI pointing to a Place>",
+    "context": "inflight|inpublic|commercialuse...",
+    "exclusive": true|false,
+    "numberOfUses: "1, 2, 3, ...",
+    "share": "1, 2, 3, ..., 100",
+    "validFrom": { "@type": "http://schema.org/Date" },
+    "validTo": { "@type": "http://schema.org/Date" },
+    "manifestation": "<URI pointing to the Manifestation object>",
+    "license": "<URI pointing to a license on an immutable ledger>"
 }
 ```
 
 
-As can be seen, a LCC RRM Right is basically just a link between a creation and a license. Since license are usually
-documents with pages of text, intended for humans to read, pointing to a license must be done by using technology
+As can be seen, a LCC RRM Right is basically just a link between a Manifestation and a license. Since licenses are usually
+documents with pages of text intended for humans to read and interpret, pointing to a license must be done by using technology
 that doesn't allow the content behind a link to be altered (e.g. an immutable ledger or by using links that implement
 Content-Addressing). Hence, an implementation in IPLD is favored:
 
@@ -1393,24 +1405,31 @@ Content-Addressing). Hence, an implementation in IPLD is favored:
 // A Right object in IPLD
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Right>" },
-    "creation": { "/": "<hash pointing to the Creation>" },
-    "license": { "/": "<hash pointing to the License>" },
+    "usages": "all|copy|play|stream|...",
+    "territory": { "/": "<hash pointing to a Place>" },
+    "context": "inflight|inpublic|commercialuse...",
+    "exclusive": true|false,
+    "numberOfUses: "1, 2, 3, ...",
+    "share": "1, 2, 3, ..., 100",
+    "validFrom": { "/": "<hash pointing to RDF-Schema of Date" },
+    "validTo": { "/": "<hash pointing to RDF-Schema of Date" },
+    "manifestation": { "/": "<hash pointing to the a Manifestation>" },
+    "license": { "/": "<hash pointing to the license>" },
 }
 ```
 
 
-Another point to be discussed in this section is why none of the recommended properties described in the LCC RRM were
-used in the proposed transformation. The answer to this is that all the listed properties can also be expressed in a
-custom legal contract that is linked to in the LCC RRM Right model. In essence, the few keywords mentioned outline words
-that are clarified in a license for a machine to be interpretable.
-As they are though way to less to give a machine an understanding of what the human-readable license is about, only
-including a few didn't make any sense to us. When the time is ready, of course human and machine readable licenses could
-be linked in the LCC RRM Right model. For now though, it is not a priority.
+As mentioned in a [previous section](#the-notion-of-ownership) section already, a Right object needs to be ownable by a
+participant of the protocol. Being ownable means that only an individual or a group of individuals owning a specific
+private key to a corresponding public key can alter the data that has occurred in certain past transactions. In addition,
+Ownership transactions (in the RRM called "RightsAssignment"s, see next section for more detail) of every form - be it
+transfers, loans or consignments - must be stored in an orderly fashion, to guarantee an always valid chain of provenance
+of a Manifestation's Rights. The next section will explore this functionality further.
 
 
 ### The LCC RightsAssignment Model
 
-According to the LCC RRM specification a LCC RRM RightsAssignment describes an event. A LCC RRM RightsAssignment can
+According to the LCC RRM specification, a LCC RRM RightsAssignment describes an event. A LCC RRM RightsAssignment can
 have the following types (property name: `RightsAssignment`):
 
 - **RightsLaw:** Representing a law by which rights come into existence (e.g. the US Copyright Act of 1976)
@@ -1422,8 +1441,8 @@ have the following types (property name: `RightsAssignment`):
 
 In addition, the LCC recommends the RightsAssignment to have three statuses (property name: `RightsAssignmentStatus`):
 
-- `lcc:Offer`: An open RightAssignment the Assignee can accept or reject
-- `lcc:Request`: A request of an Assigner to an Assignee to register a specific RightsAssignment
+- `lcc:Offer`: An open RightAssignment the Assignee may accept or reject
+- `lcc:Request`: A request of an Assigner to an Assignee to register/create a specific RightsAssignment
 - `lcc:Executed`: A actual transfer of a LCC RRM Right from a Party to another Party
 
 
@@ -1443,30 +1462,51 @@ Visualized, the LCC RRM RightsAssignment model looks like this:
 
 An appropriate transformation for the LCC RRM RightsAssignment model could potentially be found by looking at schemata
 for asset transfers. As this specification's scope is to make digital rights manageable on an immutable ledger though,
-we're not interested in defining this type of schema, as we think a immutable ledger must have this operation already
-build in from the start. Furthermore, we decided to leave out any complexities that could be introduced having
-RightsAssignment types. A RightsAssignment will have a single type that corresponds to the type `RightsAssignment` and
-for now only one `RightsAssignmentStatus` that is of value `lcc:Executed`.
+we're not interested in defining this type of schema, as we think an immutable ledger must have this operation already
+built in from the start. This specification's goal is to be able to run on as many ledgers as possible. Both IPLD and
+the Interledger Protocol were chosen consciously, to establish a meta data and licensing ontology that can potentially
+overspan many ledgers and immutable data stores. General requirements for a ledger's transactions are:
 
-A concern we'd like to address however, is the concept of assigning rights using more specific legal terms. What this is
-enabling is that in a RightsAssignment a specific contract for a transfer of rights can be specified.
+- Specific assets must only be transferrable using crypto-key-pair signatures on a transaction level.
+- Transactions must allow to define a JSON-serializable payload
+- An asset's chain of provenance must easily be comprehensible by any user of the protocol
+- Asset's must allow to be devided upon registration
+- Transactions must either support JSON-LD or IPLD
+- Transfer-transactions should support different modes, examples are:
+    - A transfer from a group of individuals to a single individual (and vice-versa)
+    - A transfer that is only claimable during a certain time span (timelock conditions)
+    - A transfer that is only claimable by an individual or group that knows a certain secret value (hashlock conditions)
+    - TODO: Are there more?
+- TODO: Are there more requirements COALA IP asks from a ledger?
 
-As said before, by assuming that every immutable ledger implements the concept of asset transfer, a minimal transformed
-LCC RRM RightsAssignment would look like this (this represent the payload of the ledger-specific transfer):
 
-- TODO: Define this as JSON-LD
+By assuming that every ledger implements the concept of asset transfer, a minimal transformed LCC RRM RightsAssignment
+would look like this (this is represented in the payload of the ledger-specific transfer):
 
 
 ```javascript
+// In JSON-LD
 {
-   "rdf:contract": "link to IPFS"
+   "contract": "<URI pointing to a contract on a ledger>"
 }
 ```
 
-- TODO: There is probably a better way to phrase this. I mean, who knows what a cryptocondition is...
 
-Now obviously, this contract is executed by default as soon as a RightsAssignment is made. However, an immutable ledger
-could fall back on escrow mechanisms using cryptographical conditions to represent a state of acceptance or rejection.
+and in IPLD:
+
+```javascript
+// In IPLD
+{
+   "contract": { "/": "<hash pointing to a contract>" }
+}
+```
+
+
+Defining the `contract` keyword in a transfer-transaction is not required. It is mentioned at this point, as it
+solves lots us use cases for potential users. Legally speaking, a contract defined in the transfer-transaction of
+a Right must only contain permissions derived from the original license issued in the Right or a former contract of
+a transfer-transaction. Generally, this means that only permissions, taken from the set of permissions given from the
+last owner, are allowed to be included in the contract.
 
 
 ### The LCC Assertion Model
