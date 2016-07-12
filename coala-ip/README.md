@@ -1555,7 +1555,7 @@ Additionally, an LCC RRM Assertion can have the following outgoing references:
 Visualized, the LCC RRM Assertion model looks like this:
 
 
-![](media/lccrrmright.png)
+![](media/lccrrmassertion.png)
 
 
 #### Proposed Transformation
