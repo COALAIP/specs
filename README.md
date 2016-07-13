@@ -1532,11 +1532,11 @@ given from the last owner, are allowed to be included in the contract.
 
 ### The LCC Assertion Model
 
-Since none of the assets registered in the COALA IP ontology are minted and hence under direct control of a decentralized network only
-committed to guarantee for all data to be valid, the COALA IP ontology will inevitably contain false or fraudulent
-licensing statements made by its users. To counteract this problem, the LCC RRM recommends the implementation of a LCC
-RRM Assertion object, which is an evaluation about the truth or falsehood of a statement made by a participating Party
-within the ontology.
+Since none of the assets registered in the COALA IP ontology are minted and hence under direct control of a decentralized
+network only committed to guarantee for all data to be valid, the COALA IP ontology will inevitably contain false or
+fraudulent licensing statements made by its users. To counteract this problem, the LCC RRM recommends the implementation
+of a LCC RRM Assertion object, which is an evaluation about the truth or falsehood of a statement made by a participating
+Party within the ontology.
 
 The LCC's minimum set of required properties includes:
 
@@ -1561,27 +1561,31 @@ Visualized, the LCC RRM Assertion model looks like this:
 #### Proposed Transformation
 
 An Assertion model in the ontology definitely makes sense, considering that the ontology will potentially be exposed to
-every user of the internet. Hence, a healing mechanism that helps interpreters of the data to retrieve a statistical
+every user of the Internet. Hence, a healing mechanism that helps interpreters of the data to retrieve a statistical
 truth is helpful for sure. We'd like to propose though that assertions are not being made on actual models themselves,
 but rather on a model's attributes and links.
 
 
 Think about the following scenario:
 
-Andy Warhol decides to use the COALA IP protocol to register his work on the blockchain. He's registering one of his
+Andy Warhol decides to use the COALA IP protocol to register his work on a Blockchain. He's registering one of his
 works called "32 Campbell's Soup Cans" as a Creation and attaches a poster of the work as a Manifestation to it. He also
-creates a Manifestation defining the licensing terms of buying in a Right and attaches it to the Manifestation. Since
-Andy is not really good with computer programs - it was never really his type of medium - his program contains a bug
-that leads him to also register a Creation of Edvard Munch's The Scream under his name. Visually, this is what we'd end
-up with:
+creates a Right defining the licensing terms of buying the poster and attaches it to the Manifestation. Since Andy is
+not really good with computers - they were never really his type of medium - his program contains a bug that leads him
+to also register a Creation of Edvard Munch's The Scream under his name. Visually, this is what we'd end up with:
 
 
 ![](media/lccrrmassertionexample1.png)
 
 
-Now, instead of falsifying the existence of the Creation "The Scream", what we'd actually like to assert is this
-Creation's author property. Fortunately, by using IPLD's merkle-path feature, we're able to achieve exactly that by
-defining the object like this:
+Now obviously, we've created a awkward situation. We've stored all our ontology on a Blockchain, supporting IPLD and
+content-addressed storage, meaning that in contrast to a for example SQL database, we're by no means able to revert the
+transactions made. So since we can append-only to a Blockchain, the solution left to solve the problem is actually to
+append an Assertion validating specific statements on their truthiness or falseness.
+
+Instead of falsifying the existence of the Creation "The Scream" though (this is what the LCC RRM recommends), what we'd
+actually like to assert is the Creation's author property. By using IPLD's merkle-path feature, we're able to achieve
+exactly that by defining an Assertion object like this:
 
 ```javascript
 // In IPLD
@@ -1613,9 +1617,9 @@ What we'd end up with is the following:
 ![](media/lccrrmassertionexample2.png)
 
 
-As changing any of the objects values of key would provoce a change in the object's IPLD hash and since mutating data is
+As changing any of the objects values of key would provoke a change in the object's IPLD hash and since mutating data is
 not possible anyways, we could also simply point the assertion to the object itself. However then, we'd probably lose
-valuable meta data and it would be difficult to find out why an object was flagged fasly by an asserter.
+valuable meta data and it would be difficult to find out why an object was flagged by an asserter.
 
 
 
@@ -1647,12 +1651,6 @@ TODO:
           ahead and link it to the identity that is maybe stored on me.tim.com also exposing my public key. Now imagine
           someone gets access to tim.com and just changes my public key to a public key they they private key. Can they
           then make valid claims in my name?
-    - When saving data into an immutable ledger, do we even need a RightsAssignment? A RightsAssignment could just be
-      the transfer of a (divided) Right (very much like the SPOOL protocol)
-
-    - Updated opinion: A RightsAssignment is a transfer on a ledger. It can contain contract data, a cryptocondition
-      could be used to model an accept/reject state for example
-
 
 ## Future
 
