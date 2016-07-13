@@ -1580,8 +1580,8 @@ to also register a Creation of Edvard Munch's The Scream under his name. Visuall
 
 Now obviously, we've created a awkward situation. We've stored all our ontology on a Blockchain, supporting IPLD and
 content-addressed storage, meaning that in contrast to a for example SQL database, we're by no means able to revert the
-transactions made. So since we can append-only to a Blockchain, the solution left to solve the problem is actually to
-append an Assertion validating specific statements on their truthiness or falseness.
+transactions made. Since we can append-only to a Blockchain, the solution left to solve the problem is actually to
+append an Assertion validating specific statements.
 
 Instead of falsifying the existence of the Creation "The Scream" though (this is what the LCC RRM recommends), what we'd
 actually like to assert is the Creation's author property. By using IPLD's merkle-path feature, we're able to achieve
@@ -1664,6 +1664,5 @@ outcome there is a number of events that need to follow this specification, whic
 - Using the RDF schema, implement this specification
 - Identify a standards commite to send this to
 - Take the RDF schema, take the proposed transformations here and put them in a format of a standard proposal
-
 
 Thanks for reading!
