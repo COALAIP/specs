@@ -23,6 +23,9 @@ This is a list of all features currently in production for ascribe.io.
 - Registration form
 - Further detail fields
 - Extra pages (e.g. "Send new contract" in Ikono)
+- Custom first-time user flow (e.g. Ikono's contract acceptance)
+- Specialized piece and edition page
+- Specialized piece / edition action buttons and pre-filled forms
 - Filters for collection page
 - Emails sent from the back end
     - Styling
@@ -39,8 +42,8 @@ This is a list of all features currently in production for ascribe.io.
 - Sign in
 - Logout
 - Reset password
-- Notifications for pending consign requests
-- Emails and UI in multiple languages (English and partially French)
+- Notifications for pending actions (e.g. consign requests)
+- Emails and UI in multiple languages (English and partially French and German)
 - Editable user name
 - Manageable list of API tokens (with custom name)
 - Manageable list of Webhooks bound to actions: Share, loan, transfer, consign
@@ -75,11 +78,12 @@ This is a list of all features currently in production for ascribe.io.
     - Upload of multiple files
     - Live progress update for upload
     - Drag and Drop for multiple files
-    - Thumbnail for upload
+    - Display of thumbnail for upload
     - Display of uploading file name
     - Cancelable uploading process (stoping it while uploading)
     - Resetable uploading process (stoping upload after successfully uploading)
     - If enabled in settings: Hashing and uploading of .txt file of file instead of file in uploader
+    - Error handling and retry functionality
 - Definition and async creation of editions in registration
 - Automatic conversion and thumbnail creation of media files after upload:
     - Generate thumbnails for GIFs (to GIF), JPGs, PNGs, BMPs (to JPG), TIFs (to JPG) and creation of thumbnail for all
@@ -87,9 +91,8 @@ This is a list of all features currently in production for ascribe.io.
     - Conversion from OGG, WMA, MP3, WAV to web supported formats
     - Conversion from MOV, MPG, MPEG, M4V, OGV, AVI, WEBM, MP4 to web supported formats
     - If automatic thumbnail creation doesn't support file format, allowance for definition of a representative image
-        - Upload of single file
+        - Upload of single image file within size limit
         - Resetable uploading process
-
 
 
 ## Piece and Edition Page
@@ -121,8 +124,10 @@ This is a list of all features currently in production for ascribe.io.
     - Actions: save and cancel
     - Upon typing a new line, textarea expands to show all text
 - SPOOL details: Artwork ID, Hash of Artwork, Owned by SPOOL address
+    - Links to a blockchain explorer
 - Loan History
     - Shows when edition loaned under a contract (contract link provided)
+- Hiding / disabling of features based on user role and permissions
 
 
 ## Edition page specifics
@@ -131,7 +136,7 @@ This is a list of all features currently in production for ascribe.io.
 - Consignment History
     - Shows when edition consigned under a contract (contract link provided)
 - Certificate of Authenticity
-    - Asynch creation of certificates
+    - Asynch creation of certificates on first visit
     - Preview in browser
     - Downloadable as PDF
     - Verification of COA crypto signature on extra "verify" page
@@ -193,6 +198,7 @@ This is a list of all features currently in production for ascribe.io.
 
 - Domain-specific further detail fields
 - Streamlined registration and custom-contract-loan process for pieces
+- No Editions
 
 
 ### ikonotv.ascribe.io
@@ -216,6 +222,7 @@ This is a list of all features currently in production for ascribe.io.
 - Domain-specific further detail fields
 - Streamlined registration and custom-contract-loan process for pieces
 - Alert notice when registration process wasn't completed
+- No Editions
 
 
 ### Consignment-Wallet (23vivi, lumenus, artcity, etc.)
@@ -233,6 +240,7 @@ This is a list of all features currently in production for ascribe.io.
 
 - Streamlined registration and custom-contract-loan process for editions
 - Domain-specific further detail fields
+- Must create Editions
 
 
 #### Collection
@@ -240,3 +248,4 @@ This is a list of all features currently in production for ascribe.io.
 - Custom filter function for pieces:
     - submitted
     - loaned
+- Custom bulk action for submitting multiple editions
