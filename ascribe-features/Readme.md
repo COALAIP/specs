@@ -114,18 +114,17 @@ This is a list of all features currently in production for ascribe.io.
 
 
 ## Piece and Edition action modes
-    - All actions + modes: Personal message is definable
-    - Share via email: email sent to sharee, piece or edition shows up in collection
-    - Transfer: email sent to transferee, edition shows up in collection
-    - Loan:
-        - All modes: start and end loan data are selectable
-        - Normal: email sent to loanee, piece or edition shows up in collection
-        - Contract: loaner accepts contract uploaded by loanee (contract previews upon typing of email (is also
-          downloadable)), email sent to loanee,
-          piece or edition shows up in collection
-    - Consignment:
-        - Normal: email sent to consignee, edition shows up in collection
-        - Contract: consigner accepts contract uploaded by consignee, email sent to consignee, edition shows up in
-          collection
-        - Pending: consignee can accept/reject a consignment, email to consigner
-        - Unconsign: consignee can after acceptance back-consign to consigner, email to consigner
+
+- All actions + modes: Personal message is definable
+- Share via email: email sent to sharee, piece or edition shows up in collection
+- Transfer: email sent to transferee, edition shows up in collection
+- Loan:
+    - All modes: start and end loan data are selectable
+    - Normal: email sent to loanee, piece or edition shows up in collection
+    - Contract: loaner accepts contract uploaded by loanee (contract previews upon typing of email (is also
+      downloadable)), email sent to loanee,
+      piece or edition shows up in collection
+- Consignment:
+    - Normal: email sent to consignee, edition shows up in collection
+    - Contract: consigner accepts contract uploaded by consignee, email sent to consignee, edition shows up in
+      collection
