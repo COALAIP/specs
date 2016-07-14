@@ -7,6 +7,29 @@ This is a list of all features currently in production for ascribe.io.
 - Email sent to users for various actions
 - Browser title automatically set to page the user is viewing currently
 - Responsive web design: Website usable with mobile, tablet and desktop
+- Error reporting to Sentry and Papertrail
+- KPIs based on back end logs
+- Elaborate permissions system to show and hide features based on:
+    - user's role
+    - Piece or editon
+    - Whitelabel page
+
+
+## Whitelabelability
+
+- Favicon
+- Styling for the whole front end
+- Landing page
+- Registration form
+- Further detail fields
+- Extra pages (e.g. "Send new contract" in Ikono)
+- Filters for collection page
+- Emails sent from the back end
+    - Styling
+    - Content
+    - Additional emails
+- Hiding and showing of features/elements through permission system (ACLs)
+- Footer (Styling + Content)
 
 
 ## User
@@ -68,6 +91,7 @@ This is a list of all features currently in production for ascribe.io.
         - Resetable uploading process
 
 
+
 ## Piece and Edition Page
 - Share to Twitter and Facebook
     - Render a preview for Twitter and Faceook crawlers
@@ -81,11 +105,11 @@ This is a list of all features currently in production for ascribe.io.
     - Preview for video files
 - Embeddable script for audio and video files
 - Actions for piece or edition
-    - Share
-    - Transfer
-    - Consign
-    - Loan
-    - Delete
+    - Share: Piece or edition shows up in sharee's collection
+    - Transfer: Edition is owned by transferee
+    - Consign: Edition is managed by consignee
+    - Loan: Piece or edition is publicly displayable by loanee
+    - Delete: Piece or edition is deleted from SQL database (not from the BTC blockchain)
     - Expandable information for all actions
 - Personal and private notes
 - Generic further details fields
@@ -122,9 +146,97 @@ This is a list of all features currently in production for ascribe.io.
     - All modes: start and end loan data are selectable
     - Normal: email sent to loanee, piece or edition shows up in collection
     - Contract: loaner accepts contract uploaded by loanee (contract previews upon typing of email (is also
-      downloadable)), email sent to loanee,
-      piece or edition shows up in collection
+      downloadable)), email sent to loanee, piece or edition shows up in collection
+    - Pending: Loanee can accept/reject loan of loaner, loaner gets email
 - Consignment:
     - Normal: email sent to consignee, edition shows up in collection
     - Contract: consigner accepts contract uploaded by consignee, email sent to consignee, edition shows up in
       collection
+    - Pending: Consignee can accept/reject consignment of consigner, consigner gets email
+    - Unconsign: Consignee can back-consign consignment to consigner, consigner gets email
+
+
+## Whitelabel custom features
+
+- Custom landing page
+
+
+### cc.ascribe.io
+
+
+#### Registration
+
+- Choose between six CreativeCommons licenses
+
+
+#### Collection
+
+- Display of chosen CC license in collection piece items
+
+
+### cyland.ascribe.io
+
+
+#### User
+
+- Manageable list of uploaded contracts for admin
+
+
+#### Collection
+
+- Custom filter function for pieces:
+    - submitted
+    - loaned
+
+
+#### Registration and Piece Pages
+
+- Domain-specific further detail fields
+- Streamlined registration and custom-contract-loan process for pieces
+
+
+### ikonotv.ascribe.io
+
+
+#### User
+
+- Invite only members
+    - Acceptance of a custom contract, uploaded through admin ("SEND NEW CONTRACT")
+    - Ability of definition of appending to the contract
+- Whitelabeled emails for contract acceptance
+- Manageable list of uploaded contracts for admin
+- Contract review page (accept or reject, respective emails are sent to contracter)
+    - PDF preview for contract
+    - Contract downloadable
+    - Selection option for copyright societies
+
+
+#### Registration and Piece Pages
+
+- Domain-specific further detail fields
+- Streamlined registration and custom-contract-loan process for pieces
+- Alert notice when registration process wasn't completed
+
+
+### Consignment-Wallet (23vivi, lumenus, artcity, etc.)
+
+
+#### User
+
+- Whitelabeled emails for:
+    - Transfer
+    - Consign
+- Manageable list of uploaded contracts for admin
+
+
+#### Registration and Piece Pages
+
+- Streamlined registration and custom-contract-loan process for editions
+- Domain-specific further detail fields
+
+
+#### Collection
+
+- Custom filter function for pieces:
+    - submitted
+    - loaned
