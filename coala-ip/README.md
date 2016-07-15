@@ -120,7 +120,7 @@ For more in-depth information about the goals of the LCC, find the attached link
 
 #### The LCC Entity Model
 
-*Note that knowing the definition of the LCC Entity model is not vital for understand the contents of this
+*Note that knowing the definition of the LCC Entity model is not vital for understanding the contents of this
 specification. The LCC Entity model is a meta-model the LCC defined to model their actual ontology - the LCC Rights
 Reference Model.*
 
@@ -144,8 +144,8 @@ in the attached figure:
 ![](media/f1.png)
 
 
-The `Entity` model's attributes are deliberately chosen to be generic so that more complex data models like the LCC RRM can be
-built on top. For in-depth information follow the link to the PDF provided in the beginning of this section.
+The `Entity` model's attributes are deliberately chosen to be generic so that more complex data models like the LCC RRM
+can be built on top. For in-depth information follow the link to the PDF provided in the beginning of this section.
 
 
 **Sources:**
@@ -206,8 +206,8 @@ The Web is a universal place for sharing information globally. In most cases, th
 information in a human-readable way (say for example as an HTML page). While human-readable information is theoretically
 possible to be read by machines, the task in practice is rather challenging and inefficient.
 Think of an HTML page containing tabular data about the population of a country. Simply identifying that the first
-column of the table is describing "the name of the country" and using that name to merge the data with other table's data
-to establish new information is incredible difficult for a machine.
+column of the table is describing "the name of the country" and using that name to merge the data with other table's
+data to establish new information is incredible difficult for a machine.
 Additionally, reasoning about information that can be derived from such a table is nearly impossible for a machine,
 without the necessary context given.
 
@@ -225,7 +225,7 @@ following section.
 
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) is a framework for describing
 entities on the Web. Since it is using the generalization of the Universal Resource Location (short form: URL), the
-Universal Resource Identifier (short form: URI) as a scheme to address resources, it is exceptionally interoperatable
+Universal Resource Identifier (short form: URI) as a scheme to address resources, it is exceptionally interoperable
 and extensible.
 
 RDF's core data structure is a graph-based data model. This is achieved by constructing subsets of a graph with a set of
@@ -271,7 +271,7 @@ Rights Reference Model specification to RDF using JSON-LD, the next section will
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging the concepts of the
-[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) with [JSON](https://tools.ietf.org/html/rfc7159).
+[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with [JSON](https://tools.ietf.org/html/rfc7159).
 Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to RDF schemata
 in an ontology.
 
@@ -288,8 +288,8 @@ Lets assume we have the following set of data:
 
 
 Now, for a human it's obvious that this set of data is about a person named "Andy Warhol" who was born on the 6th
-August 1928. For a machine that is lacking the intuition and _context_ of a human, resolving this representation is rather
-difficult.
+August 1928. For a machine that is lacking the intuition and _context_ of a human, resolving this representation is
+rather difficult.
 
 JSON-LD solves this problem by introducing the concept of a "context" into JSON documents. On a high level, this allows
 to link data to already defined schemata.
@@ -310,19 +310,23 @@ like this:
 
 Using the JSON-LD-specific keyword `@context` - pointing to a resource that defines how our data should look like - a
 JSON-LD parser could `GET http://schema.org/Person` the schema and validate the attached data against it.
-Additionally - and this might be the greatest benefit of JSON-LD -, if some other application developer were to be
-handling this kind of data for their users, they could rely on the same schema definition. In turn, this would unify data
-representation across services, which is a **GREAT** improvement for the world (wide web).
+If some other application developer were to be handling this kind of data for their users, they could rely
+on the same schema definition. This would unify data representation across services to enable cross-service data
+exchange without the need for data-transformation.
 
 Think of it like this: Twitter, Facebook, Github, Instagram - they all have the notion of a user model for example.
 Some of them might name the key of the user's birthday `birthDay`, while others name it `dayOfBirth`, while again others
 would name it `birth_day`. All those keys however, have the same semantic meaning for a user model, as they define when
-the user was born. So if all services were to rely on a unified schema for defining their data models, applications that talk across services
-would be so much more easier to implement. "Cross-Standard Links" (as the LCC calls it), would come for free actually.
+the user was born. Even worse, imagine they'd all use different formats for the user's birthday value (e.g. not being
+not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874).
+This would mean that not only for mapping keys custom logic would have to be written, but for most value fields as well.
 
-Going back to the example, one question that remains though is: How does JSON-LD know how to map our self-defined key (`givenName`,
+Since JSON-LD is simply a serialization format of RDF, and since [RDF's primitive data types are based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes),
+the problem is circumvented at the base, as all advanced data types are derived from primitive data types.
+
+Going back to the example, a remaining question is: How does JSON-LD know how to map our self-defined key (`givenName`,
 `familyName` and `birthDate`) names to the properties of schema.org's Person?
-Well, turns out we didn't choose those key names randomly. They're already part of the schema.org's Person definition,
+Turns out we didn't choose those key names randomly. They're already part of the schema.org's Person definition,
 hence a JSON-LD parser is capable to map them automatically and then execute validation against it.
 
 For more clarity, let's see how a JSON-LD parser would look at this example:
@@ -363,8 +367,8 @@ gives certain forms names. The form that is shown above is called _expanded_ for
 schema.org definition defined in `@context`.
 The form in the example we gave earlier (where we defined `@context`) is called _compacted_ form.
 
-So essentially, what happens is that the JSON-LD parser assumes we defined the correctly named keys for Person already, so
-when expanding the compacted version of our JSON-object, it just individually looks them up at
+So essentially, what happens is that the JSON-LD parser assumes we defined the correctly named keys for Person already,
+so when expanding the compacted version of our JSON-object, it just individually looks them up at
 `http://schema.org/Person` and if they're defined, replaces them with more detailed URIs to their schema definition.
 What we end up with is a automatically mapped set of data by simply using what is already out there.
 Since every key of a given value now points to a leaf node of a schema ontology and since leaf nodes are only allowed to
@@ -374,11 +378,11 @@ validate each occurrence of `@value`.
 
 ##### Final thoughts
 
-With this example, we've just shown you the tip of the ice berg.
-JSON-LD has tremendous powers (Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all kinds of crazy things.
-Since this specification will make use of JSON-LD heavily, we encourage to learn more about JSON-LD before continuing
-reading this document. Useful links can be found in the **Sources** section below.
-*As a side note: The authors of the JSON-LD RFC have done a tremendous job writing anapprochable specification.
+With this example, we've just shown you the tip of the iceberg.
+JSON-LD has tremendous powers (Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all kinds of crazy
+things.  Since this specification will make use of JSON-LD heavily, we encourage to learn more about JSON-LD before
+continuing reading this document. Useful links can be found in the **Sources** section below.
+*As a side note: The authors of the JSON-LD RFC have done a tremendous job writing an approchable specification.
 It features great examples and is easy to read. :+1:*
 
 
@@ -394,13 +398,13 @@ It features great examples and is easy to read. :+1:*
 
 - TODOs in this section:
     - Just describing schema.org is I think way to narrow here. This section should be about linked data on the world
-      wide web in general. schema.org is just a regular player when it comes to linked data and RDF. Hell, there are even
-      search engines that users can lookup schemas (http://wiki.dbpedia.org/). Obviously mention schema.org as a
+      wide web in general. schema.org is just a regular player when it comes to linked data and RDF. Hell, there are
+      even search engines that users can lookup schemas (http://wiki.dbpedia.org/). Obviously mention schema.org as a
       prefered source though.
 
 
-schema.org is a collaborative initiative with the mission to create, maintain and promote schemata for structured data on
-the Internet. It's vocabulary is defined as an ontology, connecting different concepts using links. It can be
+schema.org is a collaborative initiative with the mission to create, maintain and promote schemata for structured data
+on the Internet. It's vocabulary is defined as an ontology, connecting different concepts using links. It can be
 used with different encodings, including RDFa, Microdata and _JSON-LD_.
 
 
@@ -471,10 +475,11 @@ schema.org **doesn't** provide yet:
 - **LCC RightsConflict**
 
 
-So even though schema.org already helps us by defining some of the LCC models some do not even exist at all (specificatlly
-Rights, RightsAssignment and RightsConflict). Although, this seems like a problem at first, it is not. schema.org's
-schemata are easily extensible. schema.org [even encourages](http://schema.org/docs/extension.html) subclassing their 'core'
-schemata into so called 'hosted' and 'external' extensions. In general, there are three types of schemata on schema.org:
+So even though schema.org already helps us by defining some of the LCC models some do not even exist at all
+(specifically Rights, RightsAssignment and RightsConflict). Although, this seems like a problem at first, it is not.
+schema.org's schemata are easily extensible. schema.org [even encourages](http://schema.org/docs/extension.html)
+subclassing their 'core' schemata into so called 'hosted' and 'external' extensions. In general, there are three types
+of schemata on schema.org:
 
 - **Core:** A basic vocabulary for describing the kind of entities the most common web applications need
 - **Hosted:** Subclassed models from Core that have their own namespace (e.g. http://health-lifesci.schema.org/) and
@@ -483,9 +488,9 @@ schemata into so called 'hosted' and 'external' extensions. In general, there ar
   http://schema.bigchaindb.com). External extensions may be application-specific
 
 
-Applied to the contents of this specification, this would mean that application-agnostic schemata (so everything contained
-in LCC RRM) would ideally become a Hosted extension, while application-specific schemata (data models that are specific for
-a certain applications or services) would become External schemata.
+Applied to the contents of this specification, this would mean that application-agnostic schemata (so everything
+contained in LCC RRM) would ideally become a Hosted extension, while application-specific schemata (data models that are
+specific for a certain applications or services) would become External schemata.
 Fortunately, using schema.org in this way it also complies with rule five and six of the ten LCC targets for the rights
 data network, which say:
 
@@ -535,8 +540,8 @@ In addition, we have a set of data describing this person's work:
 
 As of now, both objects are not linked to each other, meaning there is no way to tell that Andy Warhol is the author of
 "32 Campbell's Soup Cans". Now, we could use the already introduced Linked Data approach using JSON-LD. We'd have to
-make both of the objects resolvable within the Internet, add `@id`s to their bodys as well as an `author` property to the
-creation pointing to a location where the person object is resolvable.
+make both of the objects resolvable within the Internet, add `@id`s to their bodies as well as an `author` property to
+the creation pointing to a location where the person object is resolvable.
 
 The problem with this solution is though that we'd have to trust the hosts that make these objects resolvable. While
 they'd return the correct objects at first, they'd be free to make any changes to the objects at any point, potentially
@@ -590,11 +595,11 @@ Out[4]: 'QmRinxtytQFizqBbcRfJ3i1ts617W8AA8xt53DsPGTfisC'
 
 [Multihash](https://github.com/jbenet/multihash) is a protocol for differentiating outputs from various well-established cryptographic hash functions. What
 this means is that every hash generated with multihash contains a [hexadecimal prefix](https://github.com/jbenet/multihash#table-for-multihash-v100-rc-semver), symbolizing which hash function has
-been used for generating it. This is great since hash functions will often need to be upgraded. Additionally, it allows for
-multiple hash functions to coexist within/across applications.
+been used for generating it. This is great since hash functions will often need to be upgraded. Additionally, it allows
+for multiple hash functions to coexist within/across applications.
 
-Now, since we have converted the person object to an IPLD object and since we also have its hash, we can link the creation
-to its author.
+Now, since we have converted the person object to an IPLD object and since we also have its hash, we can link the
+creation to its author.
 
 
 3. Link the creation object to its creator using the base58 hash representation of the person
@@ -655,10 +660,11 @@ Out[7]: 'QmfMLNLyJZgvSPkNMvsJspRby2oqP6hWZ8Nd2PvKLhudmK'
 
 ##### Retrieval of Linked Objects
 
-To further explore IPLD, let's assume that we've put these objects into some kind of database - actually let's just pretend it's
-IPFS for now, their identifiers being the hashes we've created. What this allows us to do now, is using so called "merkle-paths",
-to resolve any object within IPFS using its hash, but also dereference all its connecting edges by following the objects merkle-
-links. Given the example above, the `author` of the creation can be found using this merkle-path:
+To further explore IPLD, let's assume that we've put these objects into some kind of database - actually let's just
+pretend it's IPFS for now, their identifiers being the hashes we've created. What this allows us to do now, is using so
+called "merkle-paths", to resolve any object within IPFS using its hash, but also dereference all its connecting edges
+by following the objects merkle-links. Given the example above, the `author` of the creation can be found using this
+merkle-path:
 
 
 ```python
@@ -671,9 +677,9 @@ Out [8]:
 
 
 As can be seen, both merkle-links (meaning hashes of objects) as well as an objects' properties can be used to traverse
-the IPLD object. For addressing a network addresses format called [multiaddr](https://github.com/jbenet/multiaddr) is being used. This allows for the
-construction of protocol-overarching paths to resources. Meaning that an IPLD object, resolvable on IPFS could point to an IPLD
-object resolvable within other ledgers like BigchainDB, Bitcoin, ....
+the IPLD object. For addressing a network address format called [multiaddr](https://github.com/jbenet/multiaddr) is being used. This allows for the
+construction of protocol-overarching paths to resources. Meaning that an IPLD object, resolvable on IPFS could point to
+an IPLD object resolvable within other ledgers like BigchainDB, Bitcoin, ....
 
 
 #### Evaluation of IPLD
@@ -745,7 +751,8 @@ is not a problem as objects generally identify themselves in the world of Conten
 Specifying the originality and provenance of a physical thing is challenging. This is even more true for a digital thing.
 While a physical fake might easily be identified by, for example using chemical procedures, the same is not true for
 digital files. With ease they can be copied, mashup'ed, cropped and so on, meaning that by identifying one manifestation
-of a work and computing an identifier based on that single manifestation, the actual body of work cannot sufficiently defined.
+of a work and computing an identifier based on that single manifestation, the actual body of work cannot sufficiently
+defined.
 
 The LCC is in line with this fact. In their document about the Ten Targets for a Global Rights Network, they talk about
 cross-standard identifiers that can, if needed, be *transformed* into corresponding different identifiers.
@@ -755,7 +762,8 @@ identifiers of manifestations to the single identifier of a work on a global rig
 
 In this sense, every function that takes a digital asset as an input and yields a fixed length value (be it number,
 string or float) as an output could potentially then be called a **Fingerprinting function**. In it's simplest form,
-a hash function inspecting the arrangement of bytes in a digital asset creating a unique digest. In more elaborate forms:
+a hash function inspecting the arrangement of bytes in a digital asset creating a unique digest. In more elaborate
+forms:
 
 - [Image-match](https://github.com/ascribe/image-match): a simple Python module for finding approximate image matches
   from a corpus
@@ -765,12 +773,12 @@ a hash function inspecting the arrangement of bytes in a digital asset creating 
     - Find popular ones that do fingerprinting for all kinds of media types
 
 
-While a manifestation of a digital creation initially might only have a single fingerprint which was generated by feeding
-its bytes to an arbitrary hashing function, more elaborate fingerprinting technologies could help identifying the usage of
-creations within the Internet automatically. Paired with Linked Data, this would allow for storing all that information
-about the usages and manifestations of a work in an arbitrarily complex graph. Copies, mash-ups and modified versions
-of the asset could automatically be identified, paths easily located to the original manifestation of the work and the
-author be fairly attributed and compensated.
+While a manifestation of a digital creation initially might only have a single fingerprint which was generated by
+feeding its bytes to an arbitrary hashing function, more elaborate fingerprinting technologies could help identifying
+the usage of creations within the Internet automatically. Paired with Linked Data, this would allow for storing all that
+information about the usages and manifestations of a work in an arbitrarily complex graph. Copies, mash-ups and modified
+versions of the asset could automatically be identified, paths easily located to the original manifestation of the work
+and the author be fairly attributed and compensated.
 
 As rightsholder information would be ubiquitously accessible, allowing rights users to acquire rights, involved players
 in the system would be incentivized to create more elaborate fingerprinting mechanisms, increasing transparency in the
@@ -796,11 +804,11 @@ respective model can be translated into Linked Data.
 
 The section abstractly describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD model. As mentioned
 earlier already, with their document "[LCC: Entity Model](http://doi.org/10.1000/285)", they defined a generic model
-to base their actual Rights Reference Model on. What this document in essence describes, is how to implement a data model
-that is fully extendable using a multitude of linked entities. Using an RDF-based data structure in turn, means that
-defining a base data structure for linking entities is not necessary anymore, as this is what RDF is all about already.
-What this leaves us with is that in order to successfully redefine the LCC Rights Reference Model, what we're left to
-are the following steps:
+to base their actual Rights Reference Model on. What this document in essence describes, is how to implement a data
+model that is fully extensible using a multitude of linked entities. Using an RDF-based data structure in turn, means
+that defining a base data structure for linking entities is not necessary anymore, as this is what RDF is all about
+already.
+To successfully redefine the LCC's Rights Reference Model, the following steps are required:
 
 - Identify RDF schemata that map to respective entities defined in the LCC RRM specification
     - If appropriate RDF schemata are not available:
@@ -909,27 +917,28 @@ Visualized the LCC Party model looks like this:
 ![](media/lccrrmparty.png)
 
 
-Another feature of the LCC RRM Party model is that it must only have a `DateOfBirth` and a `DateOfDeath` when its `PartyType`
-is `lcc:Individual`. Other features are that it may have self-referencing links as well as links to LCC RRM Places. Note
-that using the property `PartyType` an LCC RRM Party can both represent an individual as well as an organization.
+Another feature of the LCC RRM Party model is that it must only have a `DateOfBirth` and a `DateOfDeath` when its
+`PartyType` is `lcc:Individual`. Other features are that it may have self-referencing links as well as links to LCC RRM
+Places. Note that using the property `PartyType` an LCC RRM Party can both represent an individual as well as an
+organization.
 
 
 #### Proposed Transformation
 
 *Side note: In this chapter, we describe the transformation of the LCC RRM Party model to a JSON-LD/IPLD Person and/or
-Organization very literally, as we want to provide reasoning for individual steps of the transformation. This will just be
-the case for this chapter, as in essence the rationale for transforming other models is fairly similar.*
+Organization very literally, as we want to provide reasoning for individual steps of the transformation. This will just
+be the case for this chapter, as in essence the rationale for transforming other models is fairly similar.*
 
 schema.org defines already both a [schema.org/Person](http://schema.org/Person) as well as a [schema.org/Organization](http://schema.org/Organization).
-Hence, there is no need to define both concepts as a single model and differentiate using `PartyType`. To value Separation of
-Concerns, lets first transform the LCC RRM Party model with `PartyType == 'lcc:Individual'`, then apply the discovered results
-to `PartyType == 'lcc:Organization'`.
+Hence, there is no need to define both concepts as a single model and differentiate using `PartyType`. To value
+Separation of Concerns, lets first transform the LCC RRM Party model with `PartyType == 'lcc:Individual'`, then apply
+the discovered results to `PartyType == 'lcc:Organization'`.
 
 
 ##### Transform LCC RRM Party to RDF Person
 
-Using the minimum number of properties the LCC RRM describes, a `PartyType == 'lcc:Individual'` LCC RRM Party in JSON-LD/IPLD
-using schema.org's Person could look like this:
+Using the minimum number of properties the LCC RRM describes, a `PartyType == 'lcc:Individual'` LCC RRM Party in
+JSON-LD/IPLD using schema.org's Person could look like this:
 
 
 ```javascript
@@ -958,9 +967,10 @@ using schema.org's Person could look like this:
 
 
 Now, obviously mapping `birthDate` and `deathDate` of schema.org's Person to LCC's `DayOfBirth` and `DayOfDeath` doesn't
-make a lot of sense. Neither do they comply with the way JSON is usually formated (e.g. first letter is lower case), nor is
-it necessary to reinvent the wheel on top of schema.org (by for example coming up with new names for properties). So for
-simplicity purposes we simply get rid of the so called JSON-LD-'Aliasing', using the properties schema.org provides us with:
+make a lot of sense. Neither do they comply with the way JSON is usually formated (e.g. first letter is lower case), nor
+is it necessary to reinvent the wheel on top of schema.org (by for example coming up with new names for properties). So
+for simplicity purposes we simply get rid of the so called JSON-LD-'Aliasing', using the properties schema.org provides
+us with:
 
 
 ```javascript
@@ -984,9 +994,9 @@ simplicity purposes we simply get rid of the so called JSON-LD-'Aliasing', using
 
 In the example, we used Andy Warhol's Wikipedia page as his Party identifier (`@id`). Considering that fact that all
 we need to provide is a resolvable URI or an IPLD merkle-link, a JSON-LD parser will validate this without complaining.
-Ideally though, `@id` is a pointing to a location of the data itself, showing a JSON-LD parser where its resolvable within
-the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not return the given data, we'll have to do something
-about this.
+Ideally though, `@id` is pointing to a location of the data itself, showing a JSON-LD parser where its resolvable within
+the Internet. Since `https://en.wikipedia.org/wiki/Andy_Warhol`, does not return the given data, we'll have to do
+something about this.
 
 First off, lets look at some requirements various involved parties have given:
 
@@ -999,16 +1009,16 @@ First off, lets look at some requirements various involved parties have given:
 **LCC's ten targets for the rights data network:**
 
 - A Party's identifier should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
-- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) representation, so that it can be resolved predictably and persistently within the Internet
 
 
 **LCC's Principles of identification:**
 
 - A Party should have at least one persistent unique public identifier that is both human- and machine-readable
-- Has a Party multiple public identifiers, then there should be a way that enables one identifier to be automatically 'translated' to
-  another
+- Has a Party multiple public identifiers, then there should be a way that enables one identifier to be automatically
+  'translated' to another
 - A Party's identifier may have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A)
-- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) representation
 - A Party identifier's characters or elements have no intended meaning that could lead to misinterpretation by humans
 - A Party identifier's characters or elements include no information about the Party itself or its registration date
 - **TODO: There are even more requirements in this document that should be listed here!**
@@ -1016,21 +1026,22 @@ First off, lets look at some requirements various involved parties have given:
 
 **Interplanetary Linked Data:**
 
-- Any object is addressable using its [multihashed](https://github.com/jbenet/multihash) value (encoded in base58) value (encoded in base58)
+- Any object is addressable using its [multihashed](https://github.com/jbenet/multihash) value (encoded in base58)
     - By using multihash (and later "multibase" - prefixing base-encoding functions) different hash functions can
       interoperate and stay upgradeable
 
 
-As we're proposing this practical specification based on the LCC Framework, JSON-LD and IPLD with the background of saving
-all linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of requirements:
+As we're proposing this practical specification based on the LCC Framework, JSON-LD and IPLD with the background of
+saving all linked entity data on public ledgers (read: "Blockchains" or "Registries"), we'd like to add our own set of
+requirements:
 
 - Elements of the Party's identifier may represent the public part of an asymmetric cryptographic key pair
     - If so, the public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
-- A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptographic key pair
+- A Party must only allowed to be issued when providing at least one valid crypto-key pair
 
 
-As the combination of these requirements do not exist as a coherent system yet, we'll just pretend for the sake of completeness
-that there is in fact a system that fulfills them all.
+As the combination of these requirements do not exist as a coherent system yet, we'll just pretend for the sake of
+completeness that there is in fact a system that fulfills them all.
 Hence for all following examples, we'll use an imaginary identity service that acts as a registry for the LCC RRM Party
 data. It:
 
@@ -1047,9 +1058,9 @@ Notable services for this type of use case could be:
 
 
 Preferably, a decentralized, non-profit service is chosen.
-Going back to the previous example and following the Linked Data JSON-LD approach would mean that we'd have to replace the
-`@id` of the data set representing the Party of Andy Warhol ideally with an URI pointing to the data set itself - being
-stored on an identity service:
+Going back to the previous example and following the Linked Data JSON-LD approach would mean that we'd have to replace
+the `@id` of the data set representing the Party of Andy Warhol ideally with an URI pointing to the data set itself -
+being stored on an identity service:
 
 
 ```javascript
@@ -1092,10 +1103,10 @@ Integrating this ontology into our identity model, it could look like this:
     - Make sure that the *immutability* is not violated, the WOT ontology as of now only work with mutability
 
 
-Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party model. As mentioned previously,
-there can be a one-to-many relationship from a LCC RRM Party to other LCC RRM Parties as well as a one-to-many relationship
-between a LCC RRM Party and LCC RRM Places. Now, when studying the LCC RRM document, it becomes clear that theoretically
-these requirements need to be fulfilled, as there could be use cases where:
+Two other requirements we yet need to resolve are the links proposed in the LCC RRM Party model. As mentioned
+previously, there can be a one-to-many relationship from a LCC RRM Party to other LCC RRM Parties as well as a
+one-to-many relationship between a LCC RRM Party and LCC RRM Places. Now, when studying the LCC RRM document, it becomes
+clear that theoretically these requirements need to be fulfilled, as there could be use cases where:
 
 - multiple Parties share a relationship (e.g. Party A and Party B created Creation C)
 - Parties might provide Places as a meta data (think: their home location, a contact place or a billing address)
@@ -1105,17 +1116,17 @@ these requirements need to be fulfilled, as there could be use cases where:
 Hence, in this context, it makes sense to define these relationships as a one-to-many relationship.
 Using RDF and JSON-LD however, explicitly defining a one-to-many relationship doesn't work out. Links need to be named
 and usually express a very specific logical fact in the ontology. While it means that theoretically these relationships
-would still be possible, usually in JSON-LD they're extended as needed, adjusting either the JSON-LD object itself or its
-underlying RDF implementation.
+would still be possible, usually in JSON-LD they're extended as needed, adjusting either the JSON-LD object itself or
+its underlying RDF implementation.
 
 To give some examples: say we want to specify a Person's home addresses. What we can do in this case is just use [schema.org/Person](http://schema.org/Person)'s
-`homeLocation` and specify either [schema.org/Place](http://schema.org/Place)s or [schema.org/ContactPoint](http://schema.org/ContactPoint)s.
+`homeLocation` and specify either [schema.org/Place](http://schema.org/Place)s or [schema.org/ContactPoint](http://schema.org/ContactPoint)s
 and express the link using a named property on Person that points to a location or hash where that object can be
 resolved.
 As another example, imagine we'd like to specify that Party A is a parent of Party B. This could be useful when trying
-to express that usage rights of a Creation are transferred after the death of Party B, to the heir, Party A. Fortunately,
-schema.org's Person has us covered again. A [schema.org/Person](http://schema.org/Person) has a property `parent`
-(accepting values of type `Person) that maps perfectly.
+to express that usage rights of a Creation are transferred after the death of Party B, to the heir, Party A.
+Fortunately, schema.org's Person has us covered again. A [schema.org/Person](http://schema.org/Person) has a property
+`parent` (accepting values of type `Person) that maps perfectly.
 
 Now, assume we wanted to define a relation, schema.org's Person doesn't provide us with yet. What we would need to do is
 extend schema.org's Person defining our own RDF schema and then host it somewhere resolveable within the Internet (IPFS,
@@ -1128,8 +1139,8 @@ transforming the `PartyType === lcc:Organization`.
 ##### Transform LCC RRM Party to RDF Organization
 
 In essence, a LCC RRM Party of `PartyType == lcc:Organization` is a group of individuals represented by a single entity.
-Using the minimum number of properties the LCC RRM document describes, a LCC RRM Party of `PartyType == lcc:Organization` in
-JSON-LD using schema.org's Organization could look like this:
+Using the minimum number of properties the LCC RRM document describes, a LCC RRM Party of `PartyType ==
+lcc:Organization` in JSON-LD using schema.org's Organization could look like this:
 
 
 ```javascript
@@ -1191,12 +1202,13 @@ Visualized, the LCC RRM Creation model looks like this:
 
 #### Proposed Transformation
 
-As mentioned in an earlier section already, schema.org's RDF schemata cover the use case of the LCC RRM Creation model quite
-closely already. Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork) quite extensive
-already, there is also a multitude of subtypes which are useful for defining specifics about a creation (e.g. [schema.org/Book](http://schema.org/Book)).
+As mentioned in an earlier section already, schema.org's RDF schemata cover the use case of the LCC RRM Creation model
+quite closely already. Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork) quite
+extensive already, there is also a multitude of subtypes which are useful for defining specifics about a creation (e.g.
+[schema.org/Book](http://schema.org/Book)).
 One destinction we need to draw though is that a LCC RRM Creation can have two `CreationMode`s, one for a perceivable
-Creation (called a "Manifestation") and one for an abstract distinct Creation, a so called "Work". Using IPLD, what we end up with
-is two different schemata that are linked using hashes:
+Creation (called a "Manifestation") and one for an abstract distinct Creation, a so called "Work". Using IPLD, what we
+end up with is two different schemata that are linked using hashes:
 
 
 ```javascript
@@ -1343,8 +1355,8 @@ multiple assets on a decentralized ledger cannot be guaranteed and especially no
 
 
 Both a SourceRight, as well as a SuperSeededRight could easily be represented using an ontology, but would still
-complicate ownership logic on an immutable ledger greatly, which is why we've decided to leave them out of this specification
-for now.
+complicate ownership logic on an immutable ledger greatly, which is why we've decided to leave them out of this
+specification for now.
 
 
 ##### The Notion of Ownership
@@ -1359,19 +1371,19 @@ a multitude of interested LCC RRM Parties, the following steps would be required
 4. Register a RightAssignment to assign the Rights to the interested Parties
 
 
-What this implies is that while the actions to perform on Parties and Creations (there is one exception: a Copyright transfer)
-are strictly limited to the act of registration, a LCC RRM Right actually has properties of ownership, allowing it to be
-transferred (via a LCC RRM RightsAssignment) from one LCC RRM Party to another.
+What this implies is that while the actions to perform on Parties and Creations (there is one exception: a Copyright
+transfer) are strictly limited to the act of registration, a LCC RRM Right actually has properties of ownership,
+allowing it to be transferred (via a LCC RRM RightsAssignment) from one LCC RRM Party to another.
 
 Furthermore, a LCC RRM Creation is not limited to a single LCC RRM Right. In fact, there can be as many LCC RRM Rights
-attached to a LCC RRM Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right though, some
-edge cases must be considered:
+attached to a LCC RRM Creation as a LCC RRM Party wants. Since licensing information is stored in a LCC RRM Right
+though, some edge cases must be considered:
 
 1. Specific software licenseses imply an agreement between the issuer of the Right and the commons, meaning that an
    arbitrary transfer (also called RightsAssignment) to an Individual or Organization must not take place. To handle the
    edge case of giving permissions to literally everyone, it is planed to have special Identities symbolizing the
-   commons a Right can be transferred to in this case. Additionally, once a Creation has been licensed under such license,
-   Rights with licenses that conflict with a "commons license" must not be issued.
+   commons a Right can be transferred to in this case. Additionally, once a Creation has been licensed under such
+   license, Rights with licenses that conflict with a "commons license" must not be issued.
 
 - TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
 
@@ -1414,10 +1426,10 @@ consolidates the requirements given in:
 ```
 
 
-As can be seen, a LCC RRM Right is basically just a link between a Manifestation and a license. Since licenses are usually
-documents with pages of text intended for humans to read and interpret, pointing to a license must be done by using technology
-that doesn't allow the content behind a link to be altered (e.g. an immutable ledger or by using links that implement
-Content-Addressing). Hence, an implementation in IPLD is favored:
+As can be seen, a LCC RRM Right is basically just a link between a Manifestation and a license. Since licenses are
+usually documents with pages of text intended for humans to read and interpret, pointing to a license must be done by
+using technology that doesn't allow the content behind a link to be altered (e.g. an immutable ledger or by using links
+that implement Content-Addressing). Hence, an implementation in IPLD is favored:
 
 
 ```javascript
@@ -1440,10 +1452,10 @@ Content-Addressing). Hence, an implementation in IPLD is favored:
 
 As mentioned in a [previous section](#the-notion-of-ownership) section already, a Right object needs to be ownable by a
 participant of the protocol. Being ownable means that only an individual or a group of individuals owning a specific
-private key to a corresponding public key can alter the data that has occurred in certain past transactions. In addition,
-Ownership transactions (in the RRM called "RightsAssignment"s, see next section for more detail) of every form - be it
-transfers, loans or consignments - must be stored in an orderly fashion, to guarantee an always valid chain of provenance
-of a Manifestation's Rights. The next section will explore this functionality further.
+private key to a corresponding public key can alter the data that has occurred in certain past transactions. In
+addition, Ownership transactions (in the RRM called "RightsAssignment"s, see next section for more detail) of every form
+- be it transfers, loans or consignments - must be stored in an orderly fashion, to guarantee an always valid chain of
+  provenance of a Manifestation's Rights. The next section will explore this functionality further.
 
 
 ### The LCC RightsAssignment Model
@@ -1494,7 +1506,8 @@ overspan many ledgers and immutable data stores. General requirements for a ledg
 - Transfer-transactions should support different modes, examples are:
     - A transfer from a group of individuals to a single individual (and vice-versa)
     - A transfer that is only claimable during a certain time span (timelock conditions)
-    - A transfer that is only claimable by an individual or group that knows a certain secret value (hashlock conditions)
+    - A transfer that is only claimable by an individual or group that knows a certain secret value (hashlock
+      conditions)
     - TODO: Are there more?
 - TODO: Are there more requirements COALA IP asks from a ledger?
 
@@ -1532,11 +1545,11 @@ given from the last owner, are allowed to be included in the contract.
 
 ### The LCC Assertion Model
 
-Since none of the assets registered in the COALA IP ontology are minted and hence under direct control of a decentralized
-network only committed to guarantee for all data to be valid, the COALA IP ontology will inevitably contain false or
-fraudulent licensing statements made by its users. To counteract this problem, the LCC RRM recommends the implementation
-of a LCC RRM Assertion object, which is an evaluation about the truth or falsehood of a statement made by a participating
-Party within the ontology.
+Since none of the assets registered in the COALA IP ontology are minted and hence under direct control of a
+decentralized network only committed to guarantee for all data to be valid, the COALA IP ontology will inevitably
+contain false or fraudulent licensing statements made by its users. To counteract this problem, the LCC RRM recommends
+the implementation of a LCC RRM Assertion object, which is an evaluation about the truth or falsehood of a statement
+made by a participating Party within the ontology.
 
 The LCC's minimum set of required properties includes:
 
