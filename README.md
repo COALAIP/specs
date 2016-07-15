@@ -271,7 +271,7 @@ Rights Reference Model specification to RDF using JSON-LD, the next section will
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging the concepts of the
-[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) with [JSON](https://tools.ietf.org/html/rfc7159).
+[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with [JSON](https://tools.ietf.org/html/rfc7159).
 Using the concept of a "context", it allows to provide additional mappings by linking JSON-object properties to RDF schemata
 in an ontology.
 
@@ -310,20 +310,23 @@ like this:
 
 Using the JSON-LD-specific keyword `@context` - pointing to a resource that defines how our data should look like - a
 JSON-LD parser could `GET http://schema.org/Person` the schema and validate the attached data against it.
-Additionally - and this might be the greatest benefit of JSON-LD -, if some other application developer were to be
-handling this kind of data for their users, they could rely on the same schema definition. In turn, this would unify
-data representation across services, which is a **GREAT** improvement for the world (wide web).
+If some other application developer were to be handling this kind of data for their users, they could rely
+on the same schema definition. This would unify data representation across services to enable cross-service data
+exchange without the need for data-transformation.
 
 Think of it like this: Twitter, Facebook, Github, Instagram - they all have the notion of a user model for example.
 Some of them might name the key of the user's birthday `birthDay`, while others name it `dayOfBirth`, while again others
 would name it `birth_day`. All those keys however, have the same semantic meaning for a user model, as they define when
-the user was born. So if all services were to rely on a unified schema for defining their data models, applications that
-talk across services would be so much more easier to implement. "Cross-Standard Links" (as the LCC calls it), would come
-for free actually.
+the user was born. Even worse, imagine they'd all use different formats for the user's birthday value (e.g. not being
+not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874).
+This would mean that not only for mapping keys custom logic would have to be written, but for most value fields as well.
 
-Going back to the example, one question that remains though is: How does JSON-LD know how to map our self-defined key
-(`givenName`, `familyName` and `birthDate`) names to the properties of schema.org's Person?
-Well, turns out we didn't choose those key names randomly. They're already part of the schema.org's Person definition,
+Since JSON-LD is simply a serialization format of RDF, and since [RDF's primitive data types are based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes),
+the problem is circumvented at the base, as all advanced data types are derived from primitive data types.
+
+Going back to the example, a remaining question is: How does JSON-LD know how to map our self-defined key (`givenName`,
+`familyName` and `birthDate`) names to the properties of schema.org's Person?
+Turns out we didn't choose those key names randomly. They're already part of the schema.org's Person definition,
 hence a JSON-LD parser is capable to map them automatically and then execute validation against it.
 
 For more clarity, let's see how a JSON-LD parser would look at this example:
@@ -802,11 +805,10 @@ respective model can be translated into Linked Data.
 The section abstractly describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD model. As mentioned
 earlier already, with their document "[LCC: Entity Model](http://doi.org/10.1000/285)", they defined a generic model
 to base their actual Rights Reference Model on. What this document in essence describes, is how to implement a data
-model that is fully extendable using a multitude of linked entities. Using an RDF-based data structure in turn, means
+model that is fully extensible using a multitude of linked entities. Using an RDF-based data structure in turn, means
 that defining a base data structure for linking entities is not necessary anymore, as this is what RDF is all about
 already.
-What this leaves us with is that in order to successfully redefine the LCC Rights Reference Model, what we're left to
-are the following steps:
+To successfully redefine the LCC's Rights Reference Model, the following steps are required:
 
 - Identify RDF schemata that map to respective entities defined in the LCC RRM specification
     - If appropriate RDF schemata are not available:
@@ -1007,7 +1009,7 @@ First off, lets look at some requirements various involved parties have given:
 **LCC's ten targets for the rights data network:**
 
 - A Party's identifier should be represented as an [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292) (short form: ISNI) linking to the [International Standard Name Hub](http://www.isni.org)
-- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation, so that it can be resolved predictably and persistently within the Internet
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) representation, so that it can be resolved predictably and persistently within the Internet
 
 
 **LCC's Principles of identification:**
@@ -1016,7 +1018,7 @@ First off, lets look at some requirements various involved parties have given:
 - Has a Party multiple public identifiers, then there should be a way that enables one identifier to be automatically
   'translated' to another
 - A Party's identifier may have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A)
-- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) (short form: URI) representation
+- A Party's identifier should have an [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630) representation
 - A Party identifier's characters or elements have no intended meaning that could lead to misinterpretation by humans
 - A Party identifier's characters or elements include no information about the Party itself or its registration date
 - **TODO: There are even more requirements in this document that should be listed here!**
@@ -1035,8 +1037,7 @@ requirements:
 
 - Elements of the Party's identifier may represent the public part of an asymmetric cryptographic key pair
     - If so, the public key should be represented using a unified way of encoding (as inspiration see [Bitcoin Address public key encoding](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
-- A Party must only allowed to be issued when providing at least one valid public part of an asynchronous cryptographic
-  key pair
+- A Party must only allowed to be issued when providing at least one valid crypto-key pair
 
 
 As the combination of these requirements do not exist as a coherent system yet, we'll just pretend for the sake of
