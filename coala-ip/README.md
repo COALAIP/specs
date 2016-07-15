@@ -1,4 +1,4 @@
-COALA Intellectual Property Specification
+COALA Intellectual Property Specification/Guideline
 ============
 
 
@@ -39,10 +39,10 @@ explicitly mentioned) text formating patterns as close as possible.
 
 As an overall metric for this document:
 
-    - Think practical
-    - Think in technologies
-    - Don't reinvent the wheel, take what's out there already and if so, give proper attribution
-    - Write as if you had to implement this spec next week!
+- Think practical
+- Think in technologies
+- Don't reinvent the wheel, take what's out there already and if so, give proper attribution
+- Write as if you had to implement this spec next week!
 
 
 Thank you very much!
@@ -65,9 +65,34 @@ Thank you very much!
 
 ## Abstract
 
-- TODO:
-    - tell the reader what this document is about and most importantly why they should care about
-      the problem and read/implement this specification
+Content creators on the Web are getting a raw deal. They get a fraction of a cent for an ad played
+on YouTube, and nothing on Facebook, for filling these sites with traffic-driving content. It’s hard
+to make a living when you’re a creative. Licensing is hard; the user experience is bad, so lawyers
+and middlemen extract the most value. In the music industry, more money flows into the pockets of
+distributors than creatives. Consumers are often happy to pay for their content. Instead, they're
+forced to sit through ads.
+
+
+To address these problems, COALA IP (short form: Coalition Of Automated Legal Applications,
+Intellectual Property) was formed to design and implement a free and open specification for handling
+digital licensing of intellectual property.  Its goals are to establish open, free, and easy ways to
+claim attribution, add metadata, license works, mediate intellectual property disputes, and
+authenticate claims of others. Furthermore, the group believes that there should be global agreement
+at the data level without the need for centralized control.
+
+A recent endeavor of the group has been to write this document for handling digital licensing of
+intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
+Rights Reference Model of the Linked Content Coalition into a free and open guideline. It outlines
+technologies that could be leveraged for implementation and structure of a specification for all
+involved parties: creators, rights holders, consumers, developers, etc. The protocol is to be
+technology-opinionated, but ledger-agnostic.
+
+
+The COALA Intellectual Property protocol is essentially two parallel technical efforts:
+
+1. It's a community-driven effort to find and define a minimally-viable set of data for licensing
+   intellectual property
+2. It's a free and open messaging/communication protocol for license-transactions
 
 
 ## Introduction
@@ -401,12 +426,12 @@ occurrence of `@value`.
 
 ##### Final thoughts
 
-With this example, we've just shown you the tip of the iceberg.  JSON-LD has tremendous powers
-(Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all kinds of crazy things.  Since
-this specification will make use of JSON-LD heavily, we encourage to learn more about JSON-LD before
-continuing reading this document. Useful links can be found in the **Sources** section below.  *As a
-side note: The authors of the JSON-LD RFC have done a tremendous job writing an approchable
-specification.  It features great examples and is easy to read. :+1:*
+With this example, we've just shown you the tip of the iceberg.
+
+JSON-LD has tremendous powers (Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all
+kinds of crazy things.  Since this specification will make use of JSON-LD heavily, we encourage to
+learn more about JSON-LD before continuing reading this document. Useful links can be found in the
+**Sources** section below.
 
 
 **Sources:**
