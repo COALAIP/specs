@@ -7,45 +7,43 @@ Contributors to this document:
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
 
 
-## THIS DOCUMENT IS WAY TO LONG! I DON'T HAVE TIME FOR ALL OF THIS!
+## THIS DOCUMENT IS WAY TOO LONG! I DON'T HAVE TIME FOR ALL OF THIS!
 
-We've got you covered. There are two presentations you can choose from that will explain COALA IP to
+We've got you covered with presentations:
 you.
 
-- [COALA IP presentation extended](presentations/COALA%20IP%20-%20long.pdf)
-- [COALA IP presentation](presentations/COALA%20IP%20-%20short.pdf)
+- [COALA IP (extended)](presentations/COALA%20IP%20-%20long.pdf)
+- [COALA IP](presentations/COALA%20IP%20-%20short.pdf)
 
-If you have any questions, suggestions or feedback please be vocal about it and make sure to tell
-us.  Thank you!
+Please be vocal about any questions, suggestions or feedback. Make sure to tell us!
+
+Thank you!
 
 
-## PLEASE READ THIS SECTION BEFORE READING/EDITING THE DOCUMENT
+## PLEASE REVIEW THIS SECTION FIRST BEFORE CONTINUING FURTHER
 
-This document is a work in progress! Some sections contain the key word "TODO" + a description on
-what is expected to be written there. To everyone reading this: Feel free to take the time to
-conduct research in this area to write the section yourself.
+This document is a work in progress! Some sections contain the keyword "TODO" and a description on
+what should be written. To everyone reading this: feel free to take the time to conduct research in
+an unfinished area to write the section yourself.
 
-If your section contains information from external documents, please make sure to link to the
+If your section contains information from external documents, please make sure to link to any
 appropriate sources.
 
-If your section contains lots of knowledge about a field that wasn't mentioned yet, please take the
-time to define the field briefly to give the readers of this document a chance to on-board easily.
+If your section relies on a field that wasn't previously explained, please take a moment to to
+briefly define the field to give other readers of this document a chance to on-board easily.
 
-This document has a soft characters-per-line limit of 120 characters (Note that by including links,
+This document has a soft characters-per-line limit of 100 characters (note that by including links,
 only the descriptor counts). Please respect while writing.
 
-As human beings are capable to recognize patterns easily, make sure to follow the other (here not
-explicitly mentioned) text formating patterns as close as possible.
+As human beings are capable of recognizing patterns easily, make sure to follow the other, hereto
+not explicitly mentioned, text formating patterns as close as possible.
 
 As an overall metric for this document:
 
 - Think practical
 - Think in technologies
-- Don't reinvent the wheel, take what's out there already and if so, give proper attribution
-- Write as if you had to implement this spec next week!
-
-
-Thank you very much!
+- Don't reinvent the wheel; use what's already out there and if so, give proper attribution
+- Write as if you had to implement next week!
 
 
 ## General TODOs:
@@ -65,16 +63,15 @@ Thank you very much!
 
 ## Abstract
 
-Content creators on the Web are getting a raw deal. They get a fraction of a cent for an ad played
+Content creators on the Web are getting a raw deal. They get a fraction of a cent for each ad played
 on YouTube, and nothing on Facebook, for filling these sites with traffic-driving content. It’s hard
-to make a living when you’re a creative. Licensing is hard; the user experience is bad, so lawyers
-and middlemen extract the most value. In the music industry, more money flows into the pockets of
-distributors than creatives. Consumers are often happy to pay for their content. Instead, they're
-forced to sit through ads.
+to make a living when you’re a creative. Licensing is hard: the user experience is so bad, lawyers
+and middlemen extract the most value. In the some industries, like music, more money flows into the
+pockets of distributors than creatives. Worst of all, even though many consumers are happy to pay
+creators for their content, more often than not, they're forced to sit through ads instead.
 
-
-To address these problems, COALA IP (short form: Coalition Of Automated Legal Applications,
-Intellectual Property) was formed to design and implement a free and open specification for handling
+To address these problems, the Coalition Of Automated Legal Applications - Intellectual Property
+(COALA IP) group was formed to design and implement a free and open specification for handling
 digital licensing of intellectual property.  Its goals are to establish open, free, and easy ways to
 claim attribution, add metadata, license works, mediate intellectual property disputes, and
 authenticate claims of others. Furthermore, the group believes that there should be global agreement
@@ -82,105 +79,101 @@ at the data level without the need for centralized control.
 
 A recent endeavor of the group has been to write this document for handling digital licensing of
 intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
-Rights Reference Model of the Linked Content Coalition into a free and open guideline. It outlines
-technologies that could be leveraged for implementation and structure of a specification for all
-involved parties: creators, rights holders, consumers, developers, etc. The protocol is to be
-technology-opinionated, but ledger-agnostic.
+Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into a free and open guideline.
+It outlines technologies that could be leveraged for the implementation and structure of a
+specification for all involved parties: creators, rights holders, consumers, developers, etc. The
+protocol is to be technology-opinionated, but ledger-agnostic.
 
 
 The COALA Intellectual Property protocol is essentially two parallel technical efforts:
 
-1. It's a community-driven effort to find and define a minimally-viable set of data for licensing
+1. A community-driven effort to find and define a minimally-viable set of data for licensing
    intellectual property
-2. It's a free and open messaging/communication protocol for license-transactions
+1. A free and open messaging/communication protocol for license-transactions
 
 
 ## Introduction
 
-This section provides context to the following COALA Intellectual Property Specification. It
-explains technological concepts that can be used to model a generic, extensible protocol to manage
-digital rights.  They are described briefly, to give the reader a comprehensive overview of the
-field. To understand them in their full spectrum, we advise the reader to study them further on
-their own. For each section sources on the topic are given.
+This section provides context for the COALA Intellectual Property (COALA IP) specification. It
+briefly describes and explains the technological concepts used to model a generic, extensible
+protocol for managing digital rights. These explainations are only meant to give the reader a
+comprehensive overview of the concepts; to understand them in their full spectrum, we encourage the
+reader to further study them on their own. Sources are given for each section's topic.
 
 
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework)
 is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/)
-(short form: LCC) to unify digital rights data management. The framework's key documents are:
+(LCC) to unify digital rights data management. The framework's key documents are:
 
-- [Ten targets for the rights data network](http://doi.org/10.1000/290)
+- [The LCC Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
 - [The LCC Rights Reference Model](http://doi.org/10.1000/284)
 - [The LCC Principles of identification](http://doi.org/10.1000/287)
 
 
-In this introductory section, we'll go over each document summarizing their contents briefly to give
-context and attribution for the following specification.
-
-
-#### The LCC's ten targets
+#### The LCC's Ten Targets
 
 The LCC's goal is to enable the widest possible access to appropriate rights information and the
-automation to rights trading, independent of commercial or free use. As a general guidance to
-fulfill their goals, they released a document, called "[Ten targets for the rights data network](http://doi.org/10.1000/290)"
-that is composed of the following ten goals:
+ability to automate rights trading, independent of commercial or free use. As a general guideline
+towards fulfilling their goals, they released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
+which is composed of the following ten goals:
 
 1. Every Party has a unique global identifier
-2. Every Creation as a unique global identifier
+2. Every Creation has a unique global identifier
 3. Every Right has a unique global identifier
 4. All identifiers have a URI representation to persistently and predictably resolve them within the
    Internet
 5. Links between identifiers are system agnostic and need to be authorized by participating
    consortiums
-6. Meta data is system agnostic and its schema has to be authorized by participating parties or
+6. Metadata is system agnostic and its schema has to be authorized by participating parties or
    consortiums
 7. The provenance of rights has to be made explicit
-8. Any participant is able to make standardized, machine-interpretable statements about
+8. Any participant has the ability to make standardized, machine-interpretable statements about
    rightholdings in creations
-9. Conflicts in rights declarations should be automatically identified
-10. Digital "fingerprints" or "watermarks" are linked to the registered Creation
+9. Conflicts in rights declarations should be automatically identifiable
+10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks"
 
 
-For more in-depth information about the goals of the LCC, find the attached link in this section at
-the top.
+For more in-depth information about the goals of the LCC, find the attached link at the top of this
+section.
 
 
 **Sources:**
 
-- [LCC: Ten targets for the rights data network](http://doi.org/10.1000/290), May 2016
+- [LCC: Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290), May 2016
 
 
 #### The LCC Entity Model
 
-*Note that knowing the definition of the LCC Entity model is not vital for understanding the
-contents of this specification. The LCC Entity model is a meta-model the LCC defined to model their
-actual ontology - the LCC Rights Reference Model.*
+*Note: having knowledge of the LCC Entity Model is not vital for understanding the later contents of
+this specification; the Entity Model is a meta-model used by the LCC to model their actual
+ontology---the LCC Rights Reference Model.*
 
-The [LCC Entity Model](http://doi.org/10.1000/285) (short form: LCC EM) is a generic meta data model
-used by the LCC as a "building block" to define more specific data models like the [LCC Rights
-Reference Model](http://doi.org/10.1000/284) (short form: LCC RRM).  In a nutshell, the LCC Entity
-model specification defines a model called `Entity` that is composed of five attribute types:
+The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) is a generic data model the LCC uses to
+define more specific data models, like the [LCC Rights Reference Model](http://doi.org/10.1000/284)
+(LCC RRM). In a nutshell, the LCC EM specification defines a `Entity` model that is composed of five
+attribute types:
 
 - **Category:** Categorizes the Entity (e.g. Language=iso3166-1a2:EN ("English"))
 - **Descriptor:** Names the Entity (e.g. Name="Andy Warhol")
 - **Quantity:** Quantifies the Entity (e.g. Height=20cm)
 - **Time:** Times the Entity (e.g. DateOfCreation=1999)
-- **Link:** Links the Entity (e.g. "Andy Warhol" --- isCreator ---> "32 Campbell's Soup Cans")
+- **Link:** Links the Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's Soup Cans")
 
 
-In the LCC EM specification, all five of these attributes are represented as models as well. Using
-unidirectional links, they make up the actual `Entity` model. An `Entity` itself is linked to other
-`Entities` bidirectionally, as can be seen in the attached figure:
+Each of these attributes are also represented as models in the specification and, together with
+unidirectional links, they make up the actual `Entity` model. An `Entity` itself can be linked to
+other `Entities` bidirectionally, as the attached figure shows:
 
 
 ![](media/f1.png)
 
 
 The `Entity` model's attributes are deliberately chosen to be generic so that more complex data
-models like the LCC RRM can be built on top. For in-depth information follow the link to the PDF
-provided in the beginning of this section.
+models like the LCC RRM can be built on top. For a more in-depth explaination, follow the link to
+the specification's PDF provided at the beginning of this section.
 
 
 **Sources:**
@@ -190,32 +183,33 @@ provided in the beginning of this section.
 
 #### The LCC Rights Reference Model
 
-The [LCC Rights Reference Model](http://doi.org/10.1000/284) is a formal definition for representing
-intellectual property rights digitally. The LCC RRM document is written as a specification for an
-abstract logical data model, that is built on top of the LCC EM and is composed of the following
-seven entities:
+The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal definition for
+digitally representing intellectual property rights. The LCC RRM specification describes an abstract
+logical data model that is built on top of the LCC Entity Model and is composed of the following
+seven `Entity` types:
 
-- **Party:** A Person or an organization (e.g. "Andy Warhol")
+- **Party:** A Person or an Organization (e.g. "Andy Warhol")
 - **Creation:** Something created by a Party (e.g. "32 Campbell's Soup Cans")
 - **Place:** A virtual or physical Place (e.g. "New York City, USA")
 - **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g. "Andy
   Warhol controls all rights to 32 Campbell's Soup Cans")
 - **RightsAssignment:** A decision as a result of which a Right comes into existence (e.g.
   "According to the 1976 US Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup
-  Cans", but also "I, Andy Warhol declare that "32 Campbell's Soup Cans" shall be published under the
-  CreativeCommons free use license")
+  Cans", but also "I, Andy Warhol declare that "32 Campbell's Soup Cans" shall be published under
+  the CreativeCommons free use license")
 - **Assertion:** A claim made about the substance of a Right (e.g. "I, the Museum of Modern Art, New
   York, claim that Andy Warhol is the righteous creator of 32 Campbell's Soup Cans")
 - **RightsConflict:** A statement of disagreement over a Right (e.g. "I, Malory, claim that Andy
   Warhol is NOT the righteous creator of 32 Campbell's Soup Cans")
 
 
-*Note that for the sake of simplicity, the Entity `Context` was left out of the above described
-definition. In essence though, it is just defined as a parent/categorizing class of Right,
-RightsAgreement, Assertion and RightsConflict and has hence no significant value.*
+*Note: for the sake of simplicity, the `Context` type was left out of the above list; in essence, it
+is defined only as a parent/categorizing class of Right, RightsAgreement, Assertion, and
+RightsConflict---hence holding no significant value on its own.*
 
-As these seven entities are supposed to be building blocks of a global digital rights ontology, they
-are linked unidirectional, as can be seen in the attached figure:
+As these seven `Entity` types are to be the building blocks of a global digital rights ontology,
+they can be linked to each other through specific, unidirectional relationships; the figure below
+specifies the total possible relationships between `Entities`:
 
 
 ![](media/f2.png)
@@ -241,18 +235,19 @@ are linked unidirectional, as can be seen in the attached figure:
 ### The Semantic Web
 
 The Web is a universal place for sharing information globally. In most cases, this is done by human
-beings publishing information in a human-readable way (say for example as an HTML page). While
-human-readable information is theoretically possible to be read by machines, the task in practice is
-rather challenging and inefficient.  Think of an HTML page containing tabular data about the
-population of a country. Simply identifying that the first column of the table is describing "the
-name of the country" and using that name to merge the data with other table's data to establish new
-information is incredible difficult for a machine.  Additionally, reasoning about information that
-can be derived from such a table is nearly impossible for a machine, without the necessary context
-given.
+beings publishing information in a human-readable format, say, for example, as an HTML page. While
+machines are theoretically capable of understanding information of this kind, in practice, at least
+in the near term, this is challenging and inefficient. Think of an HTML page containing tabular data
+about the population of a country; simply identifying that the table's first column describes "the
+name of a country" and using that name to deduce new information from another table is incredible
+difficult for a machine. Worse still, it is often impossible for a machine to reason about such
+information if the necessary context is not given first.
 
-Hence, converting data into schemata that have semantic meaning to both humans as well as machine is
-really valuable for the Web to advance. One technique to do so is called Resource Description
-Framework. It is briefly described in the following section.
+However, if we were to use data schemata that held semantic meaning for both humans as well as
+machines, humans would still be able to publish information but in a way that machines could more
+easily understand. Doing so would likely prove to be of great value in advancing the Web; one such
+technique of creating data in this way is called the Resource Description Framework and is briefly
+described in the following section.
 
 
 **Sources:**
@@ -260,50 +255,51 @@ Framework. It is briefly described in the following section.
 - A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval, 2009
 
 
-#### Resource Description Framework
+#### The Resource Description Framework
 
-[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (short form: RDF) is a
-framework for describing entities on the Web. Since it is using the generalization of the Universal
-Resource Location (short form: URL), the Universal Resource Identifier (short form: URI) as a scheme
-to address resources, it is exceptionally interoperable and extensible.
+[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (RDF) is a framework for
+describing entities on the Web. Since it uses the Universal Resource Identifier (URI), a
+generalization of the Universal Resource Location (URL), as a scheme to address resources, it is
+exceptionally interoperable and extensible.
 
-RDF's core data structure is a graph-based data model. This is achieved by constructing subsets of a
-graph with a set of triples, each consisting of a **subject**, **predicate** and an **object**. A
-single set of triples is already an RDF graph. Visualized a simple RDF graph could look like this:
+RDF's core data structure is a graph-based data model that uses sets of triplets, each consisting of
+a **subject**, **predicate** and an **object**, to construct subsets of the graph. In its smallest
+form, a set containing a single triplet is already an RDF graph. Visualized, a simple RDF graph
+could look like this:
 
 
 ![](media/rdfgraph.png)
 
 
-Since RDF is mainly used on the World Wide Web, what this means in practice is that each element of
-a graph is represented as a URI pointing to a resource that gives further meaning to the
-relationship of the graph. As an example mentioned in the [Creative Commons Rights Expression
-Language](https://www.w3.org/Submission/ccREL/) (short form: ccREL) W3C submission:
+As RDF is primarily used on the World Wide Web, in practice each node of the graph is usually
+represented as an URI pointing to the resource that gives further details about its relationship in
+the graph. As an example, the following figure was mentioned in the [Creative Commons Rights
+Expression Language](https://www.w3.org/Submission/ccREL/) (ccREL) W3C submission:
 
 
 ![](media/rdfexample.png)
 
 
-In the example given in the figure above licensing information about Lawrence Lessig's blog is
-stated in a machine-readable way. Mapped to the RDF-graph visualization given before, we can say
-that Lessig's blog is the *subject*, to the *predicate* that it is licensed under the Creative
-Commons Attribution 3.0 license, the *object*.  In this case, ccREL is a schema provided by Creative
-Commons that allows defining context for machines on how to interpret licensing information for
-documents on the web. ccREL itself is implemented using RDF Schema, which is basically a vocabulary
-for describing properties and classes of RDF resources. By making usage of the [Web Ontology
-Language](https://www.w3.org/TR/owl-features/) (short form: OWL), concepts from other RDF schemata
-can be included in a domain-specific RDF schema creating a global ontology of semantically
+This example RDF manifestation states licensing information about Lawrence Lessig's blog in a
+machine-readable way. We can say that Lessig's blog, the *subject*, is licensed, the *predicate*,
+under the Creative Commons Attribution 3.0 license, the *object*. ccREL is a schema provided by
+Creative Commons that allows defining context for machines on how to interpret licensing information
+for documents on the Web. ccREL itself is implemented using RDF Schema, which is basically a
+vocabulary for describing properties and classes of RDF resources. By making usage of the [Web
+Ontology Language](https://www.w3.org/TR/owl-features/) (short form: OWL), concepts from other RDF
+schemata can be included in a domain-specific RDF schema creating a global ontology of semantically
 structured data.
 
-Since RDF itself is more a concept, it's implementations vary - especially in terms of used data
-structures. Embedded RDF in HTML pages, as well as the more puristic RDF/XML are likely one of the
-more popular spin offs. In 2014 with a new version of RDF coming up (RDF 1.1), a new RDF compatible
-data structure was submitted called JSON-LD.  In essence, it fits some of the concepts of the
-semantic web (linked data to be specific) into the [Javascript Object Notation](https://tools.ietf.org/html/rfc7159)
-(short form: JSON), which makes it much more approachable than comparable implementations falling
-back on the much heavier syntax of XML for example. Since we're intending to port the LCC' Rights
-Reference Model specification to RDF using JSON-LD, the next section will highlight some of its main
-features.
+ccREL is just one example of a context-providing schema built on top of RDF; because RDF itself is a
+concept, its implementations vary---especially in terms of used data structures. Embedded RDF in
+HTML pages, as well as the more puristic RDF/XML syntax are likely two of the more popular
+implementations albeit with relatively heavy syntax and learning curves. In 2014, with a new version
+of RDF coming up, RDF 1.1, a new RDF-compatible JSON-based---and thereby more approachable---data
+structure was accepted by the W3C: JSON-LD. In essence, it fits some of the concepts of the semantic
+web (linked data, to be specific) into the [Javascript Object Notation](https://tools.ietf.org/html/rfc7159)
+(JSON), which makes it much more approachable than comparable implementations. As we're intending to
+port the LCC's Rights Reference Model specification to RDF using JSON-LD, the next section will
+highlight some of its main features.
 
 
 **Sources:**
