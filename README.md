@@ -22,37 +22,38 @@ Thank you!
 
 ## PLEASE REVIEW THIS SECTION FIRST BEFORE CONTINUING FURTHER
 
-This document is a work in progress! Some sections contain the keyword "TODO" and a description on
-what should be written. To everyone reading this: feel free to take the time to conduct research in
-an unfinished area to write the section yourself.
+This document is a work in progress. Some sections contain the keyword "TODO" and a description on
+what should be written. Feel free to take the time to conduct research in an unfinished area and
+write the section yourself.
 
-If your section contains information from external documents, please make sure to link to any
+If your contribution contains information from external documents, please make sure to link to any
 appropriate sources.
 
-If your section relies on a field that wasn't previously explained, please take a moment to to
-briefly define the field to give other readers of this document a chance to on-board easily.
+If your contribution relies on a field that wasn't previously explained, please provide an overview
+of the field to give other readers the necessary background.
 
 This document has a soft characters-per-line limit of 100 characters (note that by including links,
-only the descriptor counts). Please respect while writing.
+only the descriptor counts). Please respect this limit while writing.
 
 As human beings are capable of recognizing patterns easily, make sure to follow the other, hereto
 not explicitly mentioned, text formating patterns as close as possible.
 
-As an overall metric for this document:
+As an overall guideline for contributions to this document document:
 
-- Think practical
-- Think in technologies
-- Don't reinvent the wheel; use what's already out there and if so, give proper attribution
-- Write as if you had to implement next week!
+- Think practical.
+- Think in technologies.
+- Don't reinvent the wheel. Use what's already out there and give proper attribution.
+- Write as if you had to implement next week.
 
 
 ## General TODOs:
 
-- In some cases synonyms for lingo was used. Remove all occurrences
-- When releasing this document to the public, write an introductory section explaining what COALA
-  is, why this document matters, what is left to do, what are COALA's general goals are and so on...
+- Improve consistency of use of defined terms. Synonyms for technical terms should be replaced 
+  with the standard term.
+- Before releasing this document to the public, write an introductory section explaining what COALA
+  is, what its general goals are, why this document matters, what is left to do, and so on...
 - Sometimes this document references internally to other sections ("as seen in the above section",
-  ...). Using relative links, we should point to the sections, we're writing about
+  ...). Using relative links, we should point to the sections we're writing about
 
 
 ## Table of Contents
@@ -63,33 +64,34 @@ As an overall metric for this document:
 
 ## Abstract
 
-Content creators on the Web are getting a raw deal. They get a fraction of a cent for each ad played
-on YouTube, and nothing on Facebook, for filling these sites with traffic-driving content. It’s hard
-to make a living when you’re a creative. Licensing is hard: the user experience is so bad, lawyers
-and middlemen extract the most value. In the some industries, like music, more money flows into the
-pockets of distributors than creatives. Worst of all, even though many consumers are happy to pay
-creators for their content, more often than not, they're forced to sit through ads instead.
+Content creators on the internet are getting a raw deal. They get a fraction of the revenue earned 
+by hosting and distribution platforms, even though their work is what keeps these sites filled
+with traffic-driving content. It's hard for a creative to make a living. Licensing is hard: the 
+user experience is so bad, lawyers and middlemen extract the most value. In many areas, more money
+flows into the pockets of the distributors than to the creators. Even though many consumers would
+be happy to pay the people who made the content they love, the users are not given the chance to 
+pay. Instead, they are surveilled and served ads based on their data profiles.
 
-To address these problems, the Coalition Of Automated Legal Applications - Intellectual Property
-(COALA IP) group was formed to design and implement a free and open specification for handling
-digital licensing of intellectual property.  Its goals are to establish open, free, and easy ways to
-claim attribution, add metadata, license works, mediate intellectual property disputes, and
-authenticate claims of others. Furthermore, the group believes that there should be global agreement
-at the data level without the need for centralized control.
+To help address these problems, the Coalition Of Automated Legal Applications—Intellectual 
+Property (COALA IP) group was formed. COALA IP is working to design and implement a free and open 
+specification for representing and licensing intellectual property. COALA IP's goal is to 
+establish open, free, and easy-to-use ways to record attribution and metadata about works, assign 
+or license rights, mediate disputes, and authenticate claims by others. The group believes there 
+should be a global standard at the data level, without the need for centralized control.
 
-A recent endeavor of the group has been to write this document for handling digital licensing of
-intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
-Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into a free and open guideline.
-It outlines technologies that could be leveraged for the implementation and structure of a
-specification for all involved parties: creators, rights holders, consumers, developers, etc. The
-protocol is to be technology-opinionated, but ledger-agnostic.
+This document is COALA IP's proposal for representing intellectual property on distributed 
+ledgers. It's an effort to transform the implementation-agnostic Rights Reference Model (RRM) of 
+the Linked Content Coalition (LCC) into a free and open standard. It outlines technologies that 
+could be leveraged for the implementation and structure of a specification for all involved 
+parties: creators, rightsholders, distributors, consumers, developers, and so on. The protocol 
+will be technology-opinionated, but ledger-agnostic.
 
 
-The COALA Intellectual Property protocol is essentially two parallel technical efforts:
+The COALA Intellectual Property protocol (COALA IP Protocol) is two parallel technical efforts:
 
-1. A community-driven effort to find and define a minimally-viable set of data for licensing
-   intellectual property
-1. A free and open messaging/communication protocol for license-transactions
+1. A community-driven effort to define a minimally-viable set of data for representing and 
+transacting with intellectual property rights; and
+2. A free and open messaging and communication protocol for license transactions.
 
 
 ## Introduction
@@ -98,14 +100,14 @@ This section provides context for the COALA Intellectual Property (COALA IP) spe
 briefly describes and explains the technological concepts used to model a generic, extensible
 protocol for managing digital rights. These explainations are only meant to give the reader a
 comprehensive overview of the concepts; to understand them in their full spectrum, we encourage the
-reader to further study them on their own. Sources are given for each section's topic.
+reader to further study them on their own. Sources are given for each topic.
 
 
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework)
 is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/)
-(LCC) to unify digital rights data management. The framework's key documents are:
+(LCC) to unify digital rights data management. The key documents are:
 
 - [The LCC Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
