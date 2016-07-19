@@ -1,10 +1,11 @@
-COALA Intellectual Property Guideline
-============
+COALA Intellectual Property Guideline ============
 
 
-Contributors to this document:
+Contributors to this document, in alphabetical order:
 
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
+- Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
+- Brett Sun: brett@bigchaindb.com
 
 
 ## THIS DOCUMENT IS WAY TOO LONG! I DON'T HAVE TIME FOR ALL OF THIS!
@@ -49,7 +50,7 @@ As an overall guideline for contributions to this document document:
 ## General TODOs:
 
 - Improve consistency of use of defined terms. Synonyms for technical terms should be replaced
-  with the standard term.
+  with the standard term throughout.
 - Before releasing this document to the public, write an introductory section explaining what COALA
   is, what its general goals are, why this document matters, what is left to do, and so on...
 - Sometimes this document references internally to other sections ("as seen in the above section",
@@ -72,34 +73,35 @@ flows into the pockets of the distributors than to the creators. Even though man
 be happy to pay the people who made the content they love, the users are not given the chance to
 pay. Instead, they are surveilled and served ads based on their data profiles.
 
-To help address these problems, the Coalition Of Automated Legal Applications—Intellectual
-Property (COALA IP) group was formed. COALA IP is working to design and implement a free and open
-specification for representing and licensing intellectual property. COALA IP's goal is to
-establish open, free, and easy-to-use ways to record attribution and metadata about works, assign
-or license rights, mediate disputes, and authenticate claims by others. The group believes there
-should be a global standard at the data level, without the need for centralized control.
+The Coalition Of Automated Legal Applications — Intellectual Property Group (COALA IP) group was
+formed to address these problems. COALA IP is working to design and implement a free and open
+specification for representing and licensing intellectual property. COALA IP's goal is to establish
+open, free, and easy-to-use ways to record attribution and metadata about works, assign or license
+rights, mediate disputes, and authenticate claims by others. The group believes there should be a
+global standard at the data level, without the need for centralized control.
 
-This document is COALA IP's proposal for representing intellectual property on distributed
+This document details COALA IP's approach to representing intellectual property on distributed
 ledgers. It's an effort to transform the implementation-agnostic Rights Reference Model (RRM) of
 the Linked Content Coalition (LCC) into a free and open standard. It outlines technologies that
 could be leveraged for the implementation and structure of a specification for all involved
 parties: creators, rightsholders, distributors, consumers, developers, and so on. The protocol
 will be technology-opinionated, but ledger-agnostic.
 
-An ongoing endeavor of the group has been to write this document for handling digital licensing of
-intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
-Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into a free and open guideline.
-It outlines technologies that could be leveraged for the implementation and structure of a
-specification for all involved parties: creators, rights holders, consumers, developers, etc. The
-protocol is to be technology-opinionated, but ledger-agnostic.
+This document is part of COALA IP's effort to develop an approach for the registration and
+licensing of intellectual property on distributed ledgers. It's an effort to transform the
+implementation-agnostic Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into
+a free and open guideline. It outlines technologies that could be leveraged for the implementation
+and structure of a specification for all involved parties: creators, rights holders, consumers,
+developers, etc. The protocol is to be technology-opinionated, but ledger-agnostic.
 
 The implementation of COALA IP's vision could be distinguished into three major efforts:
 
-1. Writing this guideline, outlining the idea for a need of a technical specification for
-   digitally handling licensing of intellectual property on immutable ledgers
-1. Building a community to find and define a minimally-viable set of data for licensing intellectual
-   property
-1. Defining a free and open messaging/communication protocol for license-transactions
+1. Building a community to define a minimally-viable set of data for the description of
+   intellectual property rights and licensing agreements;
+2. Authoring this guide providing an overview of the field and discussing the need for a technical
+   specification to represent intellectual property rights on disributed ledgers; and
+3. Defining a free and open messaging and communication protocol for intellectual property rights
+   and licensing transactions.
 
 
 ## Introduction
@@ -115,7 +117,7 @@ reader to further study them on their own. Sources are given for each topic.
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework)
 is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/)
-(LCC) to unify digital rights data management. The key documents are:
+(LCC) to "unify digital rights data management". The key documents are:
 
 - [The LCC Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
@@ -125,29 +127,27 @@ is a set of documents published by the [Linked Content Coalition](http://linkedc
 
 #### The LCC's Ten Targets
 
-The LCC's goal is to enable the widest possible access to appropriate rights information and the
-ability to automate rights trading, independent of commercial or free use. As a general guideline
-towards fulfilling their goals, they released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
-which is composed of the following ten goals:
+The LCC's goal is to enable the widest possible access to accurate rights information and the
+ability to automate the licensing and assignment of rights, whether for commercial or free use.
+The LCC released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
+as a general guide toward achieving the following goals:
 
-1. Every Party has a unique global identifier
-2. Every Creation has a unique global identifier
-3. Every Right has a unique global identifier
-4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) representation to persistently and predictably resolve them within the
-   Internet
-5. Links between identifiers are system agnostic and need to be authorized by participating
-   consortiums
-6. Metadata is system agnostic and its schema has to be authorized by participating parties or
-   consortiums
-7. The provenance of rights has to be made explicit
-8. Any participant has the ability to make standardized, machine-interpretable statements about
-   rightholdings in creations
-9. Conflicts in rights declarations should be automatically identifiable
-10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks"
+1. Every Party has a unique global identifier;
+2. Every Creation has a unique global identifier;
+3. Every Right has a unique global identifier;
+4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve the identifier on the internet;
+5. Links between identifiers are platform agnostic, and the validity of the links can be confirmed
+   or denied by the Parties;
+6. Metadata is platform agnostic or interoperable, and schema should have authorized mappings to
+   translate between schema;
+7. The provenance of Rights has to be made explicit;
+8. Any participant has the ability to make standardized, machine-readable statements about
+   rightholdings in creations;
+9. Conflicts in rights declarations should be automatically identifiable; and
+10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
 
 
-For more in-depth information about the goals of the LCC, find the attached link at the top of this
-section.
+For more in-depth information about the goals of the LCC, see the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)".
 
 
 **Sources:**
@@ -157,32 +157,31 @@ section.
 
 #### The LCC Entity Model
 
-*Note: having knowledge of the LCC Entity Model is not vital for understanding the later contents of
-this specification; the Entity Model is a meta-model used by the LCC to model their actual
-ontology---the LCC Rights Reference Model.*
+*Note: Knowledge of the LCC Entity Model is not vital to understand this specification. The Entity
+Model is a meta-model used by the LCC to model their ontology, the LCC Rights Reference Model.*
 
 The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) is a generic data model the LCC uses to
 define more specific data models, like the [LCC Rights Reference Model](http://doi.org/10.1000/284)
-(LCC RRM). In a nutshell, the LCC EM specification defines a `Entity` model that is composed of five
-attribute types:
+(LCC RRM). The LCC EM specification defines an `Entity` model composed of five attribute types:
 
-- **Category:** Categorizes the Entity (e.g. Language=iso3166-1a2:EN ("English"))
-- **Descriptor:** Names the Entity (e.g. Name="Andy Warhol")
-- **Quantity:** Quantifies the Entity (e.g. Height=20cm)
-- **Time:** Times the Entity (e.g. DateOfCreation=1999)
-- **Link:** Links the Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's Soup Cans")
+- **Category:** A broad category the Entity belongs to(e.g. Language=iso3166-1a2:EN ("English"))
+- **Descriptor:** The name of the Entity (e.g. Name="Andy Warhol")
+- **Quantity:** A numeric value related to the Entity (e.g. Height=20cm)
+- **Time:** A time or date related to the Entity (e.g. DateOfCreation=1999)
+- **Link:** Links the Entity to another Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's
+  Soup Cans")
 
 
-Each of these attributes are also represented as models in the specification and, together with
-unidirectional links, they make up the actual `Entity` model. An `Entity` itself can be linked to
+These attributes are each represented as models in the specification and, together with
+unidirectional links, make up the actual `Entity` model. An `Entity` can be linked to
 other `Entities` bidirectionally, as the attached figure shows:
 
 
 ![](media/f1.png)
 
 
-The `Entity` model's attributes are deliberately chosen to be generic so that more complex data
-models like the LCC RRM can be built on top.
+The attributes of the `Entity` model are designed to be generic so more complex data models like
+the LCC RRM can be built on top.
 
 
 **Sources:**
@@ -192,24 +191,19 @@ models like the LCC RRM can be built on top.
 
 #### The LCC Rights Reference Model
 
-The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal definition for
-digitally representing intellectual property rights. The LCC RRM specification describes an abstract
-logical data model that is built on top of the LCC Entity Model and is composed of the following
-seven `Entity` types:
+The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal framework for
+the representation of intellectual property rights. The LCC RRM specification describes an abstract
+logical data model built on top of the LCC Entity Model, and is composed of the following `Entity`
+types:
 
-- **Party:** A Person or an Organization (e.g. "Andy Warhol")
-- **Creation:** Something created by a Party (e.g. "32 Campbell's Soup Cans")
-- **Place:** A virtual or physical Place (e.g. "New York City, USA")
-- **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g. "Andy
-  Warhol controls all rights to 32 Campbell's Soup Cans")
-- **RightsAssignment:** A decision as a result of which a Right comes into existence (e.g.
-  "According to the 1976 US Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup
-  Cans", but also "I, Andy Warhol declare that "32 Campbell's Soup Cans" shall be published under
-  the [CreativeCommons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license")
-- **Assertion:** A claim made about the substance of a Right (e.g. "I, the Museum of Modern Art, New
-  York, claim that Andy Warhol is the righteous creator of 32 Campbell's Soup Cans")
-- **RightsConflict:** A statement of disagreement over a Right (e.g. "I, Malory, claim that Andy
-  Warhol is NOT the righteous creator of 32 Campbell's Soup Cans")
+- **Party:** A person or an organization (e.g. "Richard Prince", "American Apparel", or "Sky Ferreira")
+- **Creation:** Something created by a Party (e.g. "Untitled Instagram Portrait")
+- **Place:** A virtual or physical location (e.g. "New York City" or "North America")
+- **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g.
+  production and sale of t-shirts bearing the Creation)
+- **RightsAssignment:** A decision by a Party resulting in the existence of a right (e.g. Richard Prince grants American Apparel the right to produce and sell t-shirts bearing Untitled Instagram Portrait in North America)
+- **Assertion:** A claim made about the substance of a Right (e.g. "Richard Prince says he has copyright in Untitled Instagram Portrait", or "Sky Ferreira says she has copyright in Untitled Instagram Portrait")
+- **RightsConflict:** A statement of disagreement over a Right (e.g. "Sky Ferreira and Richard Prince both claim copyright in Untitled Instagram Portrait")
 
 
 *Note: for the sake of simplicity, the `Context` type was left out of the above list; in essence, it
