@@ -331,7 +331,7 @@ For a human it's obvious that this is about a person named "Andy Warhol" who was
 6<sup>th</sup>, 1928. However, for a machine that lacks the intuition and *context* of a human,
 resolving this representation into the same conclusion is rather difficult.
 
-JSON-LD solves this problem by introducing a `context` into JSON documents; on a high level, this
+JSON-LD solves this problem by introducing a `context` into JSON documents. On a high level, this
 allows data to be linked to already defined schemata. Adding a special `@context` key to the
 document provides a reference to the schema of the underlying data. Transforming our previous
 example to use JSON-LD would result in:
@@ -353,18 +353,17 @@ application developer were to handle this data, they could also rely on the same
 rather than their own; over time, as more and more services use JSON-LD, data representations across
 services would begin to unify to improve cross-service data interoperability.
 
-Think of it like this: Twitter, Facebook, Github, Instagram, etc---they all have the notion of a
-user model. Some might use `birthday` as the key for the user's birthday while others use
-`dayOfBirth` or others still `birth_day`. All those keys, however, have the same semantic meaning on
-a user model: they all define when the user was born. Even worse, imagine if they all used different
-formats for the user's birthday value (i.e. not being not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874).
+Think of it like this: Twitter, Facebook, Github, Instagram all have the notion of a user model.
+Some might use `birthday` as the key for the user's birthday while others use `dayOfBirth` or
+`birth_day`. All those keys, however, have the same semantic meaning on a user model: they all
+define when the user was born. Even worse, imagine if they all used different formats for the
+user's birthday value (i.e. not being not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874)).
 Custom logic would have to be written to not only handle mapping different keys to each other, but
 also to convert their value fields into normalized representations.
 
-However, with JSON-LD, as it's simply a serialization format of RDF, and as [RDF's primitive data
-types are based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes), this
-problem is circumvented at the data format level because all advanced data types must derive from
-primitive data types.
+Since JSON-LD is simply a serialization format of RDF, and as [RDF's primitive data types are based
+on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes), this problem is circumvented
+at the data format level because all advanced data types must derive from primitive data types.
 
 Going back to the Andy Warhol example above, one remaining piece of magic to be explained is how
 JSON-LD maps our self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of
@@ -408,7 +407,7 @@ expansion:
 ```
 
 
-We end up with a much more verbose form of our set of data---what the JSON-LD specification calls
+We end up with a much more verbose form of our set of data. In the JSON-LD specification it's called
 *expanded* form, as the original object's been expanded with its `@context`. The original object's
 form, still with an `@context`, is defined by the specification as *compacted* form.
 
@@ -417,7 +416,7 @@ uses `http://schema.org/Person` to individually replace each of our properties w
 detailed schema definition URIs. The result is an automatically mapped set of data that uses an
 already available schema. As every key of a given value now points to a left node on a schema
 ontology, and as leaf nodes are only allowed to define the most basic types, such as string,
-boolean, integer, etc, the parser can now easily traverse the document and validate each occurence
+boolean, integer, etc, the parser can now easily traverse the document and validate each occurrence
 of `@value`.
 
 
@@ -454,8 +453,8 @@ concepts using links. It can be used with different encodings, including RDFa, M
 
 ##### Available Schemas
 
-Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types;
-these will be used later to help define the COALA IP specification:
+Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types.
+Potentially, these could be used later to help define the COALA IP specification:
 
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be
@@ -513,7 +512,7 @@ In summary:
 ##### Extensibility of schema.org
 
 Although some of the `Entity` types do not exist in schema.org yet (specifically Rights,
-RightsAssignment and RightsConflict), their schemata are easily extendible and we can create our own
+RightsAssignment and RightsConflict), their schemata are easily extensible and we can create our own
 schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
 others to subclass their *core* schemata into so called *hosted* and *external* extensions. In
 general, there are three types of schemata on schema.org:
@@ -523,14 +522,13 @@ general, there are three types of schemata on schema.org:
   http://health-lifesci.schema.org/) and are reviewed by the schema.org community; should be
   application-agnostic
 - **External:** Subclassed models from Core/Hosted that have an application-specific namespace (e.g.
-  http://schema.bigchaindb.com); may be application-specific
+  http://schema.coala.global); may be application-specific
 
 
-Applied to the contents of this specification, ideally any application-agnostic schemata---including
-all of LCC RRM--would ideally become a *hosted* extension, while application-specific
-schemata---data models that are specific for a specific application or service---would become
-*external* schemata. Fortunately, leveraging schema.org in this way maintains compliance with rules
-five and six of the LCC's "Ten Targets", which say:
+Applied to the contents of this specification, ideally any application-agnostic schemata would ideally
+become a *hosted* extension, while application-specific schemata would become *external* schemata.
+Fortunately, leveraging schema.org in this way maintains compliance with rules five and six of the
+LCC's "Ten Targets", which say:
 
 - Rule 5: Links between identifiers are system agnostic and need to be authorized by participating
   consortiums
