@@ -1,4 +1,4 @@
-COALA Intellectual Property Specification/Guideline
+COALA Intellectual Property Guideline
 ============
 
 
@@ -77,7 +77,7 @@ claim attribution, add metadata, license works, mediate intellectual property di
 authenticate claims of others. Furthermore, the group believes that there should be global agreement
 at the data level without the need for centralized control.
 
-A recent endeavor of the group has been to write this document for handling digital licensing of
+An ongoing endeavor of the group has been to write this document for handling digital licensing of
 intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
 Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into a free and open guideline.
 It outlines technologies that could be leveraged for the implementation and structure of a
@@ -85,11 +85,13 @@ specification for all involved parties: creators, rights holders, consumers, dev
 protocol is to be technology-opinionated, but ledger-agnostic.
 
 
-The COALA Intellectual Property protocol is essentially two parallel technical efforts:
+The implementation of COALA IP's vision could be distinguished into three major efforts:
 
-1. A community-driven effort to find and define a minimally-viable set of data for licensing
-   intellectual property
-1. A free and open messaging/communication protocol for license-transactions
+1. Writing this guideline, outlining the idea for a need of a technical specification for
+   digitally handling licensing of intellectual property on immutable ledgers
+1. Building a community to find and define a minimally-viable set of data for licensing intellectual
+   property
+1. Defining a free and open messaging/communication protocol for license-transactions
 
 
 ## Introduction
@@ -123,7 +125,7 @@ which is composed of the following ten goals:
 1. Every Party has a unique global identifier
 2. Every Creation has a unique global identifier
 3. Every Right has a unique global identifier
-4. All identifiers have a URI representation to persistently and predictably resolve them within the
+4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) representation to persistently and predictably resolve them within the
    Internet
 5. Links between identifiers are system agnostic and need to be authorized by participating
    consortiums
@@ -172,8 +174,7 @@ other `Entities` bidirectionally, as the attached figure shows:
 
 
 The `Entity` model's attributes are deliberately chosen to be generic so that more complex data
-models like the LCC RRM can be built on top. For a more in-depth explaination, follow the link to
-the specification's PDF provided at the beginning of this section.
+models like the LCC RRM can be built on top.
 
 
 **Sources:**
@@ -196,7 +197,7 @@ seven `Entity` types:
 - **RightsAssignment:** A decision as a result of which a Right comes into existence (e.g.
   "According to the 1976 US Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup
   Cans", but also "I, Andy Warhol declare that "32 Campbell's Soup Cans" shall be published under
-  the CreativeCommons free use license")
+  the [CreativeCommons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license")
 - **Assertion:** A claim made about the substance of a Right (e.g. "I, the Museum of Modern Art, New
   York, claim that Andy Warhol is the righteous creator of 32 Campbell's Soup Cans")
 - **RightsConflict:** A statement of disagreement over a Right (e.g. "I, Malory, claim that Andy
@@ -236,18 +237,18 @@ specifies the total possible relationships between `Entities`:
 
 The Web is a universal place for sharing information globally. In most cases, this is done by human
 beings publishing information in a human-readable format, say, for example, as an HTML page. While
-machines are theoretically capable of understanding information of this kind, in practice, at least
-in the near term, this is challenging and inefficient. Think of an HTML page containing tabular data
-about the population of a country; simply identifying that the table's first column describes "the
-name of a country" and using that name to deduce new information from another table is incredible
-difficult for a machine. Worse still, it is often impossible for a machine to reason about such
-information if the necessary context is not given first.
+machines are theoretically capable of understanding information of this kind, at least in the near
+term, this is challenging and inefficient. Think of an HTML page containing tabular data about the
+population of a country; simply identifying that the table's first column describes "the name of
+a country" and using that name to deduce new information from another table is incredible difficult
+for a machine. Worse still, it is often impossible for a machine to reason about such information
+if the necessary context is not structurally provided.
 
 However, if we were to use data schemata that held semantic meaning for both humans as well as
 machines, humans would still be able to publish information but in a way that machines could more
 easily understand. Doing so would likely prove to be of great value in advancing the Web; one such
-technique of creating data in this way is called the Resource Description Framework and is briefly
-described in the following section.
+effort is the creation of the Semantic Web. One of it's main building blocks, the Resource
+Description Framework (RDF), is briefly described in the following section.
 
 
 **Sources:**
@@ -294,7 +295,7 @@ ccREL is just one example of a context-providing schema built on top of RDF; bec
 concept, its implementations vary---especially in terms of used data structures. Embedded RDF in
 HTML pages, as well as the more puristic RDF/XML syntax are likely two of the more popular
 implementations albeit with relatively heavy syntax and learning curves. In 2014, with a new version
-of RDF coming up, RDF 1.1, a new RDF-compatible JSON-based---and thereby more approachable---data
+of RDF coming up, RDF 1.1, a new RDF-compatible JSON-based, and thereby more approachable, data
 structure was accepted by the W3C: JSON-LD. In essence, it fits some of the concepts of the semantic
 web (linked data, to be specific) into the [Javascript Object Notation](https://tools.ietf.org/html/rfc7159)
 (JSON), which makes it much more approachable than comparable implementations. As we're intending to
