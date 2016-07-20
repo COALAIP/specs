@@ -311,10 +311,10 @@ highlight some of its main features.
 
 #### JSON Linked Data
 
-[JSON-Linked Data](https://www.w3.org/TR/json-ld/) (short form: JSON-LD) is a data structure merging
-the concepts of the [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with
-[JSON](https://tools.ietf.org/html/rfc7159).  Using the concept of a "context", it allows to provide
-additional mappings by linking JSON-object properties to RDF schemata in an ontology.
+[JSON-Linked Data](https://www.w3.org/TR/json-ld/) (JSON-LD) is a data structure merging the
+concepts of the [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with
+[JSON](https://tools.ietf.org/html/rfc7159). Using the concept of a `context`, it allows users to
+link a JSON object's property to their corresponding RDF schemata in an ontology.
 
 Lets assume we have the following set of data:
 
@@ -328,15 +328,14 @@ Lets assume we have the following set of data:
 ```
 
 
-Now, for a human it's obvious that this set of data is about a person named "Andy Warhol" who was
-born on the 6th August 1928. For a machine that is lacking the intuition and _context_ of a human,
-resolving this representation is rather difficult.
+For a human it's obvious that this is about a person named "Andy Warhol" who was born on August
+6<sup>th</sup>, 1928. However, for a machine that lacks the intuition and *context* of a human,
+resolving this representation into the same conclusion is rather difficult.
 
-JSON-LD solves this problem by introducing the concept of a "context" into JSON documents. On a high
-level, this allows to link data to already defined schemata.  In order to include "context" into a
-JSON-object a key called `@context`, needs to be included that defines or references the schema of
-the underlying data. Using JSON-LD to define our previously mentioned example, it would look like
-this:
+JSON-LD solves this problem by introducing a `context` into JSON documents. On a high level, this
+allows data to be linked to already defined schemata. Adding a special `@context` key to the
+document provides a reference to the schema of the underlying data. Transforming our previous
+example to use JSON-LD would result in:
 
 
 ```javascript
@@ -349,40 +348,43 @@ this:
 ```
 
 
-Using the JSON-LD-specific keyword `@context` - pointing to a resource that defines how our data
-should look like - a JSON-LD parser could `GET http://schema.org/Person` the schema and validate the
-attached data against it.  If some other application developer were to be handling this kind of data
-for their users, they could rely on the same schema definition. This would unify data representation
-across services to enable cross-service data exchange without the need for data-transformation.
+Upon seeing this data, a JSON-LD parser could use the `@context` property and send a `GET` to
+`http://schema.org/Person` to receive the defined schema and perform validation. Now, if another
+application developer were to handle this data, they could also rely on the same schema definition
+rather than their own; over time, as more and more services use JSON-LD, data representations across
+services would begin to unify to improve cross-service data interoperability.
 
-Think of it like this: Twitter, Facebook, Github, Instagram - they all have the notion of a user
-model for example.  Some of them might name the key of the user's birthday `birthDay`, while others
-name it `dayOfBirth`, while again others would name it `birth_day`. All those keys however, have the
-same semantic meaning for a user model, as they define when the user was born. Even worse, imagine
-they'd all use different formats for the user's birthday value (e.g. not being not compliant with
-[ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874).  This would mean that not only
-for mapping keys custom logic would have to be written, but for most value fields as well.
+Think of it like this: Twitter, Facebook, Github, Instagram all have the notion of a user model.
+Some might use `birthday` as the key for the user's birthday while others use `dayOfBirth` or
+`birth_day`. All those keys, however, have the same semantic meaning on a user model: they all
+define when the user was born. Even worse, imagine if they all used different formats for the
+user's birthday value (i.e. not being not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874)).
+Custom logic would have to be written to not only handle mapping different keys to each other, but
+also to convert their value fields into normalized representations.
 
-Since JSON-LD is simply a serialization format of RDF, and since [RDF's primitive data types are
-based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes), the problem is
-circumvented at the base, as all advanced data types are derived from primitive data types.
+Since JSON-LD is simply a serialization format of RDF, and as [RDF's primitive data types are based
+on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes), this problem is circumvented
+at the data format level because all advanced data types must derive from primitive data types.
 
-Going back to the example, a remaining question is: How does JSON-LD know how to map our
-self-defined key (`givenName`, `familyName` and `birthDate`) names to the properties of schema.org's
-Person?  Turns out we didn't choose those key names randomly. They're already part of the
-schema.org's Person definition, hence a JSON-LD parser is capable to map them automatically and then
-execute validation against it.
+Going back to the Andy Warhol example above, one remaining piece of magic to be explained is how
+JSON-LD maps our self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of
+schema.org's `Person`. If you look at schema.org's `Person` definition, you'll see we didn't exactly
+choose random key names; they were already part of the definition. In this case, a JSON-LD parser
+is able to automatically map and execute validation against these properties by using the schema
+definition.
 
 For more clarity, let's see how a JSON-LD parser would look at this example:
 
+1. Notice `@context` contains `http://schema.org/Person`
 1. `GET http://schema.org/Person`
-2. For each of the user-defined keys, check if they map to the keys provided in the schema
-    2.1 If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls
-        this an `identifying blank node`) is found
-    2.2 "Expand" the data, replacing a keys name with an URI to its more granular schema definition
+1. For each of the user-defined keys, check if they map to any keys provided in the schema
+    1. If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls
+       this an `identifying blank node`) is found
+    1. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
 
 
-To give a practical example, this is how our previously defined set of data would look like:
+Going along with the example, this is how our previously defined set of data would look like after
+expansion:
 
 
 ```javascript
@@ -406,29 +408,25 @@ To give a practical example, this is how our previously defined set of data woul
 ```
 
 
-What we end up with is a much more verbose form of our set of data. In fact, the JSON-LD
-specification gives certain forms names. The form that is shown above is called _expanded_ form, as
-it was expanded using Person's schema.org definition defined in `@context`.  The form in the example
-we gave earlier (where we defined `@context`) is called _compacted_ form.
+We end up with a much more verbose form of our set of data. In the JSON-LD specification it's called
+*expanded* form, as the original object's been expanded with its `@context`. The original object's
+form, still with an `@context`, is defined by the specification as *compacted* form.
 
-So essentially, what happens is that the JSON-LD parser assumes we defined the correctly named keys
-for Person already, so when expanding the compacted version of our JSON-object, it just individually
-looks them up at `http://schema.org/Person` and if they're defined, replaces them with more detailed
-URIs to their schema definition.  What we end up with is a automatically mapped set of data by
-simply using what is already out there.  Since every key of a given value now points to a leaf node
-of a schema ontology and since leaf nodes are only allowed to define the most basic types (like
-string, boolean, number), the parser can then easily traverse the document and validate each
-occurrence of `@value`.
+In summary, the JSON-LD parser assumes we've defined the correctly named keys for a `Person` and
+uses `http://schema.org/Person` to individually replace each of our properties with their more
+detailed schema definition URIs. The result is an automatically mapped set of data that uses an
+already available schema. As every key of a given value now points to a left node on a schema
+ontology, and as leaf nodes are only allowed to define the most basic types, such as string,
+boolean, integer, etc, the parser can now easily traverse the document and validate each occurrence
+of `@value`.
 
 
 ##### Final thoughts
 
-With this example, we've just shown you the tip of the iceberg.
-
-JSON-LD has tremendous powers (Aliasing, Self-Referencing, Built-in types, Indexing, ...) to do all
-kinds of crazy things.  Since this specification will make use of JSON-LD heavily, we encourage to
-learn more about JSON-LD before continuing reading this document. Useful links can be found in the
-**Sources** section below.
+This example is only just the tip of the iceberg; JSON-LD has tremendous power (e.g. aliasing,
+self-referencing, built-in types, indexing, etc) and can do all sorts of crazy things. Before
+continuing, we encourage you to learn more about JSON-LD as the rest of this document will rely
+heavily on it. Useful links can be found in the **Sources** section below.
 
 
 **Sources:**
@@ -439,7 +437,7 @@ learn more about JSON-LD before continuing reading this document. Useful links c
   May 2016
 
 
-#### schema.org
+#### Schema.org
 
 - TODOs in this section:
     - Just describing schema.org is I think way to narrow here. This section should be about linked
@@ -448,20 +446,20 @@ learn more about JSON-LD before continuing reading this document. Useful links c
       (http://wiki.dbpedia.org/). Obviously mention schema.org as a prefered source though.
 
 
-schema.org is a collaborative initiative with the mission to create, maintain and promote schemata
+Schema.org is a collaborative initiative with the mission to create, maintain and promote schemata
 for structured data on the Internet. It's vocabulary is defined as an ontology, connecting different
 concepts using links. It can be used with different encodings, including RDFa, Microdata and
-_JSON-LD_.
+*JSON-LD*.
 
 
 ##### Available Schemas
 
-Schema.org includes the following schemata that could be helpful in defining a digital intellectual
-property specification based on LCC's EM/RRM:
+Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types.
+Potentially, these could be used later to help define the COALA IP specification:
 
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be
-  member of an `Organization`)
+  a member of an `Organization`)
 - [schema.org/CreativeWork](http://schema.org/CreativeWork): See LCC RRM `Creation`
     - [schema.org/Article](http://schema.org/Article)
     - [schema.org/Blog](http://schema.org/Blog)
@@ -494,58 +492,48 @@ property specification based on LCC's EM/RRM:
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
 
+In summary:
+
+- **What schema.org helps us with:**
+    - **LCC Party:** [schema.org/Organization](http://schema.org/Organization) and
+      [schema.org/Person](http://schema.org/Person)
+    - **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its
+      subschemata could be used
+    - **LCC Place:** [schema.org/Place](http://schema.org/Place)
+    - **LCC Assertion:** [schema.org/AssessAction](http://schema.org/AssessAction)
+- **What schema.org *doesn't* help us with (yet?):**
+    - **LCC Right**
+    - **LCC RightsAssignment**
+    - **LCC RightsConflict**
+
+
 *A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
 ##### Extensibility of schema.org
 
-As it is the goal of this specification to convert LCC's RRM to a linked data ontology, we need to
-be able to model the seven main LCC RRM entities: Party, Creation, Place, Right, RightsAssignment,
-Assertion, RightsConflict.  While enumerating schema.org's schemata in the previous section, for
-schemata that have similarities to the LCC's definition we already marked them. For clarity though,
-we're listing them in this section again to also highlight what schema.org **doesn't** provide yet:
+Although some of the `Entity` types do not exist in schema.org yet (specifically Rights,
+RightsAssignment and RightsConflict), their schemata are easily extensible and we can create our own
+schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
+others to subclass their *core* schemata into so called *hosted* and *external* extensions. In
+general, there are three types of schemata on schema.org:
+
+- **Core:** A basic vocabulary for describing the kind of entities most common web applications need
+- **Hosted:** Subclassed models from Core that have their own namespace on schema.org (e.g.
+  http://health-lifesci.schema.org/) and are reviewed by the schema.org community; should be
+  application-agnostic
+- **External:** Subclassed models from Core/Hosted that have an application-specific namespace (e.g.
+  http://schema.coala.global); may be application-specific
 
 
-**What schema.org helps us with:**
-
-- **LCC Party:** [schema.org/Organization](http://schema.org/Organization) and [schema.org/Person](http://schema.org/Person)
-- **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its
-  subschemata could be used
-- **LCC Place:** [schema.org/Place](http://schema.org/Place)
-- **LCC Assertion:** [schema.org/AssessAction](http://schema.org/AssessAction)
-
-
-**What schema.org _doesn't_ help us with (yet?):**
-
-- **LCC Right**
-- **LCC RightsAssignment**
-- **LCC RightsConflict**
-
-
-So even though schema.org already helps us by defining some of the LCC models some do not even exist
-at all (specifically Rights, RightsAssignment and RightsConflict). Although, this seems like a
-problem at first, it is not.  schema.org's schemata are easily extensible. schema.org [even
-encourages](http://schema.org/docs/extension.html) subclassing their 'core' schemata into so called
-'hosted' and 'external' extensions. In general, there are three types of schemata on schema.org:
-
-- **Core:** A basic vocabulary for describing the kind of entities the most common web applications
-  need
-- **Hosted:** Subclassed models from Core that have their own namespace (e.g.
-  http://health-lifesci.schema.org/) and were reviewed by the schema.org community. Hosted
-  extensions should be application-agnostic
-- **External:** Subclassed models from Core/Hosted that do have an application-specific namespace
-  (e.g.  http://schema.bigchaindb.com). External extensions may be application-specific
-
-
-Applied to the contents of this specification, this would mean that application-agnostic schemata
-(so everything contained in LCC RRM) would ideally become a Hosted extension, while
-application-specific schemata (data models that are specific for a certain applications or services)
-would become External schemata.  Fortunately, using schema.org in this way it also complies with
-rule five and six of the ten LCC targets for the rights data network, which say:
+Applied to the contents of this specification, ideally any application-agnostic schemata would ideally
+become a *hosted* extension, while application-specific schemata would become *external* schemata.
+Fortunately, leveraging schema.org in this way maintains compliance with rules five and six of the
+LCC's "Ten Targets", which say:
 
 - Rule 5: Links between identifiers are system agnostic and need to be authorized by participating
   consortiums
-- Rule 6: Meta data is system agnostic and its schema has to be authorized by participating parties
+- Rule 6: Metadata is system agnostic and its schema has to be authorized by participating parties
   or consortiums
 
 
