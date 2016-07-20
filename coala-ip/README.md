@@ -91,7 +91,7 @@ The implementation of COALA IP's vision could be distinguished into three major 
    digitally handling licensing of intellectual property on immutable ledgers
 1. Building a community to find and define a minimally-viable set of data for licensing intellectual
    property
-1. Defining a free and open messaging/communication protocol for license-transactions
+1. Defining a free and open messaging/communication protocol for licensing transactions
 
 
 ## Introduction
@@ -125,8 +125,8 @@ which is composed of the following ten goals:
 1. Every Party has a unique global identifier
 2. Every Creation has a unique global identifier
 3. Every Right has a unique global identifier
-4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) representation to persistently and predictably resolve them within the
-   Internet
+4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) representation to
+   persistently and predictably resolve them within the Internet
 5. Links between identifiers are system agnostic and need to be authorized by participating
    consortiums
 6. Metadata is system agnostic and its schema has to be authorized by participating parties or
@@ -259,9 +259,9 @@ Description Framework (RDF), is briefly described in the following section.
 #### The Resource Description Framework
 
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (RDF) is a framework for
-describing entities on the Web. Since it uses the Universal Resource Identifier (URI), a
-generalization of the Universal Resource Location (URL), as a scheme to address resources, it is
-exceptionally interoperable and extensible.
+describing entities on the Web. Since it uses the [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630)
+(URI), a generalization of the Universal Resource Location (URL), as a scheme to address resources,
+it is exceptionally interoperable and extensible.
 
 RDF's core data structure is a graph-based data model that uses sets of triplets, each consisting of
 a **subject**, **predicate** and an **object**, to construct subsets of the graph. In its smallest
@@ -422,7 +422,7 @@ boolean, integer, etc, the parser can now easily traverse the document and valid
 of `@value`.
 
 
-##### Final thoughts
+##### Final Thoughts
 
 This example is only just the tip of the iceberg; JSON-LD has tremendous power (e.g. aliasing,
 self-referencing, built-in types, indexing, etc) and can do all sorts of crazy things. Before
@@ -511,7 +511,7 @@ In summary:
 *A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
-##### Extensibility of schema.org
+##### Extensibility of Schema.org
 
 Although some of the `Entity` types do not exist in schema.org yet (specifically Rights,
 RightsAssignment and RightsConflict), their schemata are easily extendible and we can create our own
@@ -763,7 +763,7 @@ Although the naming and concept of IPLD was inspired by JSON-LD, the two have di
 functionality. This section highlights the limitations imposed on JSON-LD by IPLD.
 
 
-#### Self-identifying JSON-LD objects
+#### Self-identifying JSON-LD Objects
 
 JSON-LD objects can maintain a self-identifying link using the `@id` property, which allows the
 object to directly express its location to others. The same is possible for IPLD objects; by
@@ -849,48 +849,58 @@ elaborate fingerprinting mechanisms to further increase transparency in the syst
     - Basic same formalities as in all the sections before apply.
 
 
-## Remodeling the LCC RRM using Linked Data
+## COALA IP: Remodeling the LCC RRM with Linked Data
 
-In this section we describe how LCC's Rights Reference Model can be modeled using JSON-LD, IPLD and
-schema.org. In other words, we'll go over each model description given in the LCC Rights Reference
-Model document and discuss how the respective model can be translated into Linked Data.
+In this section we define and discuss guidelines for transforming each `Entity` type fom the LCC's
+Rights Reference Model to Linked Data by using JSON-LD, IPLD and schema.org. This will form the
+basis for the COALA IP communication protocol.
 
+### What Linked Data Gives Us Out of the Box
+
+As a building block of RRM, the LCC first defines a generic, linkable Entity Model whose entities
+can be composed together to create an extendable data model for intellectual property. However, by
+using an RDF-based data structure, we can skip the transformation of these basic entities as RDF
+already provides us with a base data structure for linking entities.
 
 ### General Approach
 
-The section abstractly describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD
-model. As mentioned earlier already, with their document "[LCC: Entity Model](http://doi.org/10.1000/285)",
-they defined a generic model to base their actual Rights Reference Model on. What this document in
-essence describes, is how to implement a data model that is fully extensible using a multitude of
-linked entities. Using an RDF-based data structure in turn, means that defining a base data
-structure for linking entities is not necessary anymore, as this is what RDF is all about already.
 To successfully redefine the LCC's Rights Reference Model, the following steps are required:
 
-- Identify RDF schemata that map to respective entities defined in the LCC RRM specification
-    - If appropriate RDF schemata are not available:
-        - Compose own RDF types from multiple RDF schemata
-        - Define own RDF schemata
-- Define how entities are identified and resolved
+- Identify RDF schemata that can be mapped to an LCC RRM `Entity` type
+    - If no appropriate RDF schemata exist, either:
+        - Compose our own RDF types from multiple, existing RDF schemata, or
+        - Define our own specialized RDF schemata
+- Define how entities can be identified and resolved
 - Resolve mismatches between the LCC RRM lingo and RDF schemata
 
 
-### The LCC Place Model
+A slight speed bump in the transformation process is to ensure support for links between entities;
+while the RRM defines the existance of links in a generic manner, e.g. as one-to-many (i.e. `0 - n`)
+links, RDF and Linked Data require these links to be explicitly named so as to express specific
+facts within their ontologies. A case in point is how schema.org's schemata often include a finite
+set of links that can be mapped to the RRM's links but can not directly support the possibly
+infinite number of such links required by the RRM. However, we can overcome this issue with a bit of
+effort by extending the base JSON-LD schemata, or its underlying RDF implementation; such extensions
+could be hosted by schema.org as a *hosted* extension, or by others as *extended* extensions.
 
-In the LCC Framework, a Place describes a localizable or virtual place. It has the following
+
+### The LCC Place `Entity`
+
+In the LCC RRM, a Place describes a localizable or virtual place. It contains the following
 property:
 
-- **PlaceType:** Defining the type of a Place
-    - `lcc:LocalizablePlace`: A Place in the universe that can be described using spatial
+- **PlaceType:** Defines the type of a Place; is one of:
+    - `lcc:LocalizablePlace`: A Place in the physical universe that can be located by spatial
       coordinates
-    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located under
+    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located at
 
 
-In addition, a Place can have the following outgoing reference to respective other entities:
+In addition, a Place can have the following outgoing links to other entities:
 
-- a self-referencing link (one-to-many)
+- Links to other Places (`0 - n`; one-to-many): *RelatedPlace*
 
 
-Visualized the LCC RRM Place looks like this:
+Visualized, the RRM Place looks like:
 
 
 ![](media/lccrrmplace.png)
@@ -898,26 +908,26 @@ Visualized the LCC RRM Place looks like this:
 
 #### Proposed Transformation
 
-Compared to schema.org's definition of a Place, the LCC RRM Place both describes a physical as well
-as a virtual Place.  In this specification though, we need to separate the two concepts explicitly
-upfront, to avoid confusions further in the transformation process. Neither a URI, nor a IPLD
-merkle-link is able to represent a physical location which is why in the context of this
-specification, they're links pointing to resources while the LCC Place model will solely be used to
-point to a physical place.
+Differing from schema.org's definition of a Place (a physical location), RRM's Place is able to
+describe both physical as well as virtual Places. However, to avoid confusion later in the
+transformation process, we explicitly separate these two concepts upfront. As neither URIs nor IPLD
+merkle-links are able to represent physical locations, we use them solely as links pointing to
+resources to let RRM Places unambiguously point to physical places.
 
-For further reference, a:
+In concrete terms, this means that an RRM Place with `PlaceType == lcc:LocalizablePlace` will be
+transformed into an RDF representation, while an RRM Place with `PlaceType == lcc:VirtualPlace` will
+be represented as a URI or IPLD hash that points to a dataset.
 
-- **LLC RRM Place or Place** will be used to describe a localizable Place, meaning a Place in the
-  universe that can be described using spatial coordinates
-- **Universal Resource Identifier** or **IPLD merkle-link** will be used to describe a virtual place
-  at which a resource may be located under
+For further reference, we will use a:
+
+- **RRM Place, modelled as a schema.org Place** to describe a *localizable* Place, i.e. a Place
+  in the physical universe that can be located by spatial coordinates
+- **URI** or **IPLD merkle-link** to describe a *virtual* place at which a resource may be located
+  at
 
 
-This implies that a LCC RRM Place of `PlaceType == lcc:LocalizablePlace` will be transformed to a
-RDF Place, while a LCC RRM Place of `PlaceType == lcc:VirtualPlace` will just be URIs or hashes in
-documents, linking in between data sets.
-
-Using schema.org's Place, a transformation is straight forward (example taken from schema.org):
+With schema.org's Place, the transformation of a *localizable* Place to RDF is straight forward
+(example adapted from schema.org):
 
 
 ```javascript
@@ -944,7 +954,9 @@ Using schema.org's Place, a transformation is straight forward (example taken fr
 }
 ```
 
-Using the special `containsPlace` property, self-referencing links to other Places are possible.
+To support links to other Places, one can use either of the two already-defined properties on a
+schema.org Place: `containsPlace` or `containedInPlace`, or extend the schema with their own
+properties.
 
 
 ### The LCC Party Model
