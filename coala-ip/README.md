@@ -429,7 +429,7 @@ boolean, integer, etc, the parser can now easily traverse the document and valid
 of `@value`.
 
 
-##### Final thoughts
+##### Final Thoughts
 
 This example is just the tip of the iceberg. JSON-LD has tremendous power. It can be used for
 aliasing, self-referencing, built-in types, indexing, and more.
@@ -499,7 +499,8 @@ Potentially, these could be used later to help define the COALA IP specification
     - [schema.org/TransferAction](http://schema.org/TransferAction)
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
+-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
+
 
 In summary:
 
@@ -633,7 +634,7 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     reference implementation](https://bitbucket.org/bodhisnarkva/cbor). The result is a byte array.
 
 
-2. Hash the serialized byte array using [multihash](https://github.com/jbenet/multihash) and encode
+1. Hash the serialized byte array using [multihash](https://github.com/jbenet/multihash) and encode
    the hash to base58
 
 
@@ -774,7 +775,6 @@ inefficient. Instead, we prevent JSON-LD objects with IPLD links from self-ident
 using an `@id` property. This is usually not a problem as objects can also identify themselves
 through content addressing.
 
-
 **Sources:**
 
 - [IPLD Specification Draft](https://github.com/ipfs/specs/tree/master/ipld), June 2016
@@ -847,12 +847,18 @@ systems to further increase transparency.
     - Same formalities as in all the sections before apply.
 
 
-## Remodeling the LCC RRM using Linked Data
+## COALA IP: Remodeling the LCC RRM with Linked Data
 
 In this section we describe how the LCC RRM can be modeled using JSON-LD, IPLD, and schema.org.
 We will go over each model description given in the LCC Rights Reference
 Model document and discuss how the respective model can be translated into Linked Data.
 
+### What Linked Data Gives Us Out of the Box
+
+As a building block of RRM, the LCC first defines a generic, linkable Entity Model whose entities
+can be composed together to create an extendable data model for intellectual property. However, by
+using an RDF-based data structure, we can skip the transformation of these basic entities as RDF
+already provides us with a base data structure for linking entities.
 
 ### General Approach
 
@@ -873,23 +879,33 @@ To redefine the LCC's Rights Reference Model, we did the following:
 - Resolve mismatches between the LCC RRM terminology and RDF schemata.
 
 
-### The LCC Place Model
+A slight speed bump in the transformation process is to ensure support for links between entities;
+while the RRM defines the existance of links in a generic manner, e.g. as one-to-many (i.e. `0 - n`)
+links, RDF and Linked Data require these links to be explicitly named so as to express specific
+facts within their ontologies. A case in point is how schema.org's schemata often include a finite
+set of links that can be mapped to the RRM's links but can not directly support the possibly
+infinite number of such links required by the RRM. However, we can overcome this issue with a bit of
+effort by extending the base JSON-LD schemata, or its underlying RDF implementation; such extensions
+could be hosted by schema.org as a *hosted* extension, or by others as *extended* extensions.
 
-In the LCC Framework, a Place describes a localizable or virtual place. It has the following
+
+### The LCC Place `Entity`
+
+In the LCC RRM, a Place describes a localizable or virtual place. It contains the following
 property:
 
-- **PlaceType:** Defining the type of a Place
-    - `lcc:LocalizablePlace`: A Place in the universe that can be described using spatial
+- **PlaceType:** Defines the type of a Place; is one of:
+    - `lcc:LocalizablePlace`: A Place in the physical universe that can be located by spatial
       coordinates
-    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located under
+    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located at
 
 
-In addition, a Place can have the following outgoing reference to respective other entities:
+In addition, a Place can have the following outgoing links to other entities:
 
-- a self-referencing link (one-to-many)
+- Links to other Places (`0 - n`; one-to-many): *RelatedPlace*
 
 
-Visualized the LCC RRM Place looks like this:
+Visualized, the RRM Place looks like:
 
 
 ![](media/lccrrmplace.png)
@@ -912,11 +928,8 @@ For reference:
   place where a resource can be found.
 
 
-This implies that a LCC RRM Place of `PlaceType == lcc:LocalizablePlace` will be transformed to a
-RDF Place, while a LCC RRM Place of `PlaceType == lcc:VirtualPlace` will just be URIs or hashes in
-documents, linking in between data sets.
-
-Using schema.org's Place, a transformation is straight forward (example taken from schema.org):
+With schema.org's Place, the transformation of a *localizable* Place to RDF is straight forward
+(example adapted from schema.org):
 
 
 ```javascript
@@ -943,7 +956,9 @@ Using schema.org's Place, a transformation is straight forward (example taken fr
 }
 ```
 
-Using the special `containsPlace` property, self-referencing links to other Places are possible.
+To support links to other Places, one can use either of the two already-defined properties on a
+schema.org Place: `containsPlace` or `containedInPlace`, or extend the schema with their own
+properties.
 
 
 ### The LCC Party Model
