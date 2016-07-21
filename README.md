@@ -1,10 +1,11 @@
-COALA Intellectual Property Guideline
-============
+# COALA Intellectual Property Guideline
 
 
-Contributors to this document:
+Contributors to this document, in alphabetical order:
 
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
+- Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
+- Brett Sun: brett@bigchaindb.com
 
 
 ## THIS DOCUMENT IS WAY TOO LONG! I DON'T HAVE TIME FOR ALL OF THIS!
@@ -22,37 +23,38 @@ Thank you!
 
 ## PLEASE REVIEW THIS SECTION FIRST BEFORE CONTINUING FURTHER
 
-This document is a work in progress! Some sections contain the keyword "TODO" and a description on
-what should be written. To everyone reading this: feel free to take the time to conduct research in
-an unfinished area to write the section yourself.
+This document is a work in progress. Some sections contain the keyword "TODO" and a description on
+what should be written. Feel free to take the time to conduct research in an unfinished area and
+write the section yourself.
 
-If your section contains information from external documents, please make sure to link to any
+If your contribution contains information from external documents, please make sure to link to any
 appropriate sources.
 
-If your section relies on a field that wasn't previously explained, please take a moment to to
-briefly define the field to give other readers of this document a chance to on-board easily.
+If your contribution relies on a field that wasn't previously explained, please provide an overview
+of the field to give other readers the necessary background.
 
 This document has a soft characters-per-line limit of 100 characters (note that by including links,
-only the descriptor counts). Please respect while writing.
+only the descriptor counts). Please respect this limit while writing.
 
 As human beings are capable of recognizing patterns easily, make sure to follow the other, hereto
 not explicitly mentioned, text formating patterns as close as possible.
 
-As an overall metric for this document:
+As an overall guideline for contributions to this document document:
 
-- Think practical
-- Think in technologies
-- Don't reinvent the wheel; use what's already out there and if so, give proper attribution
-- Write as if you had to implement next week!
+- Think practical.
+- Think in technologies.
+- Don't reinvent the wheel. Use what's already out there and give proper attribution.
+- Write as if you had to implement next week.
 
 
 ## General TODOs:
 
-- In some cases synonyms for lingo was used. Remove all occurrences
-- When releasing this document to the public, write an introductory section explaining what COALA
-  is, why this document matters, what is left to do, what are COALA's general goals are and so on...
+- Improve consistency of use of defined terms. Synonyms for technical terms should be replaced
+  with the standard term throughout.
+- Before releasing this document to the public, write an introductory section explaining what COALA
+  is, what its general goals are, why this document matters, what is left to do, and so on...
 - Sometimes this document references internally to other sections ("as seen in the above section",
-  ...). Using relative links, we should point to the sections, we're writing about
+  ...). Using relative links, we should point to the sections we're writing about
 
 
 ## Table of Contents
@@ -63,35 +65,43 @@ As an overall metric for this document:
 
 ## Abstract
 
-Content creators on the Web are getting a raw deal. They get a fraction of a cent for each ad played
-on YouTube, and nothing on Facebook, for filling these sites with traffic-driving content. It’s hard
-to make a living when you’re a creative. Licensing is hard: the user experience is so bad, lawyers
-and middlemen extract the most value. In the some industries, like music, more money flows into the
-pockets of distributors than creatives. Worst of all, even though many consumers are happy to pay
-creators for their content, more often than not, they're forced to sit through ads instead.
+Content creators on the internet are getting a raw deal. They get a fraction of the revenue earned
+by hosting and distribution platforms, even though their work is what keeps these sites filled
+with traffic-driving content. It's hard for a creative to make a living. Licensing is hard: the
+user experience is so bad, lawyers and middlemen extract the most value. In many areas, more money
+flows into the pockets of the distributors than to the creators. Even though many consumers would
+be happy to pay the people who made the content they love, the users are not given the chance to
+pay. Instead, they are surveilled and served ads based on their data profiles.
 
-To address these problems, the Coalition Of Automated Legal Applications - Intellectual Property
-(COALA IP) group was formed to design and implement a free and open specification for handling
-digital licensing of intellectual property.  Its goals are to establish open, free, and easy ways to
-claim attribution, add metadata, license works, mediate intellectual property disputes, and
-authenticate claims of others. Furthermore, the group believes that there should be global agreement
-at the data level without the need for centralized control.
+The Coalition Of Automated Legal Applications — Intellectual Property Group (COALA IP) group was
+formed to address these problems. COALA IP is working to design and implement a free and open
+specification for representing and licensing intellectual property. COALA IP's goal is to establish
+open, free, and easy-to-use ways to record attribution and metadata about works, assign or license
+rights, mediate disputes, and authenticate claims by others. The group believes there should be a
+global standard at the data level, without the need for centralized control.
 
-An ongoing endeavor of the group has been to write this document for handling digital licensing of
-intellectual property on immutable ledgers. It's an effort to transform the implementation-agnostic
-Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into a free and open guideline.
-It outlines technologies that could be leveraged for the implementation and structure of a
-specification for all involved parties: creators, rights holders, consumers, developers, etc. The
-protocol is to be technology-opinionated, but ledger-agnostic.
+This document details COALA IP's approach to representing intellectual property on distributed
+ledgers. It's an effort to transform the implementation-agnostic Rights Reference Model (RRM) of
+the Linked Content Coalition (LCC) into a free and open standard. It outlines technologies that
+could be leveraged for the implementation and structure of a specification for all involved
+parties: creators, rightsholders, distributors, consumers, developers, and so on. The protocol
+will be technology-opinionated, but ledger-agnostic.
 
+This document is part of COALA IP's effort to develop an approach for the registration and
+licensing of intellectual property on distributed ledgers. It's an effort to transform the
+implementation-agnostic Rights Reference Model (RRM) of the Linked Content Coalition (LCC) into
+a free and open guideline. It outlines technologies that could be leveraged for the implementation
+and structure of a specification for all involved parties: creators, rights holders, consumers,
+developers, etc. The protocol is to be technology-opinionated, but ledger-agnostic.
 
 The implementation of COALA IP's vision could be distinguished into three major efforts:
 
-1. Writing this guideline, outlining the idea for a need of a technical specification for
-   digitally handling licensing of intellectual property on immutable ledgers
-1. Building a community to find and define a minimally-viable set of data for licensing intellectual
-   property
-1. Defining a free and open messaging/communication protocol for licensing transactions
+1. Building a community to define a minimally-viable set of data for the description of
+   intellectual property rights and licensing agreements;
+2. Authoring this guide providing an overview of the field and discussing the need for a technical
+   specification to represent intellectual property rights on disributed ledgers; and
+3. Defining a free and open messaging and communication protocol for intellectual property rights
+   and licensing transactions.
 
 
 ## Introduction
@@ -100,14 +110,14 @@ This section provides context for the COALA Intellectual Property (COALA IP) spe
 briefly describes and explains the technological concepts used to model a generic, extensible
 protocol for managing digital rights. These explainations are only meant to give the reader a
 comprehensive overview of the concepts; to understand them in their full spectrum, we encourage the
-reader to further study them on their own. Sources are given for each section's topic.
+reader to further study them on their own. Sources are given for each topic.
 
 
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework)
 is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/)
-(LCC) to unify digital rights data management. The framework's key documents are:
+(LCC) to "unify digital rights data management". The key documents are:
 
 - [The LCC Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)
 - [The LCC Entity Model](http://doi.org/10.1000/285)
@@ -117,29 +127,26 @@ is a set of documents published by the [Linked Content Coalition](http://linkedc
 
 #### The LCC's Ten Targets
 
-The LCC's goal is to enable the widest possible access to appropriate rights information and the
-ability to automate rights trading, independent of commercial or free use. As a general guideline
-towards fulfilling their goals, they released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
-which is composed of the following ten goals:
+The LCC's goal is to enable the widest possible access to accurate rights information and the
+ability to automate the licensing and assignment of rights, whether for commercial or free use.
+The LCC released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
+as a general guide toward achieving the following goals:
 
-1. Every Party has a unique global identifier
-2. Every Creation has a unique global identifier
-3. Every Right has a unique global identifier
-4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) representation to
-   persistently and predictably resolve them within the Internet
-5. Links between identifiers are system agnostic and need to be authorized by participating
-   consortiums
-6. Metadata is system agnostic and its schema has to be authorized by participating parties or
-   consortiums
-7. The provenance of rights has to be made explicit
-8. Any participant has the ability to make standardized, machine-interpretable statements about
-   rightholdings in creations
-9. Conflicts in rights declarations should be automatically identifiable
-10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks"
+1. Every Party has a unique global identifier;
+2. Every Creation has a unique global identifier;
+3. Every Right has a unique global identifier;
+4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve them within the internet;
+5. Links between identifiers are platform agnostic and non-proprietary
+6. Metadata is platform agnostic or interoperable, and schema should have authorized mappings to
+   translate between schema;
+7. The provenance of Rights has to be made explicit;
+8. Any participant has the ability to make standardized, machine-readable statements about
+   rightholdings in creations;
+9. Conflicts in rights declarations should be automatically identifiable; and
+10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
 
 
-For more in-depth information about the goals of the LCC, find the attached link at the top of this
-section.
+For more in-depth information about the goals of the LCC, see the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)".
 
 
 **Sources:**
@@ -149,32 +156,31 @@ section.
 
 #### The LCC Entity Model
 
-*Note: having knowledge of the LCC Entity Model is not vital for understanding the later contents of
-this specification; the Entity Model is a meta-model used by the LCC to model their actual
-ontology---the LCC Rights Reference Model.*
+*Note: Knowledge of the LCC Entity Model is not vital to understand this specification. The Entity
+Model is a meta-model used by the LCC to model their ontology, the LCC Rights Reference Model.*
 
 The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) is a generic data model the LCC uses to
 define more specific data models, like the [LCC Rights Reference Model](http://doi.org/10.1000/284)
-(LCC RRM). In a nutshell, the LCC EM specification defines a `Entity` model that is composed of five
-attribute types:
+(LCC RRM). The LCC EM specification defines an `Entity` model composed of five attribute types:
 
-- **Category:** Categorizes the Entity (e.g. Language=iso3166-1a2:EN ("English"))
-- **Descriptor:** Names the Entity (e.g. Name="Andy Warhol")
-- **Quantity:** Quantifies the Entity (e.g. Height=20cm)
-- **Time:** Times the Entity (e.g. DateOfCreation=1999)
-- **Link:** Links the Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's Soup Cans")
+- **Category:** A broad category the Entity belongs to(e.g. Language=iso3166-1a2:EN ("English"))
+- **Descriptor:** The name of the Entity (e.g. Name="Andy Warhol")
+- **Quantity:** A numeric value related to the Entity (e.g. Height=20cm)
+- **Time:** A time or date related to the Entity (e.g. DateOfCreation=1999)
+- **Link:** Links the Entity to another Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's
+  Soup Cans")
 
 
-Each of these attributes are also represented as models in the specification and, together with
-unidirectional links, they make up the actual `Entity` model. An `Entity` itself can be linked to
+These attributes are each represented as models in the specification and, together with
+unidirectional links, make up the actual `Entity` model. An `Entity` can be linked to
 other `Entities` bidirectionally, as the attached figure shows:
 
 
 ![](media/f1.png)
 
 
-The `Entity` model's attributes are deliberately chosen to be generic so that more complex data
-models like the LCC RRM can be built on top.
+The attributes of the `Entity` model are designed to be generic so more complex data models like
+the LCC RRM can be built on top.
 
 
 **Sources:**
@@ -184,33 +190,29 @@ models like the LCC RRM can be built on top.
 
 #### The LCC Rights Reference Model
 
-The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal definition for
-digitally representing intellectual property rights. The LCC RRM specification describes an abstract
-logical data model that is built on top of the LCC Entity Model and is composed of the following
-seven `Entity` types:
+The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal framework for
+the representation of intellectual property rights. The LCC RRM specification describes an abstract
+logical data model built on top of the LCC Entity Model, and is composed of the following `Entity`
+types:
 
-- **Party:** A Person or an Organization (e.g. "Andy Warhol")
-- **Creation:** Something created by a Party (e.g. "32 Campbell's Soup Cans")
-- **Place:** A virtual or physical Place (e.g. "New York City, USA")
-- **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g. "Andy
-  Warhol controls all rights to 32 Campbell's Soup Cans")
-- **RightsAssignment:** A decision as a result of which a Right comes into existence (e.g.
-  "According to the 1976 US Copyright Act, Andy Warhol controls all rights to 32 Campbell's Soup
-  Cans", but also "I, Andy Warhol declare that "32 Campbell's Soup Cans" shall be published under
-  the [CreativeCommons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) license")
-- **Assertion:** A claim made about the substance of a Right (e.g. "I, the Museum of Modern Art, New
-  York, claim that Andy Warhol is the righteous creator of 32 Campbell's Soup Cans")
-- **RightsConflict:** A statement of disagreement over a Right (e.g. "I, Malory, claim that Andy
-  Warhol is NOT the righteous creator of 32 Campbell's Soup Cans")
+- **Party:** A person or an organization (e.g. "Richard Prince", "American Apparel", or "Sky
+  Ferreira")
+- **Creation:** Something created by a Party (e.g. "Untitled Instagram Portrait")
+- **Place:** A virtual or physical location (e.g. "New York City" or "http://www.newyorkcity.com")
+- **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g.
+  production and sale of t-shirts bearing the Creation)
+- **RightsAssignment:** A decision by a Party resulting in the existence of a right (e.g. "Richard
+  Prince grants American Apparel the right to produce and sell t-shirts bearing Untitled Instagram
+  Portrait in North America")
+- **Assertion:** A claim made about the substance of a Right (e.g. "Richard Prince says he has copyright in Untitled Instagram Portrait", or "Sky Ferreira says she has copyright in Untitled Instagram Portrait")
+- **RightsConflict:** A statement of disagreement over a Right (e.g. "Sky Ferreira and Richard Prince both claim copyright in Untitled Instagram Portrait")
 
 
-*Note: for the sake of simplicity, the `Context` type was left out of the above list; in essence, it
-is defined only as a parent/categorizing class of Right, RightsAgreement, Assertion, and
-RightsConflict---hence holding no significant value on its own.*
+*Note: For the sake of simplicity, the `Context` type was left out of the above list. It is defined only as a parent/categorizing class of Right, RightsAgreement, Assertion, and RightsConflict. It holds no significant value on its own.*
 
-As these seven `Entity` types are to be the building blocks of a global digital rights ontology,
-they can be linked to each other through specific, unidirectional relationships; the figure below
-specifies the total possible relationships between `Entities`:
+These seven `Entity` types are the building blocks of a global digital rights ontology. They can
+be linked to each other through specific, unidirectional relationships. The figure below specifies
+the total possible relationships between `Entities`:
 
 
 ![](media/f2.png)
@@ -235,72 +237,70 @@ specifies the total possible relationships between `Entities`:
 
 ### The Semantic Web
 
-The Web is a universal place for sharing information globally. In most cases, this is done by human
-beings publishing information in a human-readable format, say, for example, as an HTML page. While
-machines are theoretically capable of understanding information of this kind, at least in the near
-term, this is challenging and inefficient. Think of an HTML page containing tabular data about the
-population of a country; simply identifying that the table's first column describes "the name of
-a country" and using that name to deduce new information from another table is incredible difficult
-for a machine. Worse still, it is often impossible for a machine to reason about such information
-if the necessary context is not structurally provided.
+The world wide web (web)is a universal place for sharing information globally. In most cases, this
+is done by human beings publishing information in a human-readable format, like a webpage. While
+machines are theoretically capable of understanding information of this kind, in practice it is
+challenging and inefficient. For example, a HTML page containing tabular data about the population
+of a country is easy for a human to understand, but even if the first column is "the name of a
+country", it is difficult for a machine to use this information to deduce new information from
+another table, and often impossible for a machine to reason about such information if the necessary
+context is not provided.
 
-However, if we were to use data schemata that held semantic meaning for both humans as well as
-machines, humans would still be able to publish information but in a way that machines could more
-easily understand. Doing so would likely prove to be of great value in advancing the Web; one such
-effort is the creation of the Semantic Web. One of it's main building blocks, the Resource
-Description Framework (RDF), is briefly described in the following section.
+However, if we use data schemata that hold semantic meaning for both humans and machines, humans
+would still be able to publish information but in a way that machines could more easily understand.
+Doing so would likely prove to be of great value in advancing the web; one such effort is the
+creation of the semantic web. One of it's main building blocks, the Resource Description Framework,
+is briefly described in the following section.
 
 
 **Sources:**
 
-- A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval, 2009
+- A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval
 
 
-#### The Resource Description Framework
+#### The Resource Description Framework (RDF)
 
 [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) (RDF) is a framework for
-describing entities on the Web. Since it uses the [Universal Resource Identifier](https://tools.ietf.org/html/rfc1630)
-(URI), a generalization of the Universal Resource Location (URL), as a scheme to address resources,
-it is exceptionally interoperable and extensible.
+describing entities on the web. It uses the Universal Resource Identifier (URI), a generalization
+of the Universal Resource Location (URL), to address resources. This makes RDF exceptionally
+interoperable and extensible.
 
-RDF's core data structure is a graph-based data model that uses sets of triplets, each consisting of
-a **subject**, **predicate** and an **object**, to construct subsets of the graph. In its smallest
-form, a set containing a single triplet is already an RDF graph. Visualized, a simple RDF graph
-could look like this:
+RDF's core data structure is a graph-based data model that uses sets of triplets, each consisting
+of a **subject**, **predicate**, and an **object**, to construct subsets of the graph. In its
+smallest form, a set containing a single triplet is already an RDF graph. Visualized, a simple
+RDF graph could look like this:
 
 
 ![](media/rdfgraph.png)
 
 
-As RDF is primarily used on the World Wide Web, in practice each node of the graph is usually
-represented as an URI pointing to the resource that gives further details about its relationship in
-the graph. As an example, the following figure was mentioned in the [Creative Commons Rights
-Expression Language](https://www.w3.org/Submission/ccREL/) (ccREL) W3C submission:
+RDF is primarily used on the world wide web. Each node of the graph is usually represented as a
+URI pointing to the resource that gives further details about its relationship in the graph.
+The following example was used in the [Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/) (ccREL)
+W3C submission:
 
 
 ![](media/rdfexample.png)
 
 
 This example RDF manifestation states licensing information about Lawrence Lessig's blog in a
-machine-readable way. We can say that Lessig's blog, the *subject*, is licensed, the *predicate*,
-under the Creative Commons Attribution 3.0 license, the *object*. ccREL is a schema provided by
+machine-readable way. Lessig's blog (the *subject*) is licensed (the *predicate*)
+under a Creative Commons Attribution 3.0 license (the *object*). ccREL is a schema provided by
 Creative Commons that allows defining context for machines on how to interpret licensing information
-for documents on the Web. ccREL itself is implemented using RDF Schema, which is basically a
-vocabulary for describing properties and classes of RDF resources. By making usage of the [Web
-Ontology Language](https://www.w3.org/TR/owl-features/) (short form: OWL), concepts from other RDF
-schemata can be included in a domain-specific RDF schema creating a global ontology of semantically
+for documents on the web. ccREL itself is implemented using RDF Schema, which is basically a
+vocabulary for describing properties and classes of RDF resources. By using the [Web
+Ontology Language](https://www.w3.org/TR/owl-features/) (OWL), concepts from other RDF
+schemata can be included in a domain-specific RDF schema, creating a global ontology of semantically
 structured data.
 
-ccREL is just one example of a context-providing schema built on top of RDF; because RDF itself is a
-concept, its implementations vary---especially in terms of used data structures. Embedded RDF in
-HTML pages, as well as the more puristic RDF/XML syntax are likely two of the more popular
-implementations albeit with relatively heavy syntax and learning curves. In 2014, with a new version
-of RDF coming up, RDF 1.1, a new RDF-compatible JSON-based, and thereby more approachable, data
-structure was accepted by the W3C: JSON-LD. In essence, it fits some of the concepts of the semantic
-web (linked data, to be specific) into the [Javascript Object Notation](https://tools.ietf.org/html/rfc7159)
-(JSON), which makes it much more approachable than comparable implementations. As we're intending to
-port the LCC's Rights Reference Model specification to RDF using JSON-LD, the next section will
-highlight some of its main features.
+ccREL is just one example of a context-providing schema built on top of RDF. Since RDF itself is
+just a concept, its implementations vary, especially in terms of used data structures. Embedded
+RDF in HTML pages and RDF/XML syntax are two of the more popular implementations of RDF, albeit with
+relatively heavy syntax and learning curves. In 2014, with RDF 1.1 coming up, a new RDF-compatible,
+JSON-based data structure was accepted by the W3C: JSON-LD. It fits the semantic web concept of
+linked data into [Javascript Object Notation](https://tools.ietf.org/html/rfc7159) (JSON), which
+makes it much more approachable than comparable implementations. We plan to port the LCC RRM
+specification to RDF using JSON-LD, so we will explore its main features in the next section.
 
 
 **Sources:**
@@ -309,14 +309,22 @@ highlight some of its main features.
 - [W3C: Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/), May 2016
 
 
+#### Linked Data
+
+- TODO:
+    - A brief section describing the concept of Linked Data
+    - Suggested Resources:
+        - https://www.w3.org/standards/semanticweb/data
+
+
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (JSON-LD) is a data structure merging the
 concepts of the [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with
 [JSON](https://tools.ietf.org/html/rfc7159). Using the concept of a `context`, it allows users to
-link a JSON object's property to their corresponding RDF schemata in an ontology.
+link a JSON object's property to the corresponding RDF schemata in an ontology.
 
-Lets assume we have the following set of data:
+Let's assume we have the following set of data:
 
 
 ```javascript
@@ -328,11 +336,11 @@ Lets assume we have the following set of data:
 ```
 
 
-For a human it's obvious that this is about a person named "Andy Warhol" who was born on August
+For a human it's obvious that this is about a person named Andy Warhol who was born on August
 6<sup>th</sup>, 1928. However, for a machine that lacks the intuition and *context* of a human,
-resolving this representation into the same conclusion is rather difficult.
+resolving this representation into the same conclusion is difficult.
 
-JSON-LD solves this problem by introducing a `context` into JSON documents; on a high level, this
+JSON-LD solves this problem by introducing `context` into JSON documents. On a high level, this
 allows data to be linked to already defined schemata. Adding a special `@context` key to the
 document provides a reference to the schema of the underlying data. Transforming our previous
 example to use JSON-LD would result in:
@@ -349,42 +357,41 @@ example to use JSON-LD would result in:
 
 
 Upon seeing this data, a JSON-LD parser could use the `@context` property and send a `GET` to
-`http://schema.org/Person` to receive the defined schema and perform validation. Now, if another
-application developer were to handle this data, they could also rely on the same schema definition
-rather than their own; over time, as more and more services use JSON-LD, data representations across
+`http://schema.org/Person` to receive the defined schema and perform validation. If another
+application developer were to handle this data, they could rely on the same schema definition
+rather than their own. Over time, as more and more services use JSON-LD, data representations across
 services would begin to unify to improve cross-service data interoperability.
 
-Think of it like this: Twitter, Facebook, Github, Instagram, etc---they all have the notion of a
-user model. Some might use `birthday` as the key for the user's birthday while others use
-`dayOfBirth` or others still `birth_day`. All those keys, however, have the same semantic meaning on
-a user model: they all define when the user was born. Even worse, imagine if they all used different
-formats for the user's birthday value (i.e. not being not compliant with [ISO 8601](http://www.iso.org/iso/catalogue_detail?csnumber=40874).
-Custom logic would have to be written to not only handle mapping different keys to each other, but
-also to convert their value fields into normalized representations.
+Right now, each application or service has their own model for representing users. For example, one
+site might use `birthday` as the key for the user's birthday, while others use `day_of_birth` or
+`birthDay`. They may even use different formats for the value of the key, with some using `YYYY-MM-DD`
+and another using `DD-MM-YYYY`. Custom logic would have to be written to handle mapping the
+different keys to each other, but also to convert their values to a standard format when in essence
+they all have the same semantic meaning. They describe when a user was born.
 
-However, with JSON-LD, as it's simply a serialization format of RDF, and as [RDF's primitive data
-types are based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes), this
-problem is circumvented at the data format level because all advanced data types must derive from
-primitive data types.
+JSON-LD solves these problems by introducing a `context` to each data model allowing for:
 
-Going back to the Andy Warhol example above, one remaining piece of magic to be explained is how
-JSON-LD maps our self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of
-schema.org's `Person`. If you look at schema.org's `Person` definition, you'll see we didn't exactly
-choose random key names; they were already part of the definition. In this case, a JSON-LD parser
-is able to automatically map and execute validation against these properties by using the schema
-definition.
+1. A unified mapping of keys by complying to base schemata
+1. Value-validation on a [primitive data types level](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes)
+
+
+Going back to the Andy Warhol example, we need to explain how JSON-LD magically maps our
+self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of schema.org's
+`Person`. If you look at schema.org's `Person` definition, you'll see we didn't choose random key
+names. Names were already part of the definition. In this case, a JSON-LD parser can automatically
+map and execute validation against these properties by using the schema definition.
 
 For more clarity, let's see how a JSON-LD parser would look at this example:
 
 1. Notice `@context` contains `http://schema.org/Person`
-1. `GET http://schema.org/Person`
-1. For each of the user-defined keys, check if they map to any keys provided in the schema
+2. `GET http://schema.org/Person`
+3. For each of the user-defined keys, check if they map to any keys provided in the schema
     1. If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls
        this an `identifying blank node`) is found
-    1. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
+    2. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
 
 
-Going along with the example, this is how our previously defined set of data would look like after
+Continuing with this example, here is what our previously defined set of data would look like after
 expansion:
 
 
@@ -409,26 +416,26 @@ expansion:
 ```
 
 
-We end up with a much more verbose form of our set of data---what the JSON-LD specification calls
-*expanded* form, as the original object's been expanded with its `@context`. The original object's
+We end up with a much more verbose form of our set of data. In the JSON-LD specification it's called
+*expanded* form, as the original object's been expanded with a `@context`. The original object's
 form, still with an `@context`, is defined by the specification as *compacted* form.
 
-In summary, the JSON-LD parser assumes we've defined the correctly named keys for a `Person` and
-uses `http://schema.org/Person` to individually replace each of our properties with their more
+The JSON-LD parser assumes we've defined the correctly named keys for a `Person` and uses
+`http://schema.org/Person` to individually replace each of our properties with their more
 detailed schema definition URIs. The result is an automatically mapped set of data that uses an
 already available schema. As every key of a given value now points to a left node on a schema
 ontology, and as leaf nodes are only allowed to define the most basic types, such as string,
-boolean, integer, etc, the parser can now easily traverse the document and validate each occurence
+boolean, integer, etc, the parser can now easily traverse the document and validate each occurrence
 of `@value`.
 
 
 ##### Final Thoughts
 
-This example is only just the tip of the iceberg; JSON-LD has tremendous power (e.g. aliasing,
-self-referencing, built-in types, indexing, etc) and can do all sorts of crazy things. Before
-continuing, we encourage you to learn more about JSON-LD as the rest of this document will rely
-heavily on it. Useful links can be found in the **Sources** section below.
+This example is just the tip of the iceberg. JSON-LD has tremendous power. It can be used for
+aliasing, self-referencing, built-in types, indexing, and more.
 
+The rest of this document will rely heavily on JSON-LD, so we encourage you to learn more about it
+by reviewing the **Sources** section below.
 
 **Sources:**
 
@@ -441,22 +448,22 @@ heavily on it. Useful links can be found in the **Sources** section below.
 #### Schema.org
 
 - TODOs in this section:
-    - Just describing schema.org is I think way to narrow here. This section should be about linked
+    - Just describing schema.org is too narrow here. This section should be about linked
       data on the world wide web in general. schema.org is just a regular player when it comes to
-      linked data and RDF. Hell, there are even search engines that users can lookup schemas
-      (http://wiki.dbpedia.org/). Obviously mention schema.org as a prefered source though.
+      linked data and RDF. There are even search engines that users can lookup schemas
+      (http://wiki.dbpedia.org/). Obviously mention schema.org as a preferred source though.
 
 
 Schema.org is a collaborative initiative with the mission to create, maintain and promote schemata
-for structured data on the Internet. It's vocabulary is defined as an ontology, connecting different
-concepts using links. It can be used with different encodings, including RDFa, Microdata and
+for structured data on the internet. Its vocabulary is defined as an ontology, connecting different
+concepts using links. It can be used with different encodings, including RDFa, Microdata, and
 *JSON-LD*.
 
 
 ##### Available Schemas
 
-Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types;
-these will be used later to help define the COALA IP specification:
+Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types.
+Potentially, these could be used later to help define the COALA IP specification:
 
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be
@@ -492,6 +499,8 @@ these will be used later to help define the COALA IP specification:
     - [schema.org/TransferAction](http://schema.org/TransferAction)
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
+-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
+
 
 In summary:
 
@@ -511,32 +520,33 @@ In summary:
 *A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
-##### Extensibility of Schema.org
+##### Extensibility of schema.org
 
-Although some of the `Entity` types do not exist in schema.org yet (specifically Rights,
-RightsAssignment and RightsConflict), their schemata are easily extendible and we can create our own
-schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
-others to subclass their *core* schemata into so called *hosted* and *external* extensions. In
-general, there are three types of schemata on schema.org:
+Although some of the `Entity` types do not yet exist in schema.org (specifically Rights,
+RightsAssignment and RightsConflict), the schema.org schemata are easily extensible and we can
+create our own schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
+others to subclass their *core* schemata into what it calls "*hosted*" and "*external*" extensions.
+There are three basic types of schemata on schema.org:
 
-- **Core:** A basic vocabulary for describing the kind of entities most common web applications need
-- **Hosted:** Subclassed models from Core that have their own namespace on schema.org (e.g.
-  http://health-lifesci.schema.org/) and are reviewed by the schema.org community; should be
-  application-agnostic
-- **External:** Subclassed models from Core/Hosted that have an application-specific namespace (e.g.
-  http://schema.bigchaindb.com); may be application-specific
+- **Core:** A basic vocabulary for describing the kind of entities most common web applications
+  need.
+- **Hosted:** Subclassed models from Core which have their own namespace on schema.org (e.g.
+  http://health-lifesci.schema.org/) and are reviewed by the schema.org community. Hosted schemata
+  should be application-agnostic.
+- **External:** Subclassed models from Core or Hosted which have an application-specific namespace (e.g.
+  http://schema.coala.global). External schemata may be application-specific.
 
 
-Applied to the contents of this specification, ideally any application-agnostic schemata---including
-all of LCC RRM--would ideally become a *hosted* extension, while application-specific
-schemata---data models that are specific for a specific application or service---would become
-*external* schemata. Fortunately, leveraging schema.org in this way maintains compliance with rules
-five and six of the LCC's "Ten Targets", which say:
+Applied to the context of the COALA IP specification, application-agnostic schemata (including all
+of LCC RRM) would ideally become a *hosted* extension. Application-specific schemata, data models
+that are specific for a specific application or service, would become *external* schemata.
+Fortunately, leveraging schema.org in this way maintains compliance with rules
+five and six of the LCC's "Ten Targets":
 
 - Rule 5: Links between identifiers are system agnostic and need to be authorized by participating
-  consortiums
+  consortiums.
 - Rule 6: Metadata is system agnostic and its schema has to be authorized by participating parties
-  or consortiums
+  or consortiums.
 
 
 **Sources:**
@@ -551,11 +561,12 @@ five and six of the LCC's "Ten Targets", which say:
 This section describes the functionality of Interplanetary Linked Data (IPLD) and its use in working
 with immutable data stores and Linked Data.
 
-
 #### Motivation for IPLD
 
-IPLD is an attempt to put Linked Data happen on immutable ledgers using hashes for linking (so
-called "merkle-links"). Let's assume we have the following set of data describing a person:
+IPLD is an attempt to put Linked Data on distributed ledgers using hashes for linking, a technique
+referred to as "Merkle links".
+
+Let's go back to our Warhol example:
 
 
 ```javascript
@@ -566,8 +577,7 @@ called "merkle-links"). Let's assume we have the following set of data describin
 }
 ```
 
-
-In addition, we have a set of data describing this person's work:
+In addition, we have a set of data describing one of his works:
 
 
 ```javascript
@@ -578,35 +588,33 @@ In addition, we have a set of data describing this person's work:
 }
 ```
 
+Note that neither object contains a link to the other. There is no way to tell that Andy Warhol
+is the creator of "32 Campbell's Soup Cans." We could use JSON-LD to create a link between the
+objects by making both of the objects resolvable on the internet. We could do this by adding `@id`s
+to the objects' bodies, and an `author` property to the creation that points to a resolvable
+location of the person object.
 
-Note that in the above, neither object contains a link to the other; there is no way to tell that
-Andy Warhol is the author of "32 Campbell's Soup Cans." We could use the aorementioned JSON-LD to
-create a link between the objects by making both of the objects resolvable within the Internet,
-adding `@id`s to their bodies, and adding an `author` property to the creation pointing that points
-to a resolvable location of the person object.
+The problem is we have to trust the hosts that make these objects resolvable. Hosts might return
+the correct objects at first, but that could change. Since there is no way for resolving actors to
+check the integrity of the object they're requesting, a host could return arbitrary data and the
+actor wouldn't know. In addition, internal linking within objects or internal linking from URIs
+is challenging using linked data protocols like JSON-LD.
 
-However, the problem with this approach is that we have to trust the hosts that make these objects
-resolvable. While hosts might return the correct objects at first, they're free to make any changes
-to the objects later---potentially exploiting the system. Since there is no way for resolving actors
-to integrity-check the object they're requesting, a host could return arbitrary data at any time
-and go unnoticed. Additionally, internal linking within objects, as well as internal linking from
-URIs is challenging using Linked Data protocols like JSON-LD. Hence, in the rest of this section, we
-explore the features of IPLD that promise to solve these problems.
+The rest of this section explores the features of IPLD that promise to solve these problems.
 
 
 #### IPLD by Example
 
-The following sections give a brief overview of IPLD's functionality. For more information, visit
-[IPLD's specification draft](https://github.com/ipfs/specs/tree/master/ipld).
+The following sections give a brief overview of IPLD's functionality. More information is available
+in the [IPLD's specification draft](https://github.com/ipfs/specs/tree/master/ipld).
 
 
 ##### Creation of Linked Objects
 
-Using the person and creation objects previously presented, we perform the following steps to link
-them using IPLD:
+We can us IPLD to link the person and creation objects discussed earlier with the following steps:
 
 1. Serialize the person's object to a canonical form of [Concise Binary Object Representation](http://cbor.io/)
-   (CBOR)
+   (CBOR):
 
 
     ```python
@@ -622,11 +630,10 @@ them using IPLD:
     Out[3]: b'\xa3ibirthDatej1928-08-06jfamilyNamefWarholigivenNamedAndy'
     ```
 
-    For the purposes of demonstration, we use [py-ipld](https://github.com/bigchaindb/py-ipld), an
-    already existing python library, to handle IPLD specifics and data transformations. In this
-    case, `ipld.marshal` does nothing more than serialize the `person` object using a [CBOR
-    reference implementation](https://bitbucket.org/bodhisnarkva/cbor). As a result, we get a byte
-    array.
+    For this demonstration, we use [py-ipld](https://github.com/bigchaindb/py-ipld), an
+    existing Python library, to handle IPLD specifics and data transformations. In this
+    case, `ipld.marshal` is used to serialize the `person` object using a [CBOR
+    reference implementation](https://bitbucket.org/bodhisnarkva/cbor). The result is a byte array.
 
 
 1. Hash the serialized byte array using [multihash](https://github.com/jbenet/multihash) and encode
@@ -640,17 +647,15 @@ them using IPLD:
 
 
     [Multihash](https://github.com/jbenet/multihash) is a protocol for differentiating outputs from
-    various, well-established, cryptographic hash functions; it prefixes each hash generated with a
+    various well-established cryptographic hash functions. It adds a
     [hexadecimal prefix](https://github.com/jbenet/multihash#table-for-multihash-v100-rc-semver)
-    that symbolizes the hash function that was used. This offers users the ability to identify hash
-    functions in the future, in case of upgrades, and allows for multiple hash functions to coexist
-    within/across applications.
-
-    Now that we have converted the person object to an IPLD object and also have its hash, we can
-    link it to the creation as its author.
+    to each hash generated indicate the hash function used. This lets users identify the hash
+    functions in the future in case of upgrades, and allows for multiple hash functions to coexist
+    within and across applications.
 
 
-1. Link the creation object to its creator using the base58 hash representation of the person
+3. Now that we have derived an IPLD from the person object, we can link it to the creation as its
+   author:
 
 
     ```python
@@ -663,27 +668,24 @@ them using IPLD:
     ```
 
 
-    We've now connected the creation to a person by using the person's hash value (thereby creating
-    a "merkle-link"). Generally, merkle-links can be schematized like this:
+    We've now connected the creation to a person by using the person's hash value, thereby creating
+    a "Merkle link". Generally, Merkle links can be schematized like this:
 
 
     ```javascript
     Property = {
-        "key": <String>,
-        "value": <MerkleLink>
+        ...
+        [<String>]: <MerkleLink>
     }
 
     MerkleLink = {
-        "key": "/",
-        "value" <String: multihash value>
+        "/": <String: multihash value>
     }
     ```
 
 
-    Finally, to make this creation object also be resolvable, we repeat the first two steps on it:
-
-
-1. Serialize the creation object to a canonical form of CBOR
+4. Finally, to make this creation object resolvable, we repeat the first two steps. We serialize the creation
+   object to a canonical form of CBOR:
 
 
     ```python
@@ -692,13 +694,13 @@ them using IPLD:
     ```
 
 
-    Note that this case is special, with the merkle-link contained in `creation` being replaced by
+    Note this is a special case, with the Merkle link contained in `creation` replaced by
     an [unassigned CBOR tag (258)](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml) to
     make the link more easily retrievable on deserialization.
 
 
-1. Hash the resulting serialized byte array using [multihash](https://github.com/jbenet/multihash)
-   and encode the hash to base58
+5. Hash the resulting serialized byte array using [multihash](https://github.com/jbenet/multihash)
+   and encode the hash to base58:
 
 
     ```python
@@ -709,12 +711,13 @@ them using IPLD:
 
 ##### Retrieval of Linked Objects
 
-To further explore IPLD, let's assume we've put these objects into some kind of database---actually
-let's pretend it's IPFS since their identifiers are the hashes we created previously. Now we can use
-paths of merkle-links, so-called "merkle-paths", to resolve any object within IPFS using its hash
-value and also further dereference any of the object's connecting edges by following its
-merkle-links. Given the example above, the `author` of the creation could be found through this
-merkle-path:
+To further explore IPLD, let's assume we've put these objects into a data store. We'll use IPFS
+since its using compatible identifiers to the hashes we created previously.
+
+We can use paths of Merkle links (Merkle paths) to resolve any object within IPFS using its hash
+value, and also further de-reference any of the object's connecting edges by following its Merkle
+links. Given the example above, the `author` of the creation could be found through this Merkle
+path:
 
 
 ```python
@@ -726,57 +729,54 @@ Out [8]:
 ```
 
 
-Notice that IPLD resolves any merkle link, here the creation's author, with the actual object to
-make traversing into a merkle link feel similar to regular property access in objects. To address
+IPLD resolves any Merkle link, in this case the creation's author, with the actual object,
+making traversing a Merkle link feel similar to regular property access in objects. To link
 across network addresses, a format called [multiaddr](https://github.com/jbenet/multiaddr) can be
-adopted that allows for the construction of resource paths to be protocol-overarching. Doing so
-would allow an IPLD object to maintain resolvable links even if its merkle links were pointing to
+used. Multiaddr allows the construction of resource paths to reach across protocols. Doing so
+would allow an IPLD object to maintain resolvable links even if its Merkle links point to
 separate ledgers (e.g. IPFS, BigchainDB, Bitcoin, etc).
 
 
 #### Evaluation of IPLD
 
-In summary, IPLD is a promising new technology albeit with a few cavets.
+In summary, IPLD is a promising new technology, with a few cavets:
 
 - **Benefits:**
-    - Cryptographic integrity-checking of data using upgradable hash functions (multihash)
-    - Addressability of content through hashes instead of "by location"
-    - Inter-ledger/database resolvability of data (multiaddr)
-    - Unification of object identifiers through a canonicalized hashing strategy
-    - Built-in immutability by using a merkle-dag data structure
-    - Future-proof due to future-proof underlying concepts (multi-x)
-    - Potentially wide compatibility, even down to the UNIX file system path
-    - Lightweight protocol drafts and implementations
-    - Deserializes to a multitude of other data serialization formats (YAML, JSON, XML, etc)
+    - Provides cryptographic integrity checks of data using upgradable hash functions (multihash).
+    - Content addressed storage instead of location addressed storage (compare to URL)
+    - Enables cross-ledger/database resolvability of data (multiaddr and merkle-paths).
+    - Unifies object identifiers through a canonicalized hashing strategy.
+    - Imposes immutability by using a merkle-dag data structure.
+    - Future-proofs underlying concepts (multi-x).
+    - Enables wide compatibility, even down to the UNIX file system path.
+    - Lightweight protocol drafts and implementations.
+    - Deserializes to a multitude of other data serialization formats (YAML, JSON, XML, etc).
 - **Caveats:**
-    - Non-standardized protocols (multi-x)
-        - [Overlap](https://interledger.org/five-bells-condition/spec.html#crypto-conditions-type-registry)
-          with other to-be-standardized protocols
-        - Breakage with exisiting and well-established protocols (e.g. URI vs. multiaddr)
-    - Non-compliance with existing Linked Data ontologies due to immutability
-    - Opinionated CBOR serialization
+    - Non-standardized protocols (multi-x).
+        - [Overlaps](https://interledger.org/five-bells-condition/spec.html#crypto-conditions-type-registry)
+          with other protocols that are being standardized.
+        - Breaks with exisiting and well-established protocols (e.g. URI vs. multiaddr).
+    - Does not comply with existing linked data ontologies due to immutability.
+    - Opinionated CBOR serialization.
 
 
 #### Compatibility of IPLD and JSON-LD
 
-Although the naming and concept of IPLD was inspired by JSON-LD, the two have disjoint sets of
+Although the naming and concept of IPLD was inspired by JSON-LD, the two have different sets of
 functionality. This section highlights the limitations imposed on JSON-LD by IPLD.
 
 
 #### Self-identifying JSON-LD Objects
 
-JSON-LD objects can maintain a self-identifying link using the `@id` property, which allows the
-object to directly express its location to others. The same is possible for IPLD objects; by
-complying to a canonicalized representation of CBOR and multihashing this representation, an IPLD
-object is also able to express where it can be resolved on the Internet---its hash value is simply
-its Content-Address---even though it cannot directly express the location it is stored under.
-However, combining these two concepts is practically impossible since the `@id` JSON-LD identifier
-would need to be replaced with the multihash of its object; one could view this as a cryptographic
-puzzle of sorts: finding a value that would be hashed, along with the object's other properties, to
-the same value. The amount of processing required would be incredible, rendering the identification
-of objects incredibly inefficient; instead, we would rather disallow JSON-LD objects with IPLD links
-from self-identifying themselves using an `@id` property. As mentioned though, this is usually not a
-problem as objects can also identify themselves through Content-Addressing.
+JSON-LD objects can maintain a self-identifying link using the `@id` property. This allows the
+object to directly express its location. The same is impossible for IPLD objects. Since they are
+supposed to only be retrieved by the corresponding hash of the their data, the hash itself cannot be
+part of the object as it would be a very difficult to solve cryptographic puzzle.  The amount of
+processing required would be incredible, rendering the identification of objects incredibly
+inefficient. Instead, we prevent JSON-LD objects with IPLD links from self-identifying themselves
+using an `@id` property. This is usually not a problem as objects can also identify themselves
+through content addressing.
+>>>>>>> origin/master
 
 **Sources:**
 
@@ -801,59 +801,61 @@ problem as objects can also identify themselves through Content-Addressing.
 
 ### Fingerprinting
 
-Specifying the originality and provenance of a physical object is challenging. This is even more
-true for digital objects. While a physical fake might be easily identified by, for example, chemical
-procedures, the same is not true for digital files which may be exact copies. Moreover, one can
-easily modify others' works so that even if one manifestation of a work is identifiable, the actual
-body of work behind the manifestation may not be sufficiently indentifiable.
+Determining the originality and provenance of a physical object is challenging, but there are
+almost always subtle differences between an original physical object and copies. Digital files
+can be copied perfectly, down to the bit. Furthermore, it is difficult for a computer to determine
+that two files actually represent the same photograph or song if the files are different sizes or
+other subtle modifications have been made, while a human would have no difficulty making the
+connection.
 
-The LCC is aware of with this fact. In their "Ten Targets" document, they talk about cross-standard
-identifiers that can, if needed, be *transformed* into alternative identifiers. This section
-discusses a similar idea: the existence of an arbitrarily complex vector that can be used to link
-all the alternative identifiers of a manifestation to their single identifier on a global rights
-registry.
+The LCC takes these problems into account. In their "Ten Targets" document, they propose
+cross-standard identifiers that can, if needed, be *transformed* into alternative identifiers. This
+section discusses a similar idea: the existence of an arbitrarily complex vector that can be used
+to link all the alternative identifiers of a single work to a single identifier on a global
+rights registry.
 
-In this sense, every function that takes a digital asset as an input and yields a fixed length value
-(be it a string, integer, float, etc) could potentially be called a **Fingerprinting function**. In
-its simplest form: a hash function that inspects the arrangement of bytes in a digital asset and
-returns a integer. In more elaborate forms:
+Any function that takes a digital asset as an input and yields a fixed-length value could
+potentially be used as a **fingerprinting function**. This could be as simple as a hash function
+that inspects the arrangement of bytes in a digital asset and returns a integer, but there are more
+elaborate versions:
 
 - [Image-match](https://github.com/ascribe/image-match): An approximate image match algorithm
-  implemented in Python
-- [pHash](http://www.phash.org/): A hashing method using various features of a digital asset
+  implemented in Python.
+- [pHash](http://www.phash.org/): A hashing method using various features of a digital asset.
 - [dejavu](https://github.com/worldveil/dejavu): An audio fingerprinting and recognition algorithm
-  implemented in Python
+  implemented in Python.
 - TODO: List more libraries
     - Find popular ones that do fingerprinting for all kinds of media types
 
 
 While a manifestation of a digital creation may initially only have a single fingerprint generated
 by an arbitrary hashing function, more elaborate fingerprinting schemes could later be used to help
-automatically identify the creations' usage across the Internet. Paired with Linked Data, this would
-allow one to store and track all the information about a work's usages and manifestations in an
-arbitrarily complex graph. Copies, mash-ups, and modified versions of the asset could then be
-identified automatically as paths in the graph; traversing through these paths would yield the
-original manifestations and open up the possibility of fairly attributing and compensating the
-creators.
+automatically identify other occurrences of the creation on the internet. Paired with linked data,
+fingerprinting schemes could allow the storage and tracking of all information about the use of a
+work in an arbitrarily complex graph. Copies, remixes, mash-ups, and modified versions of the work
+could be identified automatically as paths in the graph. Traversing these paths would reveal the
+original instance of the work, possibly identifying the creator and providing opportunities for
+compensation.
 
-Over time, as rightsholder information becomes ubiquitously accessible and rights users are allowed
-to acquire rights, involved players in the system would be incentivized to create more and more
-elaborate fingerprinting mechanisms to further increase transparency in the system.
+As rights information becomes more transparent and users can easily license the rights they want
+to obtain, participants in the system would be incentivized to create more elaborate fingerprinting
+systems to further increase transparency.
 
 
 ### The Interledger Protocol
 
 - TODO:
     - This section should briefly explain what Interledger and the Interledger Protocol is about and
-      how COALA IP could potentially use it for leverage
-    - Basic same formalities as in all the sections before apply.
+      how COALA IP could potentially use it.
+    - Same formalities as in all the sections before apply.
 
 
 ## COALA IP: Remodeling the LCC RRM with Linked Data
 
-In this section we define and discuss guidelines for transforming each `Entity` type fom the LCC's
-Rights Reference Model to Linked Data by using JSON-LD, IPLD and schema.org. This will form the
-basis for the COALA IP communication protocol.
+In this section we describe how the LCC RRM can be modeled using JSON-LD, IPLD, and schema.org.
+We will go over each model description given in the LCC Rights Reference
+Model document and discuss how the respective model can be translated into Linked Data.
+
 
 ### What Linked Data Gives Us Out of the Box
 
@@ -862,16 +864,24 @@ can be composed together to create an extendable data model for intellectual pro
 using an RDF-based data structure, we can skip the transformation of these basic entities as RDF
 already provides us with a base data structure for linking entities.
 
+
 ### General Approach
 
-To successfully redefine the LCC's Rights Reference Model, the following steps are required:
+The section describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD
+model. As discussed, the "[LCC: Entity Model](http://doi.org/10.1000/285)" defines a generic model
+as a base for the Rights Reference Model. The document describes how to implement a fully
+extensible data model using a multitude of linked entities. Using an RDF-based data structure
+means that defining a base data structure for linking entities is not necessary—this is what RDF
+is all about.
 
-- Identify RDF schemata that can be mapped to an LCC RRM `Entity` type
-    - If no appropriate RDF schemata exist, either:
-        - Compose our own RDF types from multiple, existing RDF schemata, or
-        - Define our own specialized RDF schemata
-- Define how entities can be identified and resolved
-- Resolve mismatches between the LCC RRM lingo and RDF schemata
+To redefine the LCC's Rights Reference Model, we did the following:
+
+- Identify RDF schemata that map to entities defined in the LCC RRM specification.
+    - If appropriate RDF schemata are not available:
+        - Compose new RDF types from multiple RDF schemata; and
+        - Define new RDF schemata.
+- Define how entities are identified and resolved.
+- Resolve mismatches between the LCC RRM terminology and RDF schemata.
 
 
 A slight speed bump in the transformation process is to ensure support for links between entities;
@@ -908,22 +918,19 @@ Visualized, the RRM Place looks like:
 
 #### Proposed Transformation
 
-Differing from schema.org's definition of a Place (a physical location), RRM's Place is able to
-describe both physical as well as virtual Places. However, to avoid confusion later in the
-transformation process, we explicitly separate these two concepts upfront. As neither URIs nor IPLD
-merkle-links are able to represent physical locations, we use them solely as links pointing to
-resources to let RRM Places unambiguously point to physical places.
+Compared to schema.org's definition of a Place, the LCC RRM Place both describes a physical as well
+as a virtual Place. In this specification, we need to separate the two concepts explicitly to avoid
+confusion later in the transformation process. Neither a URI nor a IPLD Merkle link is able to
+represent a physical location, which is why in the context of this specification, these will be
+links pointing to resources, while the LCC Place model will be used
+only to refer to a physical place.
 
-In concrete terms, this means that an RRM Place with `PlaceType == lcc:LocalizablePlace` will be
-transformed into an RDF representation, while an RRM Place with `PlaceType == lcc:VirtualPlace` will
-be represented as a URI or IPLD hash that points to a dataset.
+For reference:
 
-For further reference, we will use a:
-
-- **RRM Place, modelled as a schema.org Place** to describe a *localizable* Place, i.e. a Place
-  in the physical universe that can be located by spatial coordinates
-- **URI** or **IPLD merkle-link** to describe a *virtual* place at which a resource may be located
-  at
+- **LLC RRM Place or Place** will be used to describe a localizable Place, meaning a Place in the
+  universe that can be described using spatial coordinates.
+- **Universal Resource Identifier** or **IPLD Merkle link** will be used to describe a virtual
+  place where a resource can be found.
 
 
 With schema.org's Place, the transformation of a *localizable* Place to RDF is straight forward
