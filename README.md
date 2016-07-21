@@ -1515,35 +1515,33 @@ must also be stored in an ordered fashion to guarantee each Right preserving a v
 provenance.
 
 
-### The LCC RightsAssignment Model
+### The LCC RightsAssignment `Entity`
 
-According to the LCC RRM specification, a LCC RRM RightsAssignment describes an event. A LCC RRM
-RightsAssignment can have the following types (property name: `RightsAssignment`):
+According to the RRM specification, an RRM RightsAssignment describes an event that results in the
+existence or non-existence of a Right. Depending on the type, a RightsAssignment may be linked from
+an assigning Party (Assigner) to a receiving Party (Assignee). From the RRM, a RightsAssignment can
+have the following properties:
 
-- **RightsLaw:** Representing a law by which rights come into existence (e.g. the US Copyright Act
-  of 1976)
-- **RightsPolicy:** Representing an event by which a Party assigns rights to another Party without
-  requiring an agreement of the later (e.g. security level for user access of a computer system)
-- **RightsAgreement:** Representing an agreement between to Parties over a right (e.g. a license, a
-  publishing agreement, ...)
-
-
-In addition, the LCC recommends the RightsAssignment to have three statuses (property name:
-`RightsAssignmentStatus`):
-
-- `lcc:Offer`: An open RightAssignment the Assignee may accept or reject
-- `lcc:Request`: A request of an Assigner to an Assignee to register/create a specific
-  RightsAssignment
-- `lcc:Executed`: A actual transfer of a LCC RRM Right from a Party to another Party
+- **RightsAssignmentType**: Defines the type of RightsAssignment; can be one of:
+    - **RightsLaw:** Represents the creation of a Right by law (e.g. the US Copyright Act of 1976)
+    - **RightsPolicy:** Represents the assignment of a Right from an authorized Party to another
+      Party without requiring the latter's agreement (e.g. security level for user access of a
+      computer system)
+    - **RightsAgreement:** Represents the argreement over a Right between two Parties (e.g. a
+      license, publishing agreement, etc)
+- **RightsAssignmentStatus**: Defines the status of the RightsAssignment; can be one of:
+    - `lcc:Offer`: An open RightsAssignment proposed by a prospective Assigner
+    - `lcc:Request`: An open RightsAssignment proposed by a prospective Assignee
+    - `lcc:Executed`: An executed assignment of Rights
 
 
-The LCC RRM RightsAssignment has the following outgoing references:
+The RRM RightsAssignment has the following outgoing references:
 
-- a link to a LCC RRM Party (one-to-many)
-- a link to a LCC RRM Right (one-to-many)
+- Links to RRM Parties (`0 - n`; one-to-many): *RelatedParty*
+- Links to RRM Rights (`0 - n`; one-to-many): *RelatedRight*
 
 
-Visualized, the LCC RRM RightsAssignment model looks like this:
+Visualized, an RRM RightsAssignment looks like:
 
 
 ![](media/lccrrmrightsassignment.png)
@@ -1551,33 +1549,31 @@ Visualized, the LCC RRM RightsAssignment model looks like this:
 
 #### Proposed Transformation
 
-An appropriate transformation for the LCC RRM RightsAssignment model could potentially be found by
-looking at schemata for asset transfers. As this specification's scope is to make digital rights
-manageable on an immutable ledger though, we're not interested in defining this type of schema, as
-we think an immutable ledger must have this operation already built in from the start. This
-specification's goal is to be able to run on as many ledgers as possible. Both IPLD and the
-Interledger Protocol were chosen consciously, to establish a metadata and licensing ontology that
-can potentially overspan many ledgers and immutable data stores. General requirements for a ledger's
-transactions are:
+Although a potential source of transformations could come from existing schemata for transferring
+assets, we choose to ignore these schemata as we expect RightsAssignments to be registered on
+immutable ledgers that can already handle asset transfers. This specification consciously chooses
+both the IPLD and Interledger protocols in the hopes of establishing a metadata and licensing
+ontology that is able to overspan multiple ledgers and immutable data stores. In general, we assume
+the following requirements to be fulfilled by every ledger:
 
-- Specific assets must only be transferrable using crypto-key-pair signatures on a transaction
+- Assets must only be transferrable if cryptographic key-pair signatures are used on the transaction
   level.
-- Transactions must allow to define a JSON-serializable payload
-- An asset's chain of provenance must easily be comprehensible by any user of the protocol
-- Asset's must allow to be devided upon registration
-- Transactions must either support JSON-LD or IPLD
-- Transfer-transactions should support different modes, examples are:
-    - A transfer from a group of individuals to a single individual (and vice-versa)
-    - A transfer that is only claimable during a certain time span (timelock conditions)
-    - A transfer that is only claimable by an individual or group that knows a certain secret value
+- Transactions must be able to define a JSON-serializable payload
+- Assets' provenance chains must be easily comprehensible by any user
+- Assets must be divisible after registration
+- Transactions must support either JSON-LD or IPLD
+- Transfer-transactions must support different modes; examples include:
+    - Transfers from a group of individuals to a single individual (and vice-versa)
+    - Transfers that are only claimable during a certain time span (timelock conditions)
+    - Transfers that are only claimable by an individual or group that knows a certain secret key
       (hashlock conditions)
     - TODO: Are there more?
 - TODO: Are there more requirements COALA IP asks from a ledger?
 
 
-By assuming that every ledger implements the concept of asset transfer, a minimal transformed LCC
-RRM RightsAssignment would look like this (this is represented in the payload of the ledger-specific
-transfer-transaction):
+With this assumption, we can now model a minimally transformed RRM RightsAssignment to be part of
+the payload of a ledger-specific transfer-transaction (and thereby automatically including links to
+related Parties and information about the RightAssignment's status):
 
 
 ```javascript
@@ -1600,12 +1596,11 @@ and in IPLD:
 ```
 
 
-Defining the `contract` keyword in a transfer-transaction is not required. It is mentioned at this
-point, as it solves lots us use cases for potential users. Legally speaking, a contract defined in
-the transfer-transaction of a Right must only contain permissions derived from the original license
-issued in the creation of a Right or a former contract of a transfer-transaction. Generally, this
-means that only permissions, taken from the set of permissions given from the last owner, are
-allowed to be included in the contract.
+Although not required, we include the `contract` property in this schema to solve some potential use
+cases of users. Legally speaking, a contract defined in the transfer-transaction of a Right must
+only contain permissions derived from the original license issued in the creation of the Right or a
+previous transfer-transaction. This generally results in contracts only including permissions which
+were also available to the previous owner.
 
 
 ### The LCC Assertion Model
