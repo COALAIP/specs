@@ -1,4 +1,4 @@
-COALA Intellectual Property Guideline ============
+# COALA Intellectual Property Guideline
 
 
 Contributors to this document, in alphabetical order:
@@ -352,20 +352,21 @@ example to use JSON-LD would result in:
 Upon seeing this data, a JSON-LD parser could use the `@context` property and send a `GET` to
 `http://schema.org/Person` to receive the defined schema and perform validation. If another
 application developer were to handle this data, they could rely on the same schema definition
-rather than their own.
+rather than their own. Over time, as more and more services use JSON-LD, data representations across
+services would begin to unify to improve cross-service data interoperability.
 
 Right now, each application or service has their own model for representing users. For example, one
 site might use `birthday` as the key for the user's birthday, while others use `day_of_birth` or
-`dob`. They may even use different formats for the value of the key, with some using `YYYY-MM-DD`
+`birthDay`. They may even use different formats for the value of the key, with some using `YYYY-MM-DD`
 and another using `DD-MM-YYYY`. Custom logic would have to be written to handle mapping the
-different keys to each other, but also to convert their values to a standard format.
+different keys to each other, but also to convert their values to a standard format when in essence
+they all have the same semantic meaning. They describe when a user was born.
 
-However, all those keys have the same semantic meaning to a user model: they all describe
-when the user was born. As more and more services start using JSON-LD, data representations
-across services will begin to unify to improve cross-service data interoperability. Since JSON-LD
-is a serialization format of RDF, and since [RDF's primitive data types are based on XML schema](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes),
-this problem is circumvented at the data format level because all advanced data types must derive
-from primitive data types.
+JSON-LD solves these problems by introducing a `context` to each data model allowing for:
+
+1. A unified mapping of keys by complying to base schemata
+1. Value-validation on a [primitive data types level](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes)
+
 
 Going back to the Andy Warhol example, we need to explain how JSON-LD magically maps our
 self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of schema.org's
@@ -373,7 +374,7 @@ self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties 
 names. Names were already part of the definition. In this case, a JSON-LD parser can automatically
 map and execute validation against these properties by using the schema definition.
 
-Let's see how a JSON-LD parser would look at this example:
+For more clarity, let's see how a JSON-LD parser would look at this example:
 
 1. Notice `@context` contains `http://schema.org/Person`
 2. `GET http://schema.org/Person`
@@ -408,16 +409,16 @@ expansion:
 ```
 
 
-The result is a much more verbose form of our set of data. The JSON-LD specification calls this
-*expanded* form, as the original object has been expanded with its `@context`. The original
-object's form, still with an `@context`, is *compacted* form.
+We end up with a much more verbose form of our set of data. In the JSON-LD specification it's called
+*expanded* form, as the original object's been expanded with a `@context`. The original object's
+form, still with an `@context`, is defined by the specification as *compacted* form.
 
 The JSON-LD parser assumes we've defined the correctly named keys for a `Person` and uses
 `http://schema.org/Person` to individually replace each of our properties with their more
 detailed schema definition URIs. The result is an automatically mapped set of data that uses an
 already available schema. As every key of a given value now points to a left node on a schema
 ontology, and as leaf nodes are only allowed to define the most basic types, such as string,
-boolean, integer, etc, the parser can now easily traverse the document and validate each occurence
+boolean, integer, etc, the parser can now easily traverse the document and validate each occurrence
 of `@value`.
 
 
@@ -455,7 +456,7 @@ concepts using links. It can be used with different encodings, including RDFa, M
 ##### Available Schemas
 
 Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types.
-These schemata will be used to help define the COALA IP specification:
+Potentially, these could be used later to help define the COALA IP specification:
 
 - [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
 - [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be
