@@ -309,6 +309,14 @@ specification to RDF using JSON-LD, so we will explore its main features in the 
 - [W3C: Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/), May 2016
 
 
+#### Linked Data
+
+- TODO:
+    - A brief section describing the concept of Linked Data
+    - Suggested Resources:
+        - https://www.w3.org/standards/semanticweb/data
+
+
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (JSON-LD) is a data structure merging the
@@ -663,13 +671,12 @@ We can us IPLD to link the person and creation objects discussed earlier with th
 
     ```javascript
     Property = {
-        "key": <String>,
-        "value": <MerkleLink>
+        ...
+        [<String>]: <MerkleLink>
     }
 
     MerkleLink = {
-        "key": "/",
-        "value" <String: multihash value>
+        "/": <String: multihash value>
     }
     ```
 
