@@ -499,6 +499,8 @@ Potentially, these could be used later to help define the COALA IP specification
     - [schema.org/TransferAction](http://schema.org/TransferAction)
 - [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
 
+-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
+
 
 In summary:
 
