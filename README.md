@@ -776,7 +776,7 @@ processing required would be incredible, rendering the identification of objects
 inefficient. Instead, we prevent JSON-LD objects with IPLD links from self-identifying themselves
 using an `@id` property. This is usually not a problem as objects can also identify themselves
 through content addressing.
->>>>>>> origin/master
+
 
 **Sources:**
 
@@ -1003,7 +1003,7 @@ Organization very literally, so as to provide reasoning for the individual steps
 transformation. This will only be the case for this `Entity`, as the rationale for transforming
 later `Entity` types will be fairly similar.*
 
-Schema.org makes both a [Person](http://schema.org/Person) and an [Organization](http://schema.org/Organization)
+Schema.org makes both a [schema.org/Person](http://schema.org/Person) and an [schema.org/Organization](http://schema.org/Organization)
 available; hence, there is no need to define either concept as a single model differentiated by
 `PartyType`. To keep the transformation of the `Entity` into an RDF schema simple, let us first
 transform a RRM Party with `PartyType == 'lcc:Individual'` and then apply the learnings to an RRM
@@ -1070,9 +1070,9 @@ us:
 In the example, we've used Andy Warhol's Wikipedia page as his Party identifier (`@id`). As an `@id`
 value is only required to be a resolvable URI or IPLD merkle-link, a JSON-LD parser would validate
 this without complaining; however, `@id` would ideally point to the location of the data itself to
-show the JSON-LD parser how it could be resolved within the Internet. Unfortunately, Wikipedia
-doesn't support this and `https://en.wikipedia.org/wiki/Andy_Warhol` doesn't return the required
-data so we'll have to implement this ourselves.
+show the JSON-LD parser where it could be resolved within the internet. Unfortunately, Wikipedia
+doesn't support this, so that `https://en.wikipedia.org/wiki/Andy_Warhol` doesn't return the required
+data, which is why we'll have to look for another solution.
 
 To start off with, lets look at some limitations and requirements derived from the RRM and JSON-LD /
 IPLD:
@@ -1120,7 +1120,8 @@ decentralized not-for-profit service is chosen). It lets users:
 - Attach the public part of their key pairs to their identity.
 
 
-Notable, currently-existing services that could be extended to support our use case include:
+Notable, currently-existing services that could be extended to support our use case include
+(preferably, a decentralized, non-profit service is chosen):
 
 - https://pgp.mit.edu/
 - https://keybase.io/
