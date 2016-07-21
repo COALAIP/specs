@@ -135,9 +135,8 @@ as a general guide toward achieving the following goals:
 1. Every Party has a unique global identifier;
 2. Every Creation has a unique global identifier;
 3. Every Right has a unique global identifier;
-4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve the identifier on the internet;
-5. Links between identifiers are platform agnostic, and the validity of the links can be confirmed
-   or denied by the Parties;
+4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve them within the internet;
+5. Links between identifiers are platform agnostic and non-proprietary
 6. Metadata is platform agnostic or interoperable, and schema should have authorized mappings to
    translate between schema;
 7. The provenance of Rights has to be made explicit;
@@ -199,7 +198,7 @@ types:
 - **Party:** A person or an organization (e.g. "Richard Prince", "American Apparel", or "Sky
   Ferreira")
 - **Creation:** Something created by a Party (e.g. "Untitled Instagram Portrait")
-- **Place:** A virtual or physical location (e.g. "New York City" or "North America")
+- **Place:** A virtual or physical location (e.g. "New York City" or "http://www.newyorkcity.com")
 - **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g.
   production and sale of t-shirts bearing the Creation)
 - **RightsAssignment:** A decision by a Party resulting in the existence of a right (e.g. "Richard
@@ -256,7 +255,7 @@ is briefly described in the following section.
 
 **Sources:**
 
-- A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval, 2009
+- A. Granzotto (2009): Exploiting spatio–temporal linked data to improve backlinks retrieval
 
 
 #### The Resource Description Framework (RDF)
@@ -294,12 +293,12 @@ Ontology Language](https://www.w3.org/TR/owl-features/) (OWL), concepts from oth
 schemata can be included in a domain-specific RDF schema, creating a global ontology of semantically
 structured data.
 
-ccREL is just one example of a context-providing schema built on top of RDF. Since RDF itself is a
-concept, its implementations vary, especially in terms of used data structures. Embedded RDF in
-HTML pages and RDF/XML syntax are two of the more popular implementations of RDF, albeit with
+ccREL is just one example of a context-providing schema built on top of RDF. Since RDF itself is
+just a concept, its implementations vary, especially in terms of used data structures. Embedded
+RDF in HTML pages and RDF/XML syntax are two of the more popular implementations of RDF, albeit with
 relatively heavy syntax and learning curves. In 2014, with RDF 1.1 coming up, a new RDF-compatible,
-JSON-based data structure was accepted by the W3C: JSON-LD. JSON-LD fits the semantic web concept
-of linked data into [Javascript Object Notation](https://tools.ietf.org/html/rfc7159) (JSON), which
+JSON-based data structure was accepted by the W3C: JSON-LD. It fits the semantic web concept of
+linked data into [Javascript Object Notation](https://tools.ietf.org/html/rfc7159) (JSON), which
 makes it much more approachable than comparable implementations. We plan to port the LCC RRM
 specification to RDF using JSON-LD, so we will explore its main features in the next section.
 
@@ -512,7 +511,7 @@ In summary:
 ##### Extensibility of schema.org
 
 Although some of the `Entity` types do not yet exist in schema.org (specifically Rights,
-RightsAssignment and RightsConflict), the schema.org schemata are easily extendible and we can
+RightsAssignment and RightsConflict), the schema.org schemata are easily extensible and we can
 create our own schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
 others to subclass their *core* schemata into what it calls "*hosted*" and "*external*" extensions.
 There are three basic types of schemata on schema.org:
@@ -585,10 +584,10 @@ to the objects' bodies, and an `author` property to the creation that points to 
 location of the person object.
 
 The problem is we have to trust the hosts that make these objects resolvable. Hosts might return
-the correct objects at first, that could change. Since there is no way for resolving actors to
-check the integrity of the object they're requesting, a host could return arbitrary data and we
-wouldn't know. In addition, internal linking within objects or internal linking from
-URIs is challenging using linked data protocols like JSON-LD.
+the correct objects at first, but that could change. Since there is no way for resolving actors to
+check the integrity of the object they're requesting, a host could return arbitrary data and the
+actor wouldn't know. In addition, internal linking within objects or internal linking from URIs
+is challenging using linked data protocols like JSON-LD.
 
 The rest of this section explores the features of IPLD that promise to solve these problems.
 
@@ -644,8 +643,8 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     within and across applications.
 
 
-3. Now that we have converted the person object to an IPLD object have its hash, we can link the
-   person to the creation as its author, using the base58 hash representation of the person:
+3. Now that we have derived an IPLD from the person object, we can link it to the creation as its
+   author:
 
 
     ```python
@@ -702,11 +701,13 @@ We can us IPLD to link the person and creation objects discussed earlier with th
 
 ##### Retrieval of Linked Objects
 
-To further explore IPLD, let's assume we've put these objects into a database. We'll use IPFS
-since its identifiers are the hashes we created previously. Now we can use paths of Merkle links
-(Merkle paths) to resolve any object within IPFS using its hash value, and also further
-de-reference any of the object's connecting edges by following its Merkle links. Given the example
-above, the `author` of the creation could be found through this Merkle path:
+To further explore IPLD, let's assume we've put these objects into a data store. We'll use IPFS
+since its using compatible identifiers to the hashes we created previously.
+
+We can use paths of Merkle links (Merkle paths) to resolve any object within IPFS using its hash
+value, and also further de-reference any of the object's connecting edges by following its Merkle
+links. Given the example above, the `author` of the creation could be found through this Merkle
+path:
 
 
 ```python
@@ -732,10 +733,10 @@ In summary, IPLD is a promising new technology, with a few cavets:
 
 - **Benefits:**
     - Provides cryptographic integrity checks of data using upgradable hash functions (multihash).
-    - Addresses content through hashes instead of by location.
-    - Enables cross-ledger/database resolvability of data (multiaddr).
+    - Content addressed storage instead of location addressed storage (compare to URL)
+    - Enables cross-ledger/database resolvability of data (multiaddr and merkle-paths).
     - Unifies object identifiers through a canonicalized hashing strategy.
-    - Allows immutability by using a merkle-dag data structure.
+    - Imposes immutability by using a merkle-dag data structure.
     - Future-proofs underlying concepts (multi-x).
     - Enables wide compatibility, even down to the UNIX file system path.
     - Lightweight protocol drafts and implementations.
@@ -757,18 +758,15 @@ functionality. This section highlights the limitations imposed on JSON-LD by IPL
 
 #### Self-identifying JSON-LD objects
 
-JSON-LD objects can maintain a self-identifying link using the `@id` property, which allows the
-object to directly express its location to others. The same is possible for IPLD objects. By
-complying to a canonicalized representation of CBOR and multihashing this representation, an IPLD
-object is also able to express where it can be resolved on the internet even though it cannot
-directly express the location it is stored under. However, combining these two concepts is
-practically impossible since the `@id` JSON-LD identifier would need to be replaced with the
-multihash of its object. This can be viewed as a cryptographic puzzle: finding a value
-that would be hashed, along with the object's other properties, to the same value. The amount
-of processing required would be incredible, rendering the identification of objects incredibly
+JSON-LD objects can maintain a self-identifying link using the `@id` property. This allows the
+object to directly express its location. The same is impossible for IPLD objects. Since they are
+supposed to only be retrieved by the corresponding hash of the their data, the hash itself cannot be
+part of the object as it would be a very difficult to solve cryptographic puzzle.  The amount of
+processing required would be incredible, rendering the identification of objects incredibly
 inefficient. Instead, we prevent JSON-LD objects with IPLD links from self-identifying themselves
 using an `@id` property. This is usually not a problem as objects can also identify themselves
 through content addressing.
+
 
 **Sources:**
 
@@ -806,9 +804,10 @@ section discusses a similar idea: the existence of an arbitrarily complex vector
 to link all the alternative identifiers of a single work to a single identifier on a global
 rights registry.
 
-Any function that takes a digital asset as an input and yields a fixed value could potentially be
-used as a **fingerprinting function**. This could be as simple as a hash function that inspects the
-arrangement of bytes in a digital asset and returns a integer, but there are more elaborate versions:
+Any function that takes a digital asset as an input and yields a fixed-length value could
+potentially be used as a **fingerprinting function**. This could be as simple as a hash function
+that inspects the arrangement of bytes in a digital asset and returns a integer, but there are more
+elaborate versions:
 
 - [Image-match](https://github.com/ascribe/image-match): An approximate image match algorithm
   implemented in Python.
