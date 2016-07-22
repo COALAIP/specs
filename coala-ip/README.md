@@ -1265,7 +1265,7 @@ Visualized, an RRM Creation looks like:
 As previously mentioned, schema.org's existing schemata already covers a large number of the RRM
 Creation's use cases. Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork)
 quite extensive, there are also a number of subtypes that can be used to define specifics about a
-creation (e.g. [schema.org/Book](http://schema.org/Book)). However, one destinction to highlight is
+creation (e.g. [schema.org/Book](http://schema.org/Book)). However, one distinction to highlight is
 how an RRM Creation has two `CreationMode`s: one for perceivable Creations (called `Manifestation`s)
 and one for abstract Creations (called `Work`s). Transforming to JSON-LD, we get:
 
@@ -1351,6 +1351,13 @@ to, at least, an example of the work. In the future, we plan to subtype both a `
 case-by-case basis.
 
 
+#### The Copyright Transfer
+
+- TODO:
+    - When a Creation is being transferred, expresses a Copyright transfer between parties
+    - Outline how this is working, what implications it has and so on
+
+
 ### The LCC Right `Entity`
 
 In comparison to all other RRM `Entity` types, the Right is by far the most interconnected. A
@@ -1364,7 +1371,8 @@ minimal set of required properties include:
   type of cover material for a book)
 - **ValidContextType:** Defines the type of context in which the Right must be exercised (e.g. in
   flight, public, commercial use, academic research, etc)
-- **IsExclusive:** Indicates whether the Right is exclusive to the Rightsholder
+- **IsExclusive:** Indicates whether the Right is exclusive to the Rightsholder (e.g. `true` or
+  `false)
 - **PercentageShare:** Defines the percentage share of the Rights controlled (e.g. 51%, 100%, etc)
 - **NumberOfUses:** Defines the number of uses permitted by the Right (e.g. 3, 5, unlimited uses,
   etc)
@@ -1419,29 +1427,29 @@ For now though, we've decided to leave these special types out of the specificia
 ##### The Notion of Ownership
 
 As RRM Rights are specific to the RRM Party they're provided for, any digital creator that wanted to
-distribute a Creation's Rights to a multitude of interested Parties would have to take the following
+distribute a Manifestation's Rights to a multitude of interested Parties would have to take the following
 steps:
 
 1. Register their Party identifier on a global registry
 2. Register their Creation on a global registry and link it to their Party identifier
+3. Register Manifestations to the Creation on a global registry
 3. Register any number of Rights tailored to interested Parties on a global registry
 4. Register RightAssignments to assign these Rights to interested Parties
 
 
-This highlights that, unlike RRM Parties or Creations, Rights are not strictly limited to only
-registrations or copyright transfers. RRM Rights contain properties of ownership and can be
-transferred from one Party to another via RightsAssignments.
+This highlights that Rights are not strictly limited to only registrations.  They contain properties
+of ownership and can be transferred from one Party to another via RightsAssignments.
 
-Furthermore, Creations are not limited to a single Right: Parties are able to attach as many Rights
-as necessary to Creations. However, there are a few edge cases to consider when licensing
+Furthermore, Manifestations are not limited to a single Right: Parties are able to attach as many
+Rights as necessary to them. There are however a few edge cases to consider when licensing
 information is stored:
 
 - Specific licenses can imply an agreement between the issuer of the Right and the commons; to
   handle this intention to grant Rights to literally everyone, a special Party symbolizing the
-  commons could be created to receive and hold such Rights. Following the assignment of this right,
+  commons could be created to receive and hold such Rights. Following the assignment of this Right,
   other, arbitrary, transfers of Rights of the license to specific Persons or must be disallowed.
   Finally, Parties must also be disallowed from attaching new Rights with licenses that conflict
-  with the "commons license" to the Creation.
+  with the "commons license" to the Manifestation.
 - TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
 
 
@@ -1486,7 +1494,7 @@ propose the following schema that satisfies the consolidated requirements of:
 As can be seen, an RRM Right is basically just a link between a `Manifestation` and a license.
 Because licenses are usually documents intended to be consumed by humans, the license would ideally
 be stored on a technology that prevents changes to the license (e.g. stored in an immutable ledger
-or be linked by Content-Addressing). Hence, an implementation in IPLD is favored:
+or be linked by Content-Addressing). Hence, an implementation in IPLD/IPFS is favored:
 
 
 ```javascript
@@ -1508,11 +1516,11 @@ or be linked by Content-Addressing). Hence, an implementation in IPLD is favored
 
 
 As [previously discussed](#the-notion-of-ownership), RRM Rights can be linked to Parties through
-crypotographic ownership: only the individuals or groups of individuals with access to a specific
-corresponding private key to a Right's public key can modify data from past transactions. Ownership
-transactions (i.e. RRM RightsAssignments) of every form (e.g. transfers, loans consignments, etc)
-must also be stored in an ordered fashion to guarantee each Right preserving a valid chain of
-provenance.
+crypotographic ownership.  Only the individuals or groups of individuals with access to a
+corresponding private key to a Right-transaction's public key must then be able to repurpose the
+Right by for example initiating a RightsAssignment to a third Party. Ownership transactions (i.e.
+RRM RightsAssignments) of every form (e.g. transfers, loans consignments, etc) must be stored in an
+ordered fashion to guarantee each Right preserving a valid chain of provenance.
 
 
 ### The LCC RightsAssignment `Entity`
@@ -1560,8 +1568,9 @@ the following requirements to be fulfilled by every ledger:
   level.
 - Transactions must be able to define a JSON-serializable payload
 - Assets' provenance chains must be easily comprehensible by any user
-- Assets must be divisible after registration
-- Transactions must support either JSON-LD or IPLD
+- Divisibility of Assets must take place during registration
+- Transactions must support IPLD as well as ILP's [Crypto-Conditions
+  specification](https://interledger.org/five-bells-condition/spec.html)
 - Transfer-transactions must support different modes; examples include:
     - Transfers from a group of individuals to a single individual (and vice-versa)
     - Transfers that are only claimable during a certain time span (timelock conditions)
