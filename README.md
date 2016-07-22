@@ -1366,10 +1366,12 @@ minimal set of required properties include:
 - **RightType:** Defines the type of Right (e.g. all uses, copy, play, stream, license, copyright,
   administration, lcc:RightSet, etc)
 - **ToolType:** Defines the type of medium that must be employed when exercising the Right (e.g.
-  only watch on mobile phone)
-- **MaterialType:** Defines the type of material that may be employed when execising the right (e.g.
-  type of cover material for a book)
-- **ValidContextType:** Defines the type of context in which the Right must be exercised (e.g. in
+  only watch on mobile phone or only use a brush to produce manifestations); `ToolType`s are not
+  consumed as part of exercising the Right.
+- **MaterialType:** Defines the type of material that may be employed when exercising the right
+  (e.g. only use watercolour paint to produce manifestations); `MaterialType`s are consumed as part
+  of exercising the Right and become part of the result.
+- **ValidContextType:** Defines the type of context in which the Right must be exercised (e.g. uin
   flight, public, commercial use, academic research, etc)
 - **IsExclusive:** Indicates whether the Right is exclusive to the Rightsholder (e.g. `true` or
   `false)
