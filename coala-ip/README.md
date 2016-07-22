@@ -910,7 +910,7 @@ In addition, a Place can have the following outgoing links to other entities:
 - Links to other Places (`0 - n`; one-to-many): *RelatedPlace*
 
 
-Visualized, the RRM Place looks like:
+Visualized, an RRM Place looks like:
 
 
 ![](media/lccrrmplace.png)
@@ -990,7 +990,7 @@ Additionally, a Party can have the following outgoing links to other entities:
 - Links to Places (`0 - n`; one-to-many): *RelatedPlace*
 
 
-Visualized, the RRM Party looks like:
+Visualized, an RRM Party looks like:
 
 
 ![](media/lccrrmparty.png)
@@ -1238,23 +1238,23 @@ model, we could get something like:
 
 ### The LCC Creation `Entity`
 
-A RRM Creation model describes something directly or indirectly made by human beings. According
+An RRM Creation model describes something directly or indirectly made by human beings. According
 to the specification, it has only a single required property:
 
-- **CreationMode:** Can take the values `lcc:Manifestation` or `lcc:Work`
-    - `lcc:Manifestation`: A perceivable Creation
+- **CreationMode:** Describes the mode of creation; one of:
+    - `lcc:Manifestation`: A perceivable manifestation of a `Work`
     - `lcc:Work`: A distinct, abstract Creation whose existence is revealed through one or more
       manifestations
 
 
-Additionally, a Creation can have the following outgoing references to respective other entities:
+Additionally, a Creation can have the following outgoing links to other entities:
 
-- a self referencing link (one-to-many)
-- a link to a Place (one-to-many)
-- a link to a Party (one-to-many)
+- Links to other Creations (`0 - n`; one-to-many): *RelatedCreation*
+- Links to Places (`0 - n`; one-to-many): *RelatedPlace*
+- Links to Parties (`0 - n`; one-to-many): *RelatedParty*
 
 
-Visualized, the LCC RRM Creation model looks like this:
+Visualized, an RRM Creation looks like:
 
 
 ![](media/lccrrmcreation.png)
@@ -1262,22 +1262,61 @@ Visualized, the LCC RRM Creation model looks like this:
 
 #### Proposed Transformation
 
-As mentioned in an earlier section already, schema.org's RDF schemata cover the use case of the LCC
-RRM Creation model quite closely already. Not only is the vocabulary of
-[schema.org/CreativeWork](http://schema.org/CreativeWork) quite extensive already, there is also a
-multitude of subtypes which are useful for defining specifics about a creation (e.g.
-[schema.org/Book](http://schema.org/Book)).  One destinction we need to draw though is that a LCC
-RRM Creation can have two `CreationMode`s, one for a perceivable Creation (called a "Manifestation")
-and one for an abstract distinct Creation, a so called "Work". Using IPLD, what we end up with is
-two different schemata that are linked using hashes:
+As previously mentioned, schema.org's existing schemata already covers a large number of the RRM
+Creation's use cases. Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork)
+quite extensive, there are also a number of subtypes that can be used to define specifics about a
+creation (e.g. [schema.org/Book](http://schema.org/Book)). However, one distinction to highlight is
+how an RRM Creation has two `CreationMode`s: one for perceivable Creations (called `Manifestation`s)
+and one for abstract Creations (called `Work`s). Transforming to JSON-LD, we get:
+
+
+```javascript
+// A Creation object and its Manifestations in JSON-LD
+// Note: We assume that the data will be put on an immutable ledger and so all links must point
+//       "backwards"
+{
+    "@graph": [
+        {
+            "@id": "#creation",
+            "@type": "http://coalaip.schema/Creation",
+            "name": "Lord of the Rings",
+            "author": "<URI pointing to the author Person>"
+        },
+        {
+            "@id": "#digitalManifestation",
+            "@type": "http://coalaip.schema/Manifestation",
+            "name": "The Fellowship of the Ring",
+            "creation": "#creation",
+            "digital_work": "<URI pointing to file>",
+            "fingerprints": [
+                "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
+                "<multihash/fingerprint value>"
+            ],
+            "locationCreated": "<URI pointing to a Place>"
+        },
+        {
+            "@id": "#physicalManifestation",
+            "@type": "http://coalaip.schema/Manifestation",
+            "name": "The Fellowship of the Ring",
+            "creation": "#creation",
+            "datePublished": "29-07-1954",
+            "locationCreated": "<URI pointing to a Place>"
+        }
+    ]
+}
+```
+
+
+A similar result can be achieved for IPLD, although split into multiple different schemata that are
+linked with hashes:
 
 
 ```javascript
 // A Creation object in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Creation (can be all subtypes of CreativeWork)>" },
+    "@type": { "/": "<hash pointing to RDF-Schema of Creation (can be any subtype of CreativeWork)>" },
     "name": "Lord of the Rings",
-    "author": { "/": "<hash pointing to the Author>" }
+    "author": { "/": "<hash pointing to the author Person>" }
 }
 
 // A a digital Manifestation of the Creation in IPLD
@@ -1288,9 +1327,9 @@ two different schemata that are linked using hashes:
     "digital_work": { "/": "<hash pointing to a file on e.g. IPFS>" },
     "fingerprints": [
         "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
-        "<multihash/multifingerprint value>"
+        "<multihash/fingerprint value>"
     ],
-    "locationCreated": "<URI pointing to a Place object>"
+    "locationCreated": { "/": "<URI pointing to a Place>" }
 }
 
 // A a physical Manifestation of the Creation in IPLD
@@ -1299,104 +1338,68 @@ two different schemata that are linked using hashes:
     "name": "The Fellowship of the Ring",
     "creation": { "/": "<hash pointing to the Creation>" },
     "datePublished": "29-07-1954",
-    "locationCreated": { "/": "<URI pointing to a Place object>" }
+    "locationCreated": { "/": "<URI pointing to a Place>" }
 }
 ```
 
 
-Similarly, the same result can be achieved using JSON-LD:
+Note that, as already mentioned, a distinction has been made between works (typed as `Creation`s)
+and manifestations (typed as `Manifestation`s). Both physical as well digital manifestations can be
+represented, with digital manifestations including a set of fingerprints as well as a link pointing
+to, at least, an example of the work. In the future, we plan to subtype both a `Creation` and a
+`Manifestation` type from schema.org's CreativeWork to allow for extra properties to be easily on a
+case-by-case basis.
 
 
-```javascript
-// A Creation object and its Manifestations in JSON-LD
-// NOTE: All links have to point "backwards" since we're on an immutable ledger
-{
-    "@graph": [
-        {
-            "@id": "#creation",
-            "@type": "http://coalaip.schema/Creation",
-            "name": "Lord of the Rings",
-            "author": "<URI pointing to Author object>"
-        },
-        {
-            "@id": "#digitalManifestation",
-            "@type": "http://coalaip.schema/Manifestation",
-            "name": "The Fellowship of the Ring",
-            "creation": "#creation",
-            "digital_work": "<URI pointing to file>",
-            "fingerprints": [
-                "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
-                "<multihash/multifingerprint value>"
-            ],
-            "locationCreated": "<URI pointing to a Place object>"
-        },
-        {
-            "@id": "#physicalManifestation",
-            "@type": "http://coalaip.schema/Manifestation",
-            "name": "The Fellowship of the Ring",
-            "creation": "#creation",
-            "datePublished": "29-07-1954",
-            "locationCreated": "<URI pointing to a Place object>"
-        }
-    ]
-}
-```
+#### The Copyright Transfer
 
-A special feature of this modeling is, as already mentioned, the distinction in "Works" (here typed
-as a `Creation`) and "Manifestations" (typed as `Manifestation`). Both physical as well digital
-Manifestations could be represented, with the difference that a digital Manifestation should be
-registered with a set of fingerprints as well as a link pointing to (at least) an example of the
-work. We plan to subtype both `Creation` as well as `Manifestation` from schema.org's CreativeWork
-so that extra properties can easily be added on case by case basis.
-
-In the next chapter, we'll go into more detail on how to transform a LCC RRM Right into Linked Data.
+- TODO:
+    - When a Creation is being transferred, expresses a Copyright transfer between parties
+    - Outline how this is working, what implications it has and so on
 
 
-### The LCC Right Model
+### The LCC Right `Entity`
 
-In the LCC RRM document, the Right model is by far the most interconnected. A minimum set of
-required properties includes:
+In comparison to all other RRM `Entity` types, the Right is by far the most interconnected. A
+minimal set of required properties include:
 
-- **RightType:** The type of the Right (e.g. all uses, copy, play, stream, license, copyright,
-  administration, lcc:RightSet - a container grouping Rights)
-- **ToolType:** The type of medium that must be employed in exercising the Right (e.g. only watch on
-  mobile phone)
-- **MaterialType:** The type of material that may be employed in execising the right (e.g. a type of
-  cover material for a book - as a rule of thumb: brush:tool as paint:material)
-- **ValidContextType:** A type of context in which the Right must be exercised (e.g. in flight, in
-  public, commercial use, academic research)
-- **IsExclusive:** Indicating whether the Right is exclusive to the Rightsholder (e.g. true, false)
-- **PercentageShare:** The percentage share of the Rights controlled (e.g. 100%, 51%)
-- **NumberOfUses:** The number of uses permitted by the Right (e.g. 3 uses, 5 uses, unlimited uses?)
-- **ValidPeriod:** The period during which the Right is valid. (e.g. 2015-2016)
-- **Territory:** A place where a Right is allowed to be exercised (e.g. North America)
-
-
-TODO: Note that the LCC RRM specification features a couple more properties which were not included
-for the following reasons:
-
-- **HostCreationType:** Unclear what it is and if it's necessary in the world of RDF
-- **OutputCreationType:** Unclear what it is
-- **ToolType:** The type of medium that must be employed in exercising the Right (e.g. only watch on
-  mobile phone) - not sure if this is necessary
-- **MaterialType:** The type of material that may be employed in execising the right (e.g. a type of
-  cover material for
-  - not sure if this is necessary
+- **RightType:** Defines the type of Right (e.g. all uses, copy, play, stream, license, copyright,
+  administration, lcc:RightSet, etc)
+- **ToolType:** Defines the type of medium that must be employed when exercising the Right (e.g.
+  only watch on mobile phone or only use a brush to produce manifestations); `ToolType`s are not
+  consumed as part of exercising the Right.
+- **MaterialType:** Defines the type of material that may be employed when exercising the right
+  (e.g. only use watercolour paint to produce manifestations); `MaterialType`s are consumed as part
+  of exercising the Right and become part of the result.
+- **ValidContextType:** Defines the type of context in which the Right must be exercised (e.g. uin
+  flight, public, commercial use, academic research, etc)
+- **IsExclusive:** Indicates whether the Right is exclusive to the Rightsholder (e.g. `true` or
+  `false)
+- **PercentageShare:** Defines the percentage share of the Rights controlled (e.g. 51%, 100%, etc)
+- **NumberOfUses:** Defines the number of uses permitted by the Right (e.g. 3, 5, unlimited uses,
+  etc)
+- **ValidPeriod:** Defines the period during which the Right is valid. (e.g. 2015-2016)
+- **Territory:** Defines the Place where the Right is must be exercised (e.g. North America)
 
 
-In addition, a LCC RRM Right can have the following outgoing references to respective other
-entities:
+Note that the RRM specification features a number of properties which were not included:
 
-- a self-referencing link (one-to-many)
-- a link to a Party (one-to-many)
-- a link to a Creation (one-to-many)
-- a link to a Place (one-to-many)
-- a link to a RightsAssignment (one-to-many)
-- a link to a Assertion (one-to-many)
-- a link to a RightsConflict (one-to-many)
+- **HostCreationType:** Unclear what this is
+- **OutputCreationType:** Unclear what this is
 
 
-Visualized, the LCC RRM Rights model looks like this:
+In addition, a Right can have the following outgoing links to other entities:
+
+- Links to other Rights (`0 - n`; one-to-many): *RelatedRight*
+- Links to Parties (`0 - n`; one-to-many): *RelatedParty*
+- Links to Creations (`0 - n`; one-to-many): *RelatedCreations*
+- Links to Places (`0 - n`; one-to-many): *RelatedPlace*
+- Links to RightAssignments (`0 - n`; one-to-many): *RelatedContext*
+- Links to Assertions (`0 - n`; one-to-many): *RelatedContext*
+- Links to RightsConflicts (`0 - n`; one-to-many): *RelatedContext*
+
+
+Visualized, an RRM Right looks like:
 
 
 ![](media/lccrrmright.png)
@@ -1404,74 +1407,67 @@ Visualized, the LCC RRM Rights model looks like this:
 
 ##### Additional Types of Rights
 
-Additionally, the LCC Rights Reference Model specifies three types of LCC RRM Rights that each
-implement special functionality:
+Additionally, the RRM specifies three special types of Rights that are intended for specific use
+cases:
 
 - **SourceRight:** A Right from which another Right is derived
-- **SuperSededRight:** A Right to render a referenced Right invalid
-- **RightSet:** A collection of Rights all bundled under a single Right
+- **SuperSededRight:** A Right to invalidate a referenced Right
+- **RightSet:** A collection of Rights bundled as a single Right
 
 
-For putting Rights onto a global registry, handling a RightSet poses a problem. Essentially, the
-concurrent transfer of multiple assets on a decentralized ledger cannot be guaranteed and especially
-not synchronized.
+For now though, we've decided to leave these special types out of the specificiation:
 
-- TODO: Tim: I talked to Dimi about this, and we were trying to figure this out with
-  cryptoconditions, but it seems that at this stage it is not possible.
-
-
-Both a SourceRight, as well as a SuperSeededRight could easily be represented using an ontology, but
-would still complicate ownership logic on an immutable ledger greatly, which is why we've decided to
-leave them out of this specification for now.
+- **SourceRight and **SuperSededRight**: Although both can be easily represented with an ontology,
+  they would greatly complicate the ownership logic of an immutable ledger
+- **RightSet**: In the context of putting Rights onto a global registry, this is specifically a
+  problem: most decentralized ledgers cannot guarantee, and especially synchronize, the concurrent
+  transfer of multiple assets.
+    - TODO: Tim: I talked to Dimi about this, and we were trying to figure this out with
+      cryptoconditions, but it seems that at this stage it is not possible.
 
 
 ##### The Notion of Ownership
 
-As can be drawn from the LCC RRM specification, a LCC RRM Right is LCC RRM Party-specific. In a
-sense that, a Right is always specific to the Party it's provided for. Assuming that digital
-creators would like to distribute their rights to a multitude of interested LCC RRM Parties, the
-following steps would be required:
+As RRM Rights are specific to the RRM Party they're provided for, any digital creator that wanted to
+distribute a Manifestation's Rights to a multitude of interested Parties would have to take the following
+steps:
 
-1. Register their Party identifier on a global registry as described in previous sections
-2. Register their Creation on a global registry as described in a previous section and link it to
-   their Party identifier
-3. Register a number of Rights on a global registry, tailored to the interested Party
-4. Register a RightAssignment to assign the Rights to the interested Parties
+1. Register their Party identifier on a global registry
+2. Register their Creation on a global registry and link it to their Party identifier
+3. Register Manifestations to the Creation on a global registry
+3. Register any number of Rights tailored to interested Parties on a global registry
+4. Register RightAssignments to assign these Rights to interested Parties
 
 
-What this implies is that while the actions to perform on Parties and Creations (there is one
-exception: a Copyright transfer) are strictly limited to the act of registration, a LCC RRM Right
-actually has properties of ownership, allowing it to be transferred (via a LCC RRM RightsAssignment)
-from one LCC RRM Party to another.
+This highlights that Rights are not strictly limited to only registrations.  They contain properties
+of ownership and can be transferred from one Party to another via RightsAssignments.
 
-Furthermore, a LCC RRM Creation is not limited to a single LCC RRM Right. In fact, there can be as
-many LCC RRM Rights attached to a LCC RRM Creation as a LCC RRM Party wants. Since licensing
-information is stored in a LCC RRM Right though, some edge cases must be considered:
+Furthermore, Manifestations are not limited to a single Right: Parties are able to attach as many
+Rights as necessary to them. There are however a few edge cases to consider when licensing
+information is stored:
 
-1. Specific software licenseses imply an agreement between the issuer of the Right and the commons,
-   meaning that an arbitrary transfer (also called RightsAssignment) to an Individual or
-   Organization must not take place. To handle the edge case of giving permissions to literally
-   everyone, it is planed to have special Identities symbolizing the commons a Right can be
-   transferred to in this case. Additionally, once a Creation has been licensed under such license,
-   Rights with licenses that conflict with a "commons license" must not be issued.
-
+- Specific licenses can imply an agreement between the issuer of the Right and the commons; to
+  handle this intention to grant Rights to literally everyone, a special Party symbolizing the
+  commons could be created to receive and hold such Rights. Following the assignment of this Right,
+  other, arbitrary, transfers of Rights of the license to specific Persons or must be disallowed.
+  Finally, Parties must also be disallowed from attaching new Rights with licenses that conflict
+  with the "commons license" to the Manifestation.
 - TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
 
 
 #### Proposed Transformation
 
-Transforming the LCC RRM Rights model poses some challenges. According to the LCC RRM specification:
+Transforming the RRM Right `Entity` poses some challenges. According to the RRM specification, an RRM
+Right can:
 
-- A LCC RRM Right object can both represent copyright as well as licensing information
-- A LCC RRM Right can be a SourceRight, SuperSeededRight as well as a RightSet.
+- Represent both copyright as well as licensing information
+- Be a SourceRight, SuperSeededRight or RightSet
 
 
-In order to allow for Rights to be atomicly transferrable units, we decided to ignore the latter
-requirement for now and purely focus on the Right being a transferrable container for specific
-licensing information.
-
-Since we weren't able to find an appropriate RDF schema to model the LCC RRM Right, we're proposing
-a schema that consolidates the requirements given in:
+As previously mentioned, in order for Rights to be atomically transferrable units, we ignore the
+latter requirement and focus on modelling Rights to be transferrable containers of specific
+licensing information. We weren't able to find an appropriate RDF schema that did this, so we
+propose the following schema that satisfies the consolidated requirements of:
 
 - [LCC: Rights Reference Model](http://doi.org/10.1000/284)
 - [W3C: Open Digital Rights Language](https://www.w3.org/TR/odrl/)
@@ -1479,7 +1475,7 @@ a schema that consolidates the requirements given in:
 
 
 ```javascript
-// A Right object in JSON-LD
+// In JSON-LD
 {
     "@type": "http://coalaip.schema/Right",
     "@id": "<URI pointing to this object>",
@@ -1497,15 +1493,14 @@ a schema that consolidates the requirements given in:
 ```
 
 
-As can be seen, a LCC RRM Right is basically just a link between a Manifestation and a license.
-Since licenses are usually documents with pages of text intended for humans to read and interpret,
-pointing to a license must be done by using technology that doesn't allow the content behind a link
-to be altered (e.g. an immutable ledger or by using links that implement Content-Addressing). Hence,
-an implementation in IPLD is favored:
+As can be seen, an RRM Right is basically just a link between a `Manifestation` and a license.
+Because licenses are usually documents intended to be consumed by humans, the license would ideally
+be stored on a technology that prevents changes to the license (e.g. stored in an immutable ledger
+or be linked by Content-Addressing). Hence, an implementation in IPLD/IPFS is favored:
 
 
 ```javascript
-// A Right object in IPLD
+// In IPLD
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Right>" },
     "usages": "all|copy|play|stream|...",
@@ -1517,50 +1512,46 @@ an implementation in IPLD is favored:
     "validFrom": { "/": "<hash pointing to RDF-Schema of Date" },
     "validTo": { "/": "<hash pointing to RDF-Schema of Date" },
     "manifestation": { "/": "<hash pointing to the a Manifestation>" },
-    "license": { "/": "<hash pointing to the license>" },
+    "license": { "/": "<hash pointing to the license>" }
 }
 ```
 
 
-As mentioned in a [previous section](#the-notion-of-ownership) section already, a Right object needs
-to be ownable by a participant of the protocol. Being ownable means that only an individual or a
-group of individuals owning a specific private key to a corresponding public key can alter the data
-that has occurred in certain past transactions. In addition, Ownership transactions (in the RRM
-called "RightsAssignment"s, see next section for more detail) of every form
-- be it transfers, loans or consignments - must be stored in an orderly fashion, to guarantee an
-  always valid chain of provenance of a Manifestation's Rights. The next section will explore this
-  functionality further.
+As [previously discussed](#the-notion-of-ownership), RRM Rights can be linked to Parties through
+crypotographic ownership.  Only the individuals or groups of individuals with access to a
+corresponding private key to a Right-transaction's public key must then be able to repurpose the
+Right by for example initiating a RightsAssignment to a third Party. Ownership transactions (i.e.
+RRM RightsAssignments) of every form (e.g. transfers, loans consignments, etc) must be stored in an
+ordered fashion to guarantee each Right preserving a valid chain of provenance.
 
 
-### The LCC RightsAssignment Model
+### The LCC RightsAssignment `Entity`
 
-According to the LCC RRM specification, a LCC RRM RightsAssignment describes an event. A LCC RRM
-RightsAssignment can have the following types (property name: `RightsAssignment`):
+According to the RRM specification, an RRM RightsAssignment describes an event that results in the
+existence or non-existence of a Right. Depending on the type, a RightsAssignment may be linked from
+an assigning Party (Assigner) to a receiving Party (Assignee). From the RRM, a RightsAssignment can
+have the following properties:
 
-- **RightsLaw:** Representing a law by which rights come into existence (e.g. the US Copyright Act
-  of 1976)
-- **RightsPolicy:** Representing an event by which a Party assigns rights to another Party without
-  requiring an agreement of the later (e.g. security level for user access of a computer system)
-- **RightsAgreement:** Representing an agreement between to Parties over a right (e.g. a license, a
-  publishing agreement, ...)
-
-
-In addition, the LCC recommends the RightsAssignment to have three statuses (property name:
-`RightsAssignmentStatus`):
-
-- `lcc:Offer`: An open RightAssignment the Assignee may accept or reject
-- `lcc:Request`: A request of an Assigner to an Assignee to register/create a specific
-  RightsAssignment
-- `lcc:Executed`: A actual transfer of a LCC RRM Right from a Party to another Party
+- **RightsAssignmentType**: Defines the type of RightsAssignment; can be one of:
+    - **RightsLaw:** Represents the creation of a Right by law (e.g. the US Copyright Act of 1976)
+    - **RightsPolicy:** Represents the assignment of a Right from an authorized Party to another
+      Party without requiring the latter's agreement (e.g. security level for user access of a
+      computer system)
+    - **RightsAgreement:** Represents the argreement over a Right between two Parties (e.g. a
+      license, publishing agreement, etc)
+- **RightsAssignmentStatus**: Defines the status of the RightsAssignment; can be one of:
+    - `lcc:Offer`: An open RightsAssignment proposed by a prospective Assigner
+    - `lcc:Request`: An open RightsAssignment proposed by a prospective Assignee
+    - `lcc:Executed`: An executed assignment of Rights
 
 
-The LCC RRM RightsAssignment has the following outgoing references:
+The RRM RightsAssignment has the following outgoing references:
 
-- a link to a LCC RRM Party (one-to-many)
-- a link to a LCC RRM Right (one-to-many)
+- Links to RRM Parties (`0 - n`; one-to-many): *RelatedParty*
+- Links to RRM Rights (`0 - n`; one-to-many): *RelatedRight*
 
 
-Visualized, the LCC RRM RightsAssignment model looks like this:
+Visualized, an RRM RightsAssignment looks like:
 
 
 ![](media/lccrrmrightsassignment.png)
@@ -1568,33 +1559,32 @@ Visualized, the LCC RRM RightsAssignment model looks like this:
 
 #### Proposed Transformation
 
-An appropriate transformation for the LCC RRM RightsAssignment model could potentially be found by
-looking at schemata for asset transfers. As this specification's scope is to make digital rights
-manageable on an immutable ledger though, we're not interested in defining this type of schema, as
-we think an immutable ledger must have this operation already built in from the start. This
-specification's goal is to be able to run on as many ledgers as possible. Both IPLD and the
-Interledger Protocol were chosen consciously, to establish a metadata and licensing ontology that
-can potentially overspan many ledgers and immutable data stores. General requirements for a ledger's
-transactions are:
+Although a potential source of transformations could come from existing schemata for transferring
+assets, we choose to ignore these schemata as we expect RightsAssignments to be registered on
+immutable ledgers that can already handle asset transfers. This specification consciously chooses
+both the IPLD and Interledger protocols in the hopes of establishing a metadata and licensing
+ontology that is able to overspan multiple ledgers and immutable data stores. In general, we assume
+the following requirements to be fulfilled by every ledger:
 
-- Specific assets must only be transferrable using crypto-key-pair signatures on a transaction
+- Assets must only be transferrable if cryptographic key-pair signatures are used on the transaction
   level.
-- Transactions must allow to define a JSON-serializable payload
-- An asset's chain of provenance must easily be comprehensible by any user of the protocol
-- Asset's must allow to be devided upon registration
-- Transactions must either support JSON-LD or IPLD
-- Transfer-transactions should support different modes, examples are:
-    - A transfer from a group of individuals to a single individual (and vice-versa)
-    - A transfer that is only claimable during a certain time span (timelock conditions)
-    - A transfer that is only claimable by an individual or group that knows a certain secret value
+- Transactions must be able to define a JSON-serializable payload
+- Assets' provenance chains must be easily comprehensible by any user
+- Divisibility of Assets must take place during registration
+- Transactions must support IPLD as well as ILP's [Crypto-Conditions
+  specification](https://interledger.org/five-bells-condition/spec.html)
+- Transfer-transactions must support different modes; examples include:
+    - Transfers from a group of individuals to a single individual (and vice-versa)
+    - Transfers that are only claimable during a certain time span (timelock conditions)
+    - Transfers that are only claimable by an individual or group that knows a certain secret key
       (hashlock conditions)
     - TODO: Are there more?
 - TODO: Are there more requirements COALA IP asks from a ledger?
 
 
-By assuming that every ledger implements the concept of asset transfer, a minimal transformed LCC
-RRM RightsAssignment would look like this (this is represented in the payload of the ledger-specific
-transfer-transaction):
+With this assumption, we can now model a minimally transformed RRM RightsAssignment to be part of
+the payload of a ledger-specific transfer-transaction (and thereby automatically including links to
+related Parties and information about the RightAssignment's status):
 
 
 ```javascript
@@ -1617,12 +1607,11 @@ and in IPLD:
 ```
 
 
-Defining the `contract` keyword in a transfer-transaction is not required. It is mentioned at this
-point, as it solves lots us use cases for potential users. Legally speaking, a contract defined in
-the transfer-transaction of a Right must only contain permissions derived from the original license
-issued in the creation of a Right or a former contract of a transfer-transaction. Generally, this
-means that only permissions, taken from the set of permissions given from the last owner, are
-allowed to be included in the contract.
+Although not required, we include the `contract` property in this schema to solve some potential use
+cases of users. Legally speaking, a contract defined in the transfer-transaction of a Right must
+only contain permissions derived from the original license issued in the creation of the Right or a
+previous transfer-transaction. This generally results in contracts only including permissions which
+were also available to the previous owner.
 
 
 ### The LCC Assertion Model
