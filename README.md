@@ -1616,11 +1616,12 @@ were also available to the previous owner.
 
 ### The LCC Assertion `Entity`
 
-Inevitably, as none of the assets registered in the COALA IP ontology are under the direct control
-of a governing body commited to guaranteeing the data's validity, the COALA IP ontology will contain
-false or fraudulent statements made by users. To counteract this, the LCC RRM recommends the
-implementation of an RRM Assertion `Entity` that evaluates claims made about the truth or falsehood
-of statements from participating Parties within the ontology.
+Since none of the assets registered in the COALA IP ontology are minted and hence under the direct
+control of a decentralized network only commited to guarantee for its data to be valid (compare to
+Crypto-currencies), the COALA IP ontology will contain false or fraudulent statements made by users.
+To counteract this, the LCC RRM recommends the implementation of an RRM Assertion `Entity` that
+evaluates claims made about the truth or falsehood of statements from participating Parties within
+the ontology.
 
 The LCC's minimum set of required properties includes:
 
