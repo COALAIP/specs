@@ -1614,31 +1614,31 @@ previous transfer-transaction. This generally results in contracts only includin
 were also available to the previous owner.
 
 
-### The LCC Assertion Model
+### The LCC Assertion `Entity`
 
-Since none of the assets registered in the COALA IP ontology are minted and hence under direct
-control of a decentralized network only committed to guarantee for all data to be valid, the COALA
-IP ontology will inevitably contain false or fraudulent licensing statements made by its users. To
-counteract this problem, the LCC RRM recommends the implementation of a LCC RRM Assertion object,
-which is an evaluation about the truth or falsehood of a statement made by a participating Party
-within the ontology.
+Since none of the assets registered in the COALA IP ontology are minted and hence under the direct
+control of a decentralized network only commited to guarantee for its data to be valid (compare to
+Crypto-currencies), the COALA IP ontology will contain false or fraudulent statements made by users.
+To counteract this, the LCC RRM recommends the implementation of an RRM Assertion `Entity` that
+evaluates claims made about the truth or falsehood of statements from participating Parties within
+the ontology.
 
 The LCC's minimum set of required properties includes:
 
-- **TruthValue**: The truth claim made about the subject of assertion (e.g. `true` or `false`)
-- **ValidPeriod**: A time period defining the time of validity for an assertion (e.g from 01.01.2011
+- **TruthValue**: Indicates the truthiness of the claim
+- **ValidPeriod**: Defines the time period during which the claim is maintained (e.g from 01.01.2011
   to 01.01.2015)
 
 
-Additionally, an LCC RRM Assertion can have the following outgoing references:
+Additionally, an RRM Assertion can have the following outgoing references:
 
-- a link to a Party (one-to-many)
-- a link to a RightsAssignment (one-to-many)
-- a link to a Assertion (one-to-many)
-- a link to a RightsConflict (one-to-many)
+- Links to Parties (`0 - n`; one-to-many): *Asserter*
+- Links to RightsAssignments (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to Assertions (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to RightsConflicts (`0 - n`; one-to-many): *SubjectOfAssertion*
 
 
-Visualized, the LCC RRM Assertion model looks like this:
+Visualized, an RRM Assertion `Entity` looks like:
 
 
 ![](media/lccrrmassertion.png)
@@ -1655,12 +1655,14 @@ attributes and links.
 
 Think about the following scenario:
 
-Andy Warhol decides to use the COALA IP protocol to register his work on a Blockchain. He's
-registering one of his works called "32 Campbell's Soup Cans" as a Creation and attaches a poster of
-the work as a Manifestation to it. He also creates a Right defining the licensing terms of buying
-the poster and attaches it to the Manifestation. Since Andy is not really good with computers - they
-were never really his type of medium - his program contains a bug that leads him to also register a
-Creation of Edvard Munch's The Scream under his name. Visually, this is what we'd end up with:
+> Andy Warhol decides to use the COALA IP protocol to register his work on a blockchain. He's
+  registering one of his works called "32 Campbell's Soup Cans" as a Creation and attaches a poster
+  of the work as a Manifestation to it. He also creates a Right defining the licensing terms of
+  buying the poster and attaches it to the Manifestation. Since Andy is not really good with
+  computers---they were never really his type of medium---he accidentally also registers a Creation
+  of Edvard Munch's "The Scream" under his name.
+
+Visually, this is what we'd end up with:
 
 
 ![](media/lccrrmassertionexample1.png)
@@ -1681,11 +1683,11 @@ merkle-path feature, we're able to achieve exactly that by defining an Assertion
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Assertion>" },
     "truth": "false",
-    "author": { "/": "<hash pointing to a Party>" },
+    "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
         "/": "<IPLD hash pointing to Creation: The Scream's author property>"
         // e.g. /ipdb/<hash_of_creation>/author
-    },
+    }
 }
 
 // and
@@ -1693,10 +1695,10 @@ merkle-path feature, we're able to achieve exactly that by defining an Assertion
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Assertion>" },
     "truth": "true",
-    "author": { "/": "<hash pointing to a Party>" },
+    "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
         "/": "<IPLD hash pointing to Creation: 32 Campbell's Soup Cans's author property>"
-    },
+    }
 }
 ```
 
@@ -1713,7 +1715,7 @@ why an object was flagged by an asserter.
 
 
 
-### The LCC RightsConflict Model
+### The LCC RightsConflict `Entity`
 
 TODO:
     - See other introductory sections of LCC models. Use same structure to describe the model
@@ -1747,11 +1749,10 @@ TODO:
 
 ## Future
 
-This specification outlined how the LCC Framework can be used to define an RDF ontology on top of
-immutable data stores to manage digital rights. As the goal is to make rights modeling an open
-international standard and implement the outcome there is a number of events that need to follow
-this specification, which are outlined here in sequential order:
-
+This document outlined general guidelines on using the LCC Framework to define an RDF ontology for
+managing digital rights on top of immutable data stores. As the goal is to implement an open
+standard for rights management, there are a number of events that are to follow; they are outlined
+here in sequential order:
 
 - Define a working RDF schema based on this specification
 - Include or build open source communities around it
@@ -1759,5 +1760,6 @@ this specification, which are outlined here in sequential order:
 - Identify a standards commite to send this to
 - Take the RDF schema, take the proposed transformations here and put them in a format of a standard
   proposal
+
 
 Thanks for reading!
