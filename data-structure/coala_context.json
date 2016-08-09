@@ -1,0 +1,76 @@
+{
+    "@context": {
+        "id": "@id",
+        "type": "@type",
+
+        "coala": "<coalaip placeholder>",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "schema": "http://schema.org/",
+
+        "DigitalFingerprint": "coala:DigitalFingerprint",
+        "Right": "coala:Right",
+        "RightsTransferAction": "coala:RightsTransferAction",
+
+        "asserter": {
+            "@id": "coala:asserter",
+            "@type": "@id"
+        },
+        "assertionSubject": {
+            "@id": "coala:assertionSubject",
+            "@type": "@id"
+        },
+        "assertionTruth": "coala:assertionTruth",
+        "creation": {
+            "@id": "coala:creation",
+            "@type": "@id"
+        },
+        "exclusive": "coala:exclusive",
+        "fingerprintOf": {
+            "@id": "coala:fingerprintOf",
+            "@type": "@id"
+        },
+        "fingerprint": "coala:fingerprint",
+        "isManifestation": "coala:isManifestation",
+        "numberOfUses": "coala:numberOfUses",
+        "percentageShares": "coala:percentageShares",
+        "rightContext": "coala:rightContext",
+        "territory": {
+            "@id": "coala:territory",
+            "@type": "@id"
+        },
+        "transferContract": {
+            "@id": "coala:transferContract",
+            "@type": "@id"
+        },
+        "usageType": "coala:usageType",
+        "validFrom": "coala:validFrom",
+        "validThrough": "coala:validThrough",
+
+        "author": {
+            "@id": "schema:author",
+            "@type": "@id"
+        },
+        "exampleOfWork": {
+            "@id": "schema:exampleOfWork",
+            "@type": "@id"
+        },
+        "founder": {
+            "@id": "schema:founder",
+            "@type": "@id"
+        },
+        "isPartOf": {
+            "@id": "schema:isPartOf",
+            "@type": "@id"
+        },
+        "locationCreated": {
+            "@id": "schema:locationCreated",
+            "@type": "@id"
+        },
+        "member": {
+            "@id": "schema:member",
+            "@type": "@id"
+        }
+    }
+}
