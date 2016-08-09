@@ -1,0 +1,302 @@
+{
+    "@context": {
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "schema": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "<coalaip placeholder>/DigitalFingerprint",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:Intangible"
+            },
+            "rdfs:comment": "Generic digital fingerprint for a Creation.",
+            "rdfs:label": "DigitalFingerprint"
+        },
+        {
+            "@id": "<coalaip placeholder>/Right",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:Intangible"
+            },
+            "rdfs:comment": "Describes a state in which a Party is entitled to do something in relation to a Creation.",
+            "rdfs:label": "Right"
+        },
+        {
+            "@id": "<coalaip placeholder>/RightsTransferAction",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:TransferAction"
+            },
+            "rdfs:comment": "A transfer of Rights from one Party (or more) to another Party (or more).",
+            "rdfs:label": "RightsTransferAction"
+        },
+        {
+            "@id": "<coalaip placeholder>/asserter",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "schema:ReviewAction"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Party"
+            },
+            "owl:equivalentProperty": {
+                "@id": "schema:agent"
+            },
+            "rdfs:comment": "The Party providing an assertion.",
+            "rdfs:label": "asserter"
+        },
+        {
+            "@id": "<coalaip placeholder>/assertionSubject",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "schema:ReviewAction"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Thing"
+            },
+            "owl:equivalentProperty": {
+                "@id": "schema:object"
+            },
+            "rdfs:comment": "The subject that is being asserted by an assertion.",
+            "rdfs:label": "assertionSubject"
+        },
+        {
+            "@id": "<coalaip placeholder>/assertionTruth",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "schema:ReviewAction"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Boolean"
+            },
+            "owl:equivalentProperty": {
+                "@id": "schema:result"
+            },
+            "rdfs:comment": "The truth claim made about an assertion's subject.",
+            "rdfs:label": "assertionTruth"
+        },
+        {
+            "@id": "<coalaip placeholder>/creation",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:CreativeWork"
+            },
+            "rdfs:comment": "The Creation associated with a Class in some way. For example, the Creation that a Right is bound to.",
+            "rdfs:label": "creation"
+        },
+        {
+            "@id": "<coalaip placeholder>/exclusive",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Boolean"
+            },
+            "rdfs:comment": "Indicates whether the Class's semantics are exclusive only to the current owners. For example, the exclusivity of a Right to its current owners.",
+            "rdfs:label": "exclusive"
+        },
+        {
+            "@id": "<coalaip placeholder>/fingerprintOf",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:DigitalFingerprint"
+            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:CreativeWork"
+                },
+                {
+                    "@id": "schema:URL"
+                }
+            ],
+            "owl:equivalentProperty": {
+                "@id": "schema:object"
+            },
+            "rdfs:comment": "The object that a fingerprint identifies.",
+            "rdfs:label": "fingerprintOf"
+        },
+        {
+            "@id": "<coalaip placeholder>/fingerprint",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:DigitalFingerprint"
+            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:PropertyValue"
+                },
+                {
+                    "@id": "schema:Text"
+                }
+            ],
+            "owl:equivalentProperty": {
+                "@id": "schema:value"
+            },
+            "rdfs:comment": "The fingerprint value of an object, for example a hash.",
+            "rdfs:label": "fingerprint"
+        },
+        {
+            "@id": "<coalaip placeholder>/isManifestation",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "schema:CreativeWork"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Boolean"
+            },
+            "rdfs:comment": "Convenience flag for indicating if a Creation is a Manifestation.",
+            "rdfs:label": "isManifestation"
+        },
+        {
+            "@id": "<coalaip placeholder>/numberOfUses",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Number"
+            },
+            "rdfs:comment": "The number of uses permitted.",
+            "rdfs:label": "numberOfUses"
+        },
+        {
+            "@id": "<coalaip placeholder>/percentageShares",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Number"
+            },
+            "rdfs:comment": "The ownership percentage.",
+            "rdfs:label": "percentageShares"
+        },
+        {
+            "@id": "<coalaip placeholder>/rightContext",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:Text"
+                },
+                {
+                    "@id": "schema:PropertyValue"
+                }
+            ],
+            "rdfs:comment": "The context in which a Right may be exercised. User defined.",
+            "rdfs:label": "rightContext"
+        },
+        {
+            "@id": "<coalaip placeholder>/territory",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Place"
+            },
+            "owl:equivalentProperty": {
+                "@id": "schema:spatialCoverage"
+            },
+            "rdfs:comment": "The location in which a Right applies.",
+            "rdfs:label": "territory"
+        },
+        {
+            "@id": "<coalaip placeholder>/transferContract",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:RightsTransferAction"
+            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:CreativeWork"
+                },
+                {
+                    "@id": "schema:URL"
+                },
+                {
+                    "@id": "schema:Text"
+                }
+            ],
+            "rdfs:comment": "The contract between offering and receiving Parties in a transfer.",
+            "rdfs:label": "transferContract"
+        },
+        {
+            "@id": "<coalaip placeholder>/usageType",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:Text"
+                },
+                {
+                    "@id": "schema:PropertyValue"
+                }
+            ],
+            "rdfs:comment": "Describes the entitled ways that something can be used or exercised. For example, a Right may only grant copyright usage.",
+            "rdfs:label": "usageType"
+        },
+        {
+            "@id": "<coalaip placeholder>/validFrom",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": [
+                {
+                    "@id": "coala:Right"
+                },
+                {
+                    "@id": "schema:ReviewAction"
+                }
+            ],
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:Date"
+                },
+                {
+                    "@id": "schema:DateTime"
+                }
+            ],
+            "owl:equivalentProperty": {
+                "@id": "schema:validFrom"
+            },
+            "rdfs:comment": "The date the object becomes valid.",
+            "rdfs:label": "valueFrom"
+        },
+        {
+            "@id": "<coalaip placeholder>/validThrough",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": [
+                {
+                    "@id": "coala:Right"
+                },
+                {
+                    "@id": "schema:ReviewAction"
+                }
+            ],
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:Date"
+                },
+                {
+                    "@id": "schema:DateTime"
+                }
+            ],
+            "owl:equivalentProperty": {
+                "@id": "schema:validThrough"
+            },
+            "rdfs:comment": "The date after when the item is not valid.",
+            "rdfs:label": "validThrough"
+        }
+    ],
+    "@id": "<coala placeholder>#version"
+}
