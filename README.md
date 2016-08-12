@@ -145,7 +145,7 @@ the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)".
 
 #### The LCC Entity Model
 
-*Note: You don't need to know the LCC Entity Model ito understand this specification. The Entity
+*Note: You don't need to know the LCC Entity Model to understand this specification. The Entity
 Model is a meta-model used by the LCC to model their ontology, the LCC Rights Reference Model.*
 
 The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) is a generic data model the LCC uses to
@@ -1338,7 +1338,7 @@ to an example of the work. In the future, we plan to subtype both a `Creation` a
 `Manifestation` type from schema.org's CreativeWork to allow the easy addition of properties.
 
 
-#### Rights Transfers: Licenses and Assignment of Copyright
+#### The Copyright Transfer
 
 - TODO:
     - When a Creation is being transferred, expresses a Copyright transfer between parties
@@ -1350,7 +1350,7 @@ to an example of the work. In the future, we plan to subtype both a `Creation` a
 In comparison to all other RRM `Entity` types, the Right is by far the most interconnected. A
 minimal set of required properties include:
 
-- **RightType:** Defines the type of Right (e.g. copyright, all uses, license, copy, play, stream,
+- **RightType:** Defines the type of Right (e.g. all uses, license, copy, play, stream,
   administration, lcc:RightSet, etc)
 - **ToolType:** Defines the type of medium that must be employed when exercising the Right (e.g.
   only watch on mobile phone or only use a brush to produce manifestations). `ToolType`s are not
@@ -1518,7 +1518,7 @@ have the following properties:
     - **RightsPolicy:** Represents the assignment of a Right from an authorized Party to another
       Party without requiring the latter's agreement (e.g. security level for user access of a
       computer system); or
-    - **RightsAgreement:** Represents an argreement between two Parties regarding a Right (e.g. a
+    - **RightsAgreement:** Represents an agreement between two Parties regarding a Right (e.g. a
       license, publishing agreement, etc.).
 - **RightsAssignmentStatus**: Defines the status of the RightsAssignment. It can be one of:
     - `lcc:Offer`: An open RightsAssignment proposed by a prospective Assigner;
@@ -1543,7 +1543,7 @@ Visualized, an RRM RightsAssignment looks like:
 Existing schemata for transferring assets could provide a source for transformations, but because of
 our unique requirements we do not use those schemata. We expect RightsAssignments to be registered
 on immutable ledgers that can already handle asset transfers. COALA IP has chosen to use both IPLD
-and Interledger protocols in the hopes of establishing a metadata and licensing ontology that can
+and the Interledger protocol in the hopes of establishing a metadata and licensing ontology that can
 span multiple ledgers and immutable data stores. We assume the following requirements will be met
 by every COALA IP-compatible ledger:
 
