@@ -1701,29 +1701,9 @@ TODO:
 
 #### Proposed Transformation
 
+TODO:
+    - See other introductory sections of LCC models. Use same structure to do the transformation
 
-## Blockchainify Linked Data
-
-- TODO:
-    - Briefly: What is a blockchain
-    - By blockchaining every set of linked data of an ontology, a simple claim system is established
-    - By requiring the signature of every set of linked data submitted to a blockchain, data is
-      linked to the submitters identity. Since the submitter's identity has a certain trust in the
-      ontology, the submitter transfers the trust of himself + the trust all people that signed his
-      key gave him onto the data he has submitted
-
-    - e.g. I claim that I am Andy Warhol and I've created 32 Campbell's Soup Cans. Well guess,
-        what: nobody signed my freshly created identity. Also, Andy Warhol is not alive anymore.
-        Sure I can submit this information to the blockchain and show to the world on ascribe that
-        I'm the creator, but everyone will be able to tell that I'm very likely NOT Andy Warhol and
-        that 32 Campbell's Soup Cans is NOT my creation
-    - Super difficult question: When pointing to data that is not on a blockchain, what to do then?
-      Discard? Allow it (but careful because data from outside is subject to change)
-        - Imagine identities would be stored on a non blockchain. Using the given definition for a
-          Creation, I'd go ahead and link it to the identity that is maybe stored on me.tim.com also
-          exposing my public key. Now imagine someone gets access to tim.com and just changes my
-          public key to a public key they they private key. Can they then make valid claims in my
-          name?
 
 ## Future
 
