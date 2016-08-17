@@ -10,6 +10,7 @@ Includes:
 
 - [Overview](#overview)
     - [Vocabularies](#vocabularies)
+    - [UX Considerations](#ux-considerations)
     - [IPLD Considerations](ipld-considerations)
     - [Immutable Data Considerations](#immutable-data-considerations)
     - [Cryptographically Signed Entities](#cryptographically-signed-entities)
@@ -40,6 +41,14 @@ and [definitions](./vocab/coala.jsonld)) with the goal of eventually integrating
 extension under schema.org. Self defined properties and classes are built preferring existing
 vocabularies, such as [OWL](https://www.w3.org/OWL/) and [DC](http://dublincore.org/).
 
+### UX Considerations
+
+There are a number of properties in the schemata that are either meant to be or can be abstracted
+away from an end user by the implementation. These are usually convenience properties that help
+implementations query for or understand entities; an implementation is free to decide its interface
+for a user but must make sure to conform to the defined models when communicating with others or
+persisting entities.
+
 ### IPLD Considerations
 
 Although JSON-LD and IPLD are similar, there are a number of specific differences that prevent the
@@ -65,9 +74,9 @@ to use when working with the models:
 - Link nested models and their parents by providing links from the nested models
 
 Adhering to these patterns avoids the creation of models that become too constrained when used in an
-immutable context. For example, consider the [`Creation` entity](#rrm-creation): although the schema
+immutable context. For example, consider the [`Creation`](#rrm-creation) entity: although the schema
 allows a Work to declare its manifestations through the [workExample property](http://schema.org/workExample),
-doing so would inherently lock the Work into only these manifestations. You can avoid this problem
+doing so would inherently lock the Work into only these Manifestations. You can avoid this problem
 by declaring your Works and Manifestations separately, using the [exampleOfWork property](http://schema.org/exampleOfWork)
 in the Manifestations to create a link to its Work. Another feature of this pattern is that you only
 have to declare a nested model once, even if multiple parents should be linked to it.
@@ -125,6 +134,11 @@ Signatures schema](https://web-payments.org/specs/source/ld-signatures/).
 
 `Party`s are represented simply by their corresponding schema.org vocabulary, [Person](http://schema.org/Person)
 and [Organization](http://schema.org/Organization).
+
+**Note**: `Party`s are still a work-in-progress (see the list of requirements in the
+[spec](https://github.com/ascribe/specs/tree/master/coala-ip#the-lcc-party-entity)) and will be
+modified in the future. We will likely be adding properties or even define a new class to better
+represent them in the future.
 
 ##### Person
 
@@ -242,7 +256,8 @@ an [`exampleOfWork`](http://schema.org/exampleOfWork) property as a Work and all
 property are considered digital Manifestations while all others are physical Manifestations. See the
 [schema.org/CreativeWork definition](http://schema.org/CreativeWork) for the Linked Data context.
 
-To conveniently identify Manifestations, we also suggest adding a `isManifestation` property:
+To conveniently identify Manifestations, we also suggest adding a `isManifestation` property
+(*although this is not mandatory*):
 
 ```javascript
 {
@@ -446,7 +461,7 @@ An example of adding fingerprinting information for a digital Manifestation:
 
 ### RRM Right
 
-As no existing schema.org vocabulary fits the RRM's notion of a `Right`, we define our own Class
+As no existing schema.org vocabulary fits the RRM's notion of a `Right`, we define our own class
 with the following vocabulary:
 
 ```javascript
@@ -519,14 +534,9 @@ with the following vocabulary:
     "schema:domainIncludes": {
         "@id": "coala:Right"
     },
-    "schema:rangeIncludes": [
-        {
-            "@id": "schema:Text"
-        },
-        {
-            "@id": "schema:PropertyValue"
-        }
-    ],
+    "schema:rangeIncludes": {
+        "@id": "schema:Text"
+    },
     ...
 }
 
@@ -553,14 +563,9 @@ with the following vocabulary:
     "schema:domainIncludes": {
         "@id": "coala:Right"
     },
-    "schema:rangeIncludes": [
-        {
-            "@id": "schema:Text"
-        },
-        {
-            "@id": "schema:PropertyValue"
-        }
-    ],
+    "schema:rangeIncludes": {
+        "@id": "schema:Text"
+    },
     ...
 }
 
@@ -622,12 +627,12 @@ with the following vocabulary:
 - Although the range of `creation` includes any CreativeWork, we expect that, for the most
   part, only Manifestations will be provided.
 - `percentageShares` must be a number between 0 and 100.
-- `rightContext` and `usageType` contain arbitrary strings or [schema.org/PropertyValues](schema.org/PropertyValues)
-  that should be classified by the registrar of the Right
+- `rightContext` and `usageType` contain arbitrary strings that should be classified by the
+  registrar of the Right
 
 An example of a Right:
 
-```
+```javascript
 // In JSON-LD
 {
     "@context": [
@@ -636,14 +641,7 @@ An example of a Right:
     ],
     "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
-    "usageType": [
-        "all", "copy", "play",
-        {
-            "@type": "PropertyValue",
-            "name": "stream",
-            "value": "240p"
-        }
-    ],
+    "usageType": ["all", "copy", "play"],
     "territory": "<URI pointing to a Place object>",
     "rightContext": ["inflight", "inpublic", "commercialuse"],
     "exclusive": true,
@@ -662,14 +660,7 @@ An example of a Right:
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "<coalaip placeholder>/Right",
-    "usageType": [
-        "all", "copy", "play",
-        {
-            "@type": "PropertyValue",
-            "name": "stream",
-            "value": "240p"
-        }
-    ],
+    "usageType": ["all", "copy", "play"],
     "territory": { "/": "<hash pointing to a Place object>" },
     "rightContext": ["inflight", "inpublic", "commercialuse"],
     "exclusive": true,
@@ -687,7 +678,7 @@ An example of a Right:
 The COALA IP Specification models `RightsAssignment`s primarily through the transfer of assets
 (`Right`s) between parties. In addition to the information inherent to these transfers, a transfer
 may also contain a payload with more specific contract information concerning the exchanging
-parties; this is modelled as a `RightsTransferAction` Class with the following vocabulary:
+parties; this is modelled as a `RightsTransferAction` class with the following vocabulary:
 
 ```javascript
 // RightsTransferAction Class
@@ -730,7 +721,6 @@ An example of an RightsAssignment payload:
     "@context": <coalaip placeholder>,
     "@id": "<URI pointing to this object>",
     "@type": "RightsTransferAction",
-    "description": "loan",
     "transferContract": [
         "<URI pointing to a CreativeWork object or file (ideally on an immutable ledger)>",
         {
@@ -743,7 +733,6 @@ An example of an RightsAssignment payload:
 {
     "@context": { "/": "<hash pointing to COALA IP's context>" }, // For now, these could also be a URI to the context
     "@type": "RightsTransferAction",
-    "description": "loan",
     "transferContract": [
         { "/": "<hash pointing to a CreativeWork object or file on e.g. IPFS>" },
         {
@@ -755,7 +744,6 @@ An example of an RightsAssignment payload:
 
 **Notes**:
 
-- `description` contains an arbitrary string that adds further detail to the RightsAssignment
 - `transferContract` is defined to be of type `"@id"` for ease of use with URLs. A string value can
   be added with expanded property containing `"@value"`.
 - In the context of transferring rights through a ledger, no `object`, `agent`, or `participant` is
