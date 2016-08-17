@@ -151,7 +151,7 @@
             "schema:rangeIncludes": {
                 "@id": "schema:Boolean"
             },
-            "rdfs:comment": "Convenience flag for indicating if a Creation is a Manifestation.",
+            "rdfs:comment": "A convenience flag for indicating if a Creation is a Manifestation.",
             "rdfs:label": "isManifestation"
         },
         {
@@ -184,14 +184,9 @@
             "schema:domainIncludes": {
                 "@id": "coala:Right"
             },
-            "schema:rangeIncludes": [
-                {
-                    "@id": "schema:Text"
-                },
-                {
-                    "@id": "schema:PropertyValue"
-                }
-            ],
+            "schema:rangeIncludes": {
+                "@id": "schema:Text"
+            },
             "rdfs:comment": "The context in which a Right may be exercised. User defined.",
             "rdfs:label": "rightContext"
         },
@@ -236,14 +231,9 @@
             "schema:domainIncludes": {
                 "@id": "coala:Right"
             },
-            "schema:rangeIncludes": [
-                {
-                    "@id": "schema:Text"
-                },
-                {
-                    "@id": "schema:PropertyValue"
-                }
-            ],
+            "schema:rangeIncludes": {
+                "@id": "schema:Text"
+            },
             "rdfs:comment": "Describes the entitled ways that something can be used or exercised. For example, a Right may only grant copyright usage.",
             "rdfs:label": "usageType"
         },
