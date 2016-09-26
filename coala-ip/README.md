@@ -165,7 +165,7 @@ unidirectional links, make up the actual `Entity` model. An `Entity` can be link
 other `Entities` bidirectionally, as the attached figure shows:
 
 
-![](media/f1.png)
+![](media/entity_model.png)
 
 
 The attributes of the `Entity` model are designed to be generic so more complex data models like
@@ -204,7 +204,7 @@ be linked to each other through specific, unidirectional relationships. The figu
 the total possible relationships between `Entities`:
 
 
-![](media/f2.png)
+![](media/rights_reference_model.png)
 
 
 **Sources:**
@@ -270,7 +270,16 @@ The following example was used in the [Creative Commons Rights Expression Langua
 W3C submission:
 
 
-![](media/rdfexample.png)
+![](media/rdfexamplegraph.png)
+
+```
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml/vocab#">
+    <rdf:Description rdf:about="http://www.lessig.org/blog/">
+        <xhtml:license rdf:resource="http://creativecommons.org/licenses/by/3.0/" />
+    </rdf:Description>
+</rdf:RDF>
+```
 
 
 This example RDF states licensing information about Lawrence Lessig's blog in a
@@ -902,7 +911,7 @@ In addition, a Place can have the following outgoing links to other entities:
 Visualized, an RRM Place looks like:
 
 
-![](media/lccrrmplace.png)
+![](media/rrmplace.png)
 
 
 #### Proposed Transformation
@@ -982,7 +991,7 @@ Additionally, a Party can have the following outgoing links to other entities:
 Visualized, an RRM Party looks like:
 
 
-![](media/lccrrmparty.png)
+![](media/rrmparty.png)
 
 
 #### Proposed Transformation
@@ -1245,7 +1254,7 @@ Additionally, a Creation can have the following outgoing links to other entities
 Visualized, an RRM Creation looks like:
 
 
-![](media/lccrrmcreation.png)
+![](media/rrmcreation.png)
 
 
 #### Proposed Transformation
@@ -1383,7 +1392,7 @@ In addition, a Right can have the following outgoing links to other entities:
 Visualized, an RRM Right looks like:
 
 
-![](media/lccrrmright.png)
+![](media/rrmright.png)
 
 
 ##### Additional Types of Rights
@@ -1535,7 +1544,7 @@ The RRM RightsAssignment has the following outgoing references:
 Visualized, an RRM RightsAssignment looks like:
 
 
-![](media/lccrrmrightsassignment.png)
+![](media/rrmrightsassignment.png)
 
 
 #### Proposed Transformation
@@ -1621,7 +1630,7 @@ Additionally, an RRM Assertion can have the following outgoing references:
 Visualized, an RRM Assertion `Entity` looks like:
 
 
-![](media/lccrrmassertion.png)
+![](media/rrmassertion.png)
 
 
 #### Proposed Transformation
