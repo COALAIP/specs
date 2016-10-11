@@ -87,9 +87,9 @@ COALA IP's vision will be realized through three key efforts:
 
 1. Building a community to define a minimally-viable set of data for the description of
    intellectual property rights and licensing agreements;
-2. Authoring a guide—this document—to provide an overview of the field and the need for a technical
+1. Authoring a guide—this document—to provide an overview of the field and the need for a technical
    specification to represent intellectual property rights on distributed ledgers; and
-3. Defining a free and open messaging and communication protocol for intellectual property rights
+1. Defining a free and open messaging and communication protocol for intellectual property rights
    and licensing transactions.
 
 
@@ -121,17 +121,17 @@ The LCC released the "[LCC Ten Targets for the Rights Data Network](http://doi.o
 as a general guide toward achieving the following goals:
 
 1. Every Party has a unique global identifier;
-2. Every Creation has a unique global identifier;
-3. Every Right has a unique global identifier;
-4. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve them within the internet;
-5. Links between identifiers are platform agnostic and non-proprietary
-6. Metadata is platform agnostic or interoperable, and schema should have mappings to
+1. Every Creation has a unique global identifier;
+1. Every Right has a unique global identifier;
+1. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve them within the internet;
+1. Links between identifiers are platform agnostic and non-proprietary
+1. Metadata is platform agnostic or interoperable, and schema should have mappings to
    translate between schema that have been authorized by relevant parties;
-7. The provenance of Rights has to be made explicit;
-8. Any participant has the ability to make standardized, machine-readable statements about
+1. The provenance of Rights has to be made explicit;
+1. Any participant has the ability to make standardized, machine-readable statements about
    rightholdings in creations;
-9. Conflicts in rights declarations should be automatically identifiable; and
-10. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
+1. Conflicts in rights declarations should be automatically identifiable; and
+1. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
 
 
 For more in-depth information about the goals of the LCC, see
@@ -383,11 +383,11 @@ map and execute validation against these properties by using the schema definiti
 For more clarity, let's see how a JSON-LD parser would look at this example:
 
 1. Notice `@context` contains `http://schema.org/Person`
-2. `GET http://schema.org/Person`
-3. For each of the user-defined keys, check if they map to any keys provided in the schema
+1. `GET http://schema.org/Person`
+1. For each of the user-defined keys, check if they map to any keys provided in the schema
     1. If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls
        this an `identifying blank node`) is found
-    2. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
+    1. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
 
 
 Continuing with this example, here is what our previously defined set of data would look like after
@@ -652,7 +652,7 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     within and across applications.
 
 
-3. Now that we have derived an IPLD from the person object, we can link it to the creation as its
+1. Now that we have derived an IPLD from the person object, we can link it to the creation as its
    author:
 
 
@@ -682,7 +682,7 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
-4. Finally, to make this creation object resolvable, we repeat the first two steps. We serialize the creation
+1. Finally, to make this creation object resolvable, we repeat the first two steps. We serialize the creation
    object to a canonical form of CBOR:
 
 
@@ -697,7 +697,7 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     make the link more easily retrievable on deserialization.
 
 
-5. Hash the resulting serialized byte array using [multihash](https://github.com/jbenet/multihash)
+1. Hash the resulting serialized byte array using [multihash](https://github.com/jbenet/multihash)
    and encode the hash to base58:
 
 
@@ -1423,10 +1423,10 @@ distribute a Manifestation's Rights to a multitude of interested Parties must ta
 steps:
 
 1. Register their Party identifier on a global registry;
-2. Register their Creation on a global registry and link it to their Party identifier;
-3. Register Manifestations to the Creation on a global registry;
-3. Register any number of Rights tailored to interested Parties on a global registry; and
-4. Register RightAssignments to assign these Rights to interested Parties.
+1. Register their Creation on a global registry and link it to their Party identifier;
+1. Register Manifestations to the Creation on a global registry;
+1. Register any number of Rights tailored to interested Parties on a global registry; and
+1. Register RightAssignments to assign these Rights to interested Parties.
 
 
 This highlights that Rights are not strictly limited to only registrations. Rights contain
