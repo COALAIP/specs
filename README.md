@@ -2,97 +2,104 @@
 
 ## TL;DR
 
-[COALA IP](https://www.coalaip.org) is a blockchain-ready, community-driven protocol for intellectual property licensing.
+[COALA IP](https://www.coalaip.org) is a blockchain-ready, community-driven protocol for
+intellectual property licensing.
 
-[This presentation](presentations/COALA%20IP%20-%20short.pdf) gives a quick summary. [Here's](presentations/COALA%20IP%20-%20long.pdf) an extended version.
+[This presentation](presentations/COALA%20IP%20-%20short.pdf) gives a quick summary. [Here's](presentations/COALA%20IP%20-%20long.pdf)
+an extended version.
 
-[This academic paper](https://github.com/COALAIP/specs/blob/master/presentations/COALA%20IP%20Report%20-%20May%202016.pdf) is about how blockchains can support, complement, or supplement IP, authored by the COALA IP working group.
+[This academic paper](https://github.com/COALAIP/specs/blob/master/presentations/COALA%20IP%20Report%20-%20May%202016.pdf)
+is about how blockchains can support, complement, or supplement IP, authored by the COALA IP working
+group.
 
 ## Resources
 
-Reference code implementations are [here](IMPLEMENTATIONS.md).
+Links to reference code implementations can be found [here](IMPLEMENTATIONS.md).
 
-COALA IP is a community effort. [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors are listed at the bottom; thanks everyone! Don't be shy -- please give us your questions, suggestions or feedback:)
+COALA IP is a community effort. [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to the
+code. Main contributors are listed at the bottom; thanks everyone! Don't be shy -- please give us
+your questions, suggestions or feedback :).
 
 What follows here is the whitepaper, including full-on specifications. Here we go...
 
 ## Abstract
 
 Content creators on the internet are getting a raw deal. They get a fraction of the revenue earned
-by hosting and distribution platforms, even though their work is what keeps these sites filled
-with traffic-driving content. It's hard for a creative to make a living. Licensing is hard: the
-user experience is bad, and lawyers and middlemen extract the most value. In many areas, more money
+by hosting and distribution platforms, even though their work is what keeps these sites filled with
+traffic-driving content. It's hard for a creative to make a living. Licensing is hard: the user
+experience is bad, with lawyers and middlemen extracting the most value. In many areas, more money
 goes to the distributors than to the creators. Even though many consumers would be happy to pay the
-people who made the content they love, they aren't given the chance. Instead, they are surveilled
-and served ads based on their data profiles. It doesn't have to be this way.
+people who made the content they love, they aren't given the chance–instead, they are surveilled and
+served ads. It doesn't have to be this way.
 
-The Coalition Of Automated Legal Applications — Intellectual Property Group (COALA IP) group was
-formed to address these problems. COALA IP is working to design and implement a free and open
-specification for representing and licensing intellectual property. COALA IP's goal is to establish
-open, free, and easy-to-use ways to record attribution information and other metadata about works,
-assign or license rights, mediate disputes, and authenticate claims by others. We believe there
-should be a global standard at the data level, without the need for centralized control.
+The [Coalition of Automated Legal Applications — Intellectual Property](http://coala.global/working-groups/)
+(COALA IP) group was formed to address these problems. COALA IP's goal is to establish free, open,
+and easy-to-use methods of recording attribution and related metadata about works, assigning or
+licensing rights, mediating disputes, and authenticating claims by others. We believe there should
+be a global standard at the data level, without the need for centralized control.
 
-This document details the COALA IP approach to representing intellectual property on distributed
-ledgers (or blockchains). It's an effort to transform the implementation-agnostic Rights Reference
-Model (RRM) of the Linked Content Coalition (LCC) into a free and open standard. It outlines
-technologies that could be leveraged for the implementation and structure of a specification for
-everyone involved: creators, rightsholders, distributors, consumers, developers, and so on. The
-protocol will be technology-specific, but ledger-agnostic.
+This document details an approach of representing intellectual property claims on distributed
+ledgers (or blockchains). It is an effort to transform the [Linked Content Coalition](http://www.linkedcontentcoalition.org/)
+(LCC)'s implementation-agnostic [Rights Reference Model](http://www.linkedcontentcoalition.org/phocadownload/framework/The%20LCC%20Rights%20Reference%20Model%20v1.0.pdf)
+(RRM) into a free and open standard by outlining technologies that could be leveraged for an
+implementation. This document aims to represent the interests of all involved stakeholders:
+creators, rightsholders, distributors, consumers, developers, and so on.
 
 COALA IP's vision will be realized through three key efforts:
 
-1. Building a community to define a minimally-viable set of data for the description of
-   intellectual property rights and licensing agreements;
-1. Authoring a guide—this document—to provide an overview of the field and the need for a technical
-   specification to represent intellectual property rights on distributed ledgers; and
-1. Defining a free and open messaging and communication protocol for intellectual property rights
-   and licensing transactions.
+1. Authoring a guide to provide an overview of the field and the need for a technical specification
+   to represent intellectual property rights on distributed ledgers (see [Introduction](#introduction));
+1. Defining a technology-specific, but ledger-agnostic, free and open messaging and communication
+   protocol for intellectual property rights and licensing transactions (see [Implementing the
+   RRM](#coala-ip-implementing-the-lcc-rrm-with-linked-data); and
+1. Building a community to define a minimally-viable set of data for the description of intellectual
+   property rights and licensing agreements.
 
 
 ## Introduction
 
-This section provides context for the COALA Intellectual Property (COALA IP) specification. It
-describes the technological concepts used to model a generic, extensible protocol for managing
-digital rights. It is meant to give the reader an overview of the concepts; for a more comprehensive
-understanding, we encourage the reader to explore the reference material throughout the document.
+This section describes the technological concepts used in this document to model a generic and
+extensible protocol for managing digital rights. Each write-up is meant only as a brief overview; to
+gain a more comprehensive understanding, we encourage you to explore the reference materials
+provided as embedded links or in the *Sources* subsections.
 
 
 ### The LCC Framework
 
 The [LCC Framework](http://www.linkedcontentcoalition.org/index.php/rights-data-network/lcc-framework)
 is a set of documents published by the [Linked Content Coalition](http://linkedcontentcoalition.org/)
-(LCC) to "unify digital rights data management". The key documents are:
+(LCC) to "unify digital rights data management." The key documents include:
 
-- [The LCC Manifesto and Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)
-- [The LCC Entity Model](http://doi.org/10.1000/285)
-- [The LCC Rights Reference Model](http://doi.org/10.1000/284)
-- [The LCC Principles of identification](http://doi.org/10.1000/287)
+- [The LCC Manifesto and Ten Targets for the Rights Data Network](#the-lccs-ten-targets)
+- [The LCC Entity Model](#the-lcc-entity-model)
+- [The LCC Rights Reference Model](#the-lcc-rights-reference-model)
+- [The LCC Principles of Identification](#the-lcc-principles-of-identification)
 
 
 #### The LCC's Ten Targets
 
-The LCC's goal is to enable the widest possible access to accurate rights information and the
-ability to automate the licensing and assignment of rights, whether for commercial or free use.
-The LCC released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290),"
-as a general guide toward achieving the following goals:
+The LCC's foremost goals are to enable, for all parties, the widest possible access to accurate
+rights information, as well as the automation of rights licensing and assignment for both
+commercial and free use. The LCC released the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)"
+as a general guide toward achieving these goals. It asks for the following:
 
 1. Every Party has a unique global identifier;
 1. Every Creation has a unique global identifier;
 1. Every Right has a unique global identifier;
-1. All identifiers have a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) to persistently resolve them within the internet;
+1. All identifiers are associated with a [URI](https://www.w3.org/Addressing/URL/uri-spec.html) that
+   will persistently resolve them within the internet;
 1. Links between identifiers are platform agnostic and non-proprietary
-1. Metadata is platform agnostic or interoperable, and schema should have mappings to
-   translate between schema that have been authorized by relevant parties;
-1. The provenance of Rights has to be made explicit;
+1. Metadata is platform agnostic or interoperable; mappings should be available to translate
+   between schemata authorized by multiple parties;
+1. The provenance of rights has to be made explicit;
 1. Any participant has the ability to make standardized, machine-readable statements about
-   rightholdings in Creations;
+   rightsholdings in Creations;
 1. Conflicts in rights declarations should be automatically identifiable; and
-1. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
+1. Registered Creations are associated with corresponding digital "fingerprints" or "watermarks".
 
 
-For more in-depth information about the goals of the LCC, see
-the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)".
+For more in-depth information about the goals of the LCC, see the "[LCC Ten Targets for the Rights
+Data Network](http://doi.org/10.1000/290)".
 
 
 **Sources:**
@@ -102,31 +109,30 @@ the "[LCC Ten Targets for the Rights Data Network](http://doi.org/10.1000/290)".
 
 #### The LCC Entity Model
 
-*Note: You don't need to know the LCC Entity Model to understand this specification. The Entity
-Model is a meta-model used by the LCC to model their ontology, the LCC Rights Reference Model.*
+*Note: You don't need to know the LCC Entity Model to understand the rest of this document. The
+Entity Model is a meta-model used by the LCC to model their higher-level [Rights Reference Model](#the-lcc-rights-reference-model).*
 
-The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) is a generic data model the LCC uses to
-define more specific data models, like the [LCC Rights Reference Model](http://doi.org/10.1000/284)
-(LCC RRM). The LCC EM specification defines an `Entity` model composed of five attribute types:
+The [LCC Entity Model](http://doi.org/10.1000/285) (LCC EM) specification defines an `Entity` model
+composed of five attribute types:
 
-- **Category:** A broad category the Entity belongs to (e.g. Language=iso3166-1a2:EN ("English"))
-- **Descriptor:** The name of the Entity (e.g. Name="Andy Warhol")
-- **Quantity:** A numeric value related to the Entity (e.g. Height=20cm)
-- **Time:** A time or date related to the Entity (e.g. DateOfCreation=1999)
-- **Link:** Links the Entity to another Entity (e.g. "Andy Warhol" ---isCreator---> "32 Campbell's
-  Soup Cans")
+- **Category:** A broad category the Entity belongs to (e.g. `Language=iso3166-1a2:EN ("English")`)
+- **Descriptor:** The name of the Entity (e.g. `Name="Andy Warhol"`)
+- **Quantity:** A numeric value related to the Entity (e.g. `Height=20cm`)
+- **Time:** A time or date related to the Entity (e.g. `DateOfCreation=1999`)
+- **Link:** A link to another Entity (e.g. `"Andy Warhol"` ––isCreator––> `"32 Campbell's Soup
+  Cans"`)
 
 
-These attributes are each represented as models in the specification and, together with
-unidirectional links, make up the actual `Entity` model. An `Entity` can be linked to
-other `Entities` bidirectionally, as the attached figure shows:
+These attributes are each represented as sub-models in the specification and, together with
+unidirectional links, make up the actual `Entity` model. An entity can be linked to
+other entities bidirectionally, as the attached figure shows:
 
 
 ![](media/entity_model.png)
 
 
-The attributes of the `Entity` model are designed to be generic so more complex data models like
-the LCC RRM can be built on top.
+The attributes of the `Entity` model are designed to be generic to allow for more complex data
+models (e.g. the [LCC RRM](#the-lcc-rights-reference-model)) to be built on top.
 
 
 **Sources:**
@@ -136,10 +142,9 @@ the LCC RRM can be built on top.
 
 #### The LCC Rights Reference Model
 
-The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal framework for
-the representation of intellectual property rights. The LCC RRM specification describes an abstract
-logical data model built on top of the LCC Entity Model, and is composed of the following `Entity`
-types:
+The [LCC Rights Reference Model](http://doi.org/10.1000/284) (LCC RRM) is a formal framework of
+representing intellectual property rights. The RRM describes a high-level data model built on top
+of the [LCC Entity Model](#the-lcc-entity-model), composed of the following entity types:
 
 - **Party:** A person or an organization (e.g. "Richard Prince", "American Apparel", or "Sky
   Ferreira")
@@ -147,18 +152,23 @@ types:
 - **Place:** A virtual or physical location (e.g. "New York City" or "http://www.newyorkcity.com")
 - **Right:** A set of permissions that entitle a Party to do something with a Creation (e.g.
   production and sale of t-shirts bearing the Creation)
-- **RightsAssignment:** A decision by a Party resulting in the existence of a right (e.g. "Richard
+- **RightsAssignment:** A decision by a Party resulting in the existence of a Right (e.g. "Richard
   Prince grants American Apparel the right to produce and sell t-shirts bearing Untitled Instagram
   Portrait in North America")
-- **Assertion:** A claim made about the substance of a Right (e.g. "Richard Prince says he has copyright in Untitled Instagram Portrait", or "Sky Ferreira says she has copyright in Untitled Instagram Portrait")
-- **RightsConflict:** A statement of disagreement over a Right (e.g. "Sky Ferreira and Richard Prince both claim copyright in Untitled Instagram Portrait")
+- **Assertion:** A claim made about the substance of a Right (e.g. "Richard Prince claims he has
+  copyright to Untitled Instagram Portrait", or "Sky Ferreira claims she has copyright to Untitled
+  Instagram Portrait")
+- **RightsConflict:** A statement of disagreement over a Right (e.g. "Sky Ferreira and Richard
+  Prince both claim copyright to Untitled Instagram Portrait")
 
 
-*Note: For the sake of simplicity, the `Context` type was left out of the above list. It is defined only as a parent/categorizing class of Right, RightsAgreement, Assertion, and RightsConflict. It holds no significant value on its own.*
+*Note: For the sake of simplicity, the `Context` type has been left out. It is defined by the RRM
+only as a parent/categorizing class of Right, RightsAgreement, Assertion, and RightsConflict and
+holds no significant value on its own.*
 
-These seven `Entity` types are the building blocks of a global digital rights ontology. They can
-be linked to each other through specific, unidirectional relationships. The figure below specifies
-the total possible relationships between `Entities`:
+These seven entity types are the building blocks of a global digital rights ontology. They can be
+linked to each other through specific, unidirectional relationships. The figure below specifies the
+total possible relationships between `Entities`:
 
 
 ![](media/rights_reference_model.png)
@@ -183,20 +193,18 @@ the total possible relationships between `Entities`:
 
 ### The Semantic Web
 
-The world wide web (web) is an information space for sharing information in linked documents.
-The web is mostly used by humans, publishing and accessing information in human-readable formats,
-like a webpage. In theory, machines are capable of understanding this kind of information, but in
-practice machines find this difficult and are inefficient at doing it. For example, a webpage
-with a table listing the populations of a number of countries is easy for a human to understand, but
-even if the first column is called "The Name of a Country", it is difficult for a machine to
-understand and to deduce new information from it. It's even harder for machines to reason from this
-kind of information if context is not provided.
+The world wide web (web) is an information space for sharing information through linked documents.
+The web is mostly used by humans, with information published and accessed in human-readable formats
+(e.g. a webpage). Although machines are, in theory, capable of understanding this kind of
+information, in practice, this is usually difficult and inefficient. For example, while humans may
+easily understand a webpage with a table listing national populations, a machine would likely not
+understand or be able to deduce new information–even the appropriate context was given by naming a
+column as "Country Population".
 
-The semantic web is about publishing information in data schemata that hold semantic meaning for
-both humans and machines. This allows humans to publish human-readable information in a way that
-machines can understand too. Doing so would likely prove to be of great value in advancing the web.
-One of the key building blocks of the semantic web, the Resource Description Framework, is
-described in the following section.
+To solve this, the semantic web introduces methods of publishing information in formats that are
+capable of holding semantic meaning for both humans and machines. This allows humans to publish
+human-readable information in a way that is also understandable to machines. The key underlying
+building block of these formats is the [Resource Description Framework](#the-resource-description-framework-rdf).
 
 
 **Sources:**
@@ -206,25 +214,24 @@ described in the following section.
 
 #### The Resource Description Framework (RDF)
 
-[Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) is a framework for
-describing entities on the web. It uses the Universal Resource Identifier (URI), a generalization
-of the Universal Resource Location (URL), to address resources. This makes RDF exceptionally
-interoperable and extensible.
+The [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) is a framework for
+describing ontologies. It uses the [Universal Resource Identifier](https://tools.ietf.org/html/rfc3986)
+(URI), a generalization of the [Universal Resource Location](https://tools.ietf.org/html/rfc1738)
+(URL), to address resources. This allows RDF to be exceptionally interoperable and extensible.
 
-RDF's core data structure is a graph-based data model that uses sets of triplets to construct
-subsets of the graph. Each triplet consists of a **subject**, **predicate**, and an **object**. In
-its smallest form, a set containing a single triplet is already an RDF graph. Visualized, a simple
-RDF graph could look like this:
+RDF's core data structure is a graph-based model that uses sets of triplets to construct graph
+subsets. Each triplet consists of a **subject**, **predicate**, and **object**. In its smallest
+form, an RDF graph can be just a single triplet. Visualized, it would look like this:
 
 
 ![](media/rdfgraph.png)
 
 
-Each node of the graph is usually represented as a URI pointing to a resource, providing further
-details about its relationship to the graph.
+Each node would usually be expressed as an URI to a resource that provides further details about the
+node's relationship to the graph.
 
-The following example was used in the [Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/) (ccREL)
-W3C submission:
+The following example was used in the [Creative Commons Rights Expression Language](https://www.w3.org/Submission/ccREL/)
+(ccREL) W3C submission:
 
 
 ![](media/rdfexamplegraph.png)
@@ -239,24 +246,20 @@ W3C submission:
 ```
 
 
-This example RDF states licensing information about Lawrence Lessig's blog in a
-machine-readable way. Lessig's blog (the *subject*) is licensed (the *predicate*)
-under a Creative Commons Attribution 3.0 license (the *object*). ccREL is a schema provided by
-Creative Commons that allows defining context for machines on how to interpret licensing information
-for documents on the web. ccREL itself is implemented using RDF Schema, which is a
-vocabulary for describing properties and classes of RDF resources. By using the [Web
-Ontology Language](https://www.w3.org/TR/owl-features/) (OWL), concepts from other RDF
-schemata can be included in a domain-specific RDF schema, creating a global ontology of semantically
-structured data.
+This example triplet states licensing information about Lawrence Lessig's blog in a machine-readable
+way. Lessig's blog (the *subject*) is licensed (the *predicate*) under a [Creative Commons
+Attribution 3.0](https://creativecommons.org/licenses/by/3.0/) license (the *object*). Provided by
+Creative Commons, ccREL is just one example of a context-providing schema that is built on top of
+RDF. Others, such as the [Web Ontology Language](https://www.w3.org/TR/owl-features/) (OWL), also
+exist.
 
-ccREL is just one example of a context-providing schema built on top of RDF. RDF
-implementations vary, especially in terms of used data structures. Embedded
-RDF in HTML pages and RDF/XML syntax are two of the more popular implementations of RDF, albeit with
-relatively heavy syntax and learning curves. In 2014, with RDF 1.1 coming up, a new RDF-compatible,
-JSON-based data structure was accepted by the W3C: JSON-LD. It fits the semantic web concept of
-linked data into [Javascript Object Notation](https://tools.ietf.org/html/rfc7159) (JSON), which
-makes it much more approachable than comparable implementations. We plan to port the LCC RRM
-specification to RDF using JSON-LD, so we will explore its main features in the next section.
+RDF itself includes multiple implementations, each varying in their underlying data structures.
+Embedding RDF in HTML pages and RDF/XML syntax are two of the more popular implementations, albeit
+with relatively heavy syntaxes and learning curves. In 2014, alongside the release of RDF 1.1, a new
+RDF-compatible, [Javascript Object Notation](https://tools.ietf.org/html/rfc7159) (JSON)-based data
+structure was accepted by the W3C: [JSON-LD](#json-linked-data). JSON-LD fit the semantic web's
+[Linked Data](#linked-data) concept into the widely popular JSON format and provided a much more
+approachable format to work with RDF.
 
 
 **Sources:**
@@ -276,11 +279,12 @@ specification to RDF using JSON-LD, so we will explore its main features in the 
 #### JSON Linked Data
 
 [JSON-Linked Data](https://www.w3.org/TR/json-ld/) (JSON-LD) is a data structure that merges the
-concepts of the [Resource Description Framework](https://www.w3.org/TR/rdf11-concepts/) with
-[JSON](https://tools.ietf.org/html/rfc7159). Using the concept of a `context`, it allows users to
-link a JSON object's property to the corresponding RDF schemata in an ontology.
+concepts of [linked](#linked-data) and interoperable data into the [JSON](https://tools.ietf.org/html/rfc7159)
+format with [RDF](#the-resource-description-framework-rdf) support. In the context of RDF, JSON-LD
+allows users to link a JSON object's properties to a corresponding RDF schema through the concept of
+a `context`.
 
-Assume we have the following set of data:
+Assume we have the following set of data, modelling a user:
 
 
 ```javascript
@@ -292,14 +296,14 @@ Assume we have the following set of data:
 ```
 
 
-For a human it's obvious this is about a person named Andy Warhol, born August 6, 1928.
-For a machine that lacks the intuition and *context* of a human,
-resolving this representation into the same conclusion is difficult.
+For a human, it's obvious this is about a person named Andy Warhol, born August 6, 1928. However,
+for a machine, which lacks the intuition and *context* of a human, resolving this representation
+into the same conclusion is difficult.
 
-JSON-LD solves this problem by introducing `context` into JSON documents. On a high level, this
-allows data to be linked to already defined schemata. Adding a special `@context` key to the
-document provides a reference to the schema of the underlying data. Transforming our previous
-example to use JSON-LD would result in:
+JSON-LD solves this problem by introducing `context` to JSON documents. On a high level, this allows
+data to be linked to already defined schemata. Adding a special `@context` key to the document
+provides a reference to the schema of the underlying data. Transforming our previous example to use
+JSON-LD:
 
 
 ```javascript
@@ -318,37 +322,36 @@ application developer were to handle this data, they could rely on the same sche
 rather than their own. Over time, as more and more services use JSON-LD, data representations across
 services would begin to unify to improve cross-service data interoperability.
 
-Right now, each application or service has its own model for representing users. For example, one
-site might use `birthday` as the key for the user's birthday, while others use `day_of_birth` or
-`birthDay`. The sites may even use different formats for the value of the key, with some using
-`YYYY-MM-DD` and another using `DD-MM-YYYY`. Custom logic would have to be written to handle mapping
-the different keys to each other, but also to convert their values to a standard format even though
-they all have the same semantic meaning. They all describe when a person was born.
+Take, for example, our previous user model. Right now, each application or service might use their
+own model definitions: one site could choose `birthday`, while another uses `day_of_birth` or
+`birthDay`, to represent the user's birthday. These models might also be of different formats: some
+could be in `YYYY-MM-DD` while others `DD-MM-YYYY`. Despite all of them containing the same semantic
+meaning, custom logic would have to be written to not only handle the mapping between the different
+keys, but also to convert their values to a standard format.
 
-JSON-LD solves these problems by introducing a `context` to each data model allowing for:
+JSON-LD's `context` solves these problems by allowing for:
 
-1. A unified mapping of keys by complying to base schemata
-1. Value-validation on a [primitive data types level](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes)
+1. A unified mapping of keys that comply to base schemata; and
+1. Value validation for [primitive data types](https://www.w3.org/TR/rdf11-concepts/#section-Datatypes).
 
 
-Going back to the Andy Warhol example, we need to explain how JSON-LD magically maps our
-self-defined keys (`givenName`, `familyName` and `birthDate`) to the properties of schema.org's
-`Person`. If you look at schema.org's `Person` definition, you'll see we didn't choose random key
-names. Names were already part of the definition. In this case, a JSON-LD parser can automatically
-map and execute validation against these properties by using the schema definition.
+To see how `context` achieves this, we need to explain how JSON-LD magically maps our example's
+self-defined keys (`givenName`, `familyName` and `birthDate`) to their matching properties on the
+`Person` schema. If you look at the [`Person` definition](http://schema.org/Person), you'll notice
+that we didn't choose random keys–these keys were already part of the schema definition. Because of
+this, JSON-LD parsers are able to automatically map and validate our example model's properties
+against their schema definitions.
 
-For more clarity, let's see how a JSON-LD parser would look at this example:
+For more clarity, let's see how a JSON-LD parser would look at our example:
 
 1. Notice `@context` contains `http://schema.org/Person`
 1. `GET http://schema.org/Person`
-1. For each of the user-defined keys, check if they map to any keys provided in the schema
-    1. If this is the case, traverse the schema until a leaf node (the JSON-LD specification calls
-       this an `identifying blank node`) is found
+1. For each of the model's keys, check if they map to any keys provided in the schema
+    1. For each matched key, traverse the schema until the matching URI is found
     1. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
 
 
-Continuing with this example, here is what our previously defined set of data would look like after
-expansion:
+Continuing with our example, this is the result after expansion:
 
 
 ```javascript
@@ -372,25 +375,16 @@ expansion:
 ```
 
 
-We end up with a much more verbose form of our data. In the JSON-LD specification it's called
-*expanded* form, as the original object's been expanded with a `@context`. The original object's
-form, still with an `@context`, is defined by the specification as *compacted* form.
+The JSON-LD parser notices that the model contains keys matching the `Person` schema, and uses
+`http://schema.org/Person` to replace these matches with their more detailed schema definition URIs.
+The result, termed as ["Expanded Document Form"](https://www.w3.org/TR/json-ld/#expanded-document-form),
+is an automatically mapped set of data that uses an already available schema where each key points
+to the predicate node of an RDF triplet. Using this form, the parser can easily traverse the
+document and validate each of ocurrence of `@value`, as leaf nodes are only allowed to define the
+most basic types (e.g. string, boolean, integer, etc).
 
-The JSON-LD parser assumes we've defined the correctly named keys for a `Person` and uses
-`http://schema.org/Person` to replace each of our properties with their more detailed schema
-definition URIs. The result is an automatically mapped set of data that uses an already available
-schema. Each key of a given value now points to a left node on a schema ontology. Leaf nodes are
-only allowed to define the most basic types, such as string, boolean, integer, and so on, so the
-parser can easily traverse the document and validate each occurrence of `@value`.
-
-
-##### Final Thoughts
-
-This example is just the tip of the iceberg. JSON-LD has tremendous power. It can be used for
-aliasing, self-referencing, built-in types, indexing, and more.
-
-The rest of this document will rely heavily on JSON-LD, so we encourage you to learn more about it
-by reviewing the **Sources** section below.
+As the rest of this document relies heavily on JSON-LD, we encourage you to learn more by reviewing
+the **Sources** below.
 
 **Sources:**
 
