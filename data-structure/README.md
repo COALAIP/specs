@@ -76,10 +76,10 @@ Adhering to these patterns helps you to avoid the creation of models that are to
 an immutable context. For example, consider the [`Creation`](#rrm-creation) entity: although the
 schema allows a `Work` to declare its manifestations through the [workExample property](http://schema.org/workExample),
 doing so would inherently lock the `Work` into only these `Manifestation`s. You can avoid this
-problem by declaring your `Work`s and `Manifestation`s separately, using the [exampleOfWork
-property](http://schema.org/exampleOfWork) in the `Manifestation`s to create a link to its `Work`.
-Another feature of this pattern is that you only have to declare a nested model once, even if
-multiple parents should be linked to it.
+problem by declaring your `Work`s and `Manifestation`s separately, using the [`manifestationOfWork`
+property](#rrm-creation) (alias of [`exampleOfWork`](http://schema.org/exampleOfWork)) in the
+`Manifestation`s to create a link to its `Work`. Another feature of this pattern is that you only
+have to declare a nested model once, even if multiple parents should be linked to it.
 
 When relying on inter-object links rather than nested objects, you may find that some properties
 from schema.org expect an object or value rather than a link. To handle this, you can either use an
@@ -251,11 +251,30 @@ An example of a localizable `Place`:
 `Creation`s are represented by [schema.org/CreativeWork](http://schema.org/CreativeWork)s and its
 subtypes (such as [schema.org/Book](http://schema.org/Book)). To differentiate between the different
 `CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we treat any CreativeWork that does not contain
-an [`exampleOfWork`](http://schema.org/exampleOfWork) property as a `Work` and all other
-CreativeWorks (or subtypes) as `Manifestation`s. `Manifestation`s that include a [`url`](http://schema.org/url)
-property are considered digital `Manifestation`s while all others are physical `Manifestation`s. See
-the [schema.org/CreativeWork definition](http://schema.org/CreativeWork) for the Linked Data
-context.
+an `manifestationOfWork` (equivalent to [`exampleOfWork`](http://schema.org/exampleOfWork)) property
+as a `Work` and all other CreativeWorks (or subtypes) as `Manifestation`s. `Manifestation`s that
+include a [`url`](http://schema.org/url) property are considered digital `Manifestation`s while all
+others are physical `Manifestation`s. See the [schema.org/CreativeWork definition](http://schema.org/CreativeWork)
+for the Linked Data context.
+
+The `manifestationOfWork` property definition:
+
+```javascript
+{
+    "@id": "<coalaip placeholder>/manifestationOfWork",
+    "@type": "rdf:Property",
+    "schema:domainIncludes": {
+        "@id": "schema:CreativeWork"
+    },
+    "schema:rangeIncludes": {
+        "@id": "schema:CreativeWork"
+    },
+    "owl:equivalentProperty": {
+        "@id": "schema:exampleOfWork"
+    },
+    ...
+}
+```
 
 To conveniently identify `Manifestation`s, we also suggest adding a `isManifestation` property
 (*although this is not mandatory*):
@@ -302,7 +321,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "exampleOfWork": "<URI pointing to a CreativeWork object>",
+    "manifestationOfWork": "<URI pointing to a CreativeWork object>",
     "isManifestation": true,
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
@@ -320,7 +339,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "exampleOfWork": "<URI pointing to a CreativeWork object>",
+    "manifestationOfWork": "<URI pointing to a CreativeWork object>",
     "isManifestation": true,
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
@@ -348,7 +367,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "exampleOfWork": { "/": "<hash pointing to a CreativeWork object>" },
+    "manifestationOfWork": { "/": "<hash pointing to a CreativeWork object>" },
     "isManifestation": true,
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },
@@ -365,7 +384,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "exampleOfWork": { "/": "<hash pointing to a CreativeWork object>" },
+    "manifestationOfWork": { "/": "<hash pointing to a CreativeWork object>" },
     "isManifestation": true,
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },

@@ -155,6 +155,21 @@
             "rdfs:label": "isManifestation"
         },
         {
+            "@id": "<coalaip placeholder>/manifestationOfWork",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "schema:CreativeWork"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:CreativeWork"
+            },
+            "owl:equivalentProperty": {
+                "@id": "schema:exampleOfWork"
+            },
+            "rdfs:comment": "The parent Work of this Manifestation.",
+            "rdfs:label": "manifestationOfWork"
+        },
+        {
             "@id": "<coalaip placeholder>/numberOfUses",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
