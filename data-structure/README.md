@@ -31,7 +31,7 @@ Includes:
 ## Overview
 
 An overview and explaination of each representation can be found in the [COALA IP Specification,
-under the section "Remodeling the LCC RRM with Linked Data"](https://github.com/ascribe/specs/tree/master/coala-ip#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
+under the section "Implementing the LCC RRM with Linked Data"](https://github.com/ascribe/specs/tree/master/coala-ip#coala-ip-implementing-the-lcc-rrm-with-linked-data).
 
 ### Vocabularies
 
