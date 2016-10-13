@@ -495,18 +495,8 @@ with the following vocabulary:
     "rdfs:subClassOf": {
         "@id": "schema:Intangible"
     },
-    ...
-}
-
-// Creation Property
-{
-    "@id": "<coalaip placeholder>/creation",
-    "@type": "rdf:Property",
-    "schema:domainIncludes": {
-        "@id": "coala:Right"
-    },
-    "schema:rangeIncludes": {
-        "@id": "schema:CreativeWork"
+    "owl:equivalentClass": {
+        "@id": "dc:RightsStatement"
     },
     ...
 }
@@ -559,6 +549,22 @@ with the following vocabulary:
     },
     "schema:rangeIncludes": {
         "@id": "schema:Text"
+    },
+    ...
+}
+
+// RightsOf Property
+{
+    "@id": "<coalaip placeholder>/rightsOf",
+    "@type": "rdf:Property",
+    "schema:domainIncludes": {
+        "@id": "coala:Right"
+    },
+    "schema:rangeIncludes": {
+        "@id": "schema:CreativeWork"
+    },
+    "owl:equivalentProperty": {
+        "@id": "dc:rights"
     },
     ...
 }
@@ -652,6 +658,8 @@ with the following vocabulary:
 - `percentageShares` must be a number between 0 and 100.
 - `rightContext` and `usageType` contain arbitrary strings that should be classified by the
   registrar of the `Right`
+- `schema.org/license` can be used to provide a URL to the legal license document covering this
+  `Right`
 
 An example of a `Right`:
 
@@ -672,7 +680,7 @@ An example of a `Right`:
     "percentageShares": 30,
     "validFrom": "2016-01-01",
     "validThrough": "2016-02-01",
-    "creation": "<URI pointing to a CreativeWork object (that should be a Manifestation)>",
+    "rightsOf": "<URI pointing to a CreativeWork object (that should be a Manifestation)>",
     "license": "<URI pointing to a CreativeWork object or file (ideally on an immutable ledger)>" // Uses schema.org/license property
 }
 
@@ -691,7 +699,7 @@ An example of a `Right`:
     "percentageShares": 30,
     "validFrom": "2016-01-01",
     "validThrough": "2016-02-01",
-    "creation": { "/": "<hash pointing to a CreativeWork object (that should be a Manifestation)>" },
+    "rightsOf": { "/": "<hash pointing to a CreativeWork object (that should be a Manifestation)>" },
     "license": { "/": "<hash pointing to a CreativeWork object or file on e.g. IPFS>" } // Uses schema.org/license property
 }
 ```
