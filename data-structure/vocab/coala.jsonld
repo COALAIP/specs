@@ -1,5 +1,6 @@
 {
     "@context": {
+        "dc": "http://purl.org/dc/terms/",
         "owl": "http://www.w3.org/2002/07/owl#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -20,6 +21,9 @@
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:Intangible"
+            },
+            "owl:equivalentClass": {
+                "@id": "dc:RightsStatement"
             },
             "rdfs:comment": "Describes a state in which a Party is entitled to do something in relation to a Creation.",
             "rdfs:label": "Right"
@@ -77,18 +81,6 @@
             },
             "rdfs:comment": "The truth claim made about an assertion's subject.",
             "rdfs:label": "assertionTruth"
-        },
-        {
-            "@id": "<coalaip placeholder>/creation",
-            "@type": "rdf:Property",
-            "schema:domainIncludes": {
-                "@id": "coala:Right"
-            },
-            "schema:rangeIncludes": {
-                "@id": "schema:CreativeWork"
-            },
-            "rdfs:comment": "The Creation associated with a Class in some way. For example, the Creation that a Right is bound to.",
-            "rdfs:label": "creation"
         },
         {
             "@id": "<coalaip placeholder>/exclusive",
@@ -204,6 +196,21 @@
             },
             "rdfs:comment": "The context in which a Right may be exercised. User defined.",
             "rdfs:label": "rightContext"
+        },
+        {
+            "@id": "<coalaip placeholder>/rightsOf",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:CreativeWork"
+            },
+            "owl:equivalentProperty": {
+                "@id": "dc:rights"
+            },
+            "rdfs:comment": "The object upon which a Right is concerned with.",
+            "rdfs:label": "rightsOf"
         },
         {
             "@id": "<coalaip placeholder>/territory",

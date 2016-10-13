@@ -22,10 +22,6 @@
             "@type": "@id"
         },
         "assertionTruth": "coala:assertionTruth",
-        "creation": {
-            "@id": "coala:creation",
-            "@type": "@id"
-        },
         "exclusive": "coala:exclusive",
         "fingerprintOf": {
             "@id": "coala:fingerprintOf",
@@ -40,6 +36,10 @@
         "numberOfUses": "coala:numberOfUses",
         "percentageShares": "coala:percentageShares",
         "rightContext": "coala:rightContext",
+        "rightsOf": {
+            "@id": "coala:rightsOf",
+            "@type": "@id"
+        },
         "territory": {
             "@id": "coala:territory",
             "@type": "@id"
