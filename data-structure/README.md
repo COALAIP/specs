@@ -281,7 +281,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
 //       E.g. The Work is registered first and then the Manifestations are linked back to the Work.
 
 // In JSON-LD
-// Creation
+// Work
 {
     "@context": [
         "http://schema.org/",
@@ -289,7 +289,8 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "CreativeWork",
     "@id": "<URI pointing to this object>",
-    "name": "Lord of the Rings"
+    "name": "Lord of the Rings",
+    "creator": "<URI pointing to a Person or Organization object>"
 }
 
 // Digital Manifestation
@@ -328,14 +329,15 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
 }
 
 // In IPLD
-// Creation
+// Work
 {
     "@context": [ // For now, these could also be a URI to the context
         { "/": "<hash pointing to schema.org's context>" },
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "CreativeWork",
-    "name": "Lord of the Rings"
+    "name": "Lord of the Rings",
+    "creator": { "/": "<hash pointing to a Person or Organization object>" },
 }
 
 // Digital Manifestation
