@@ -33,6 +33,10 @@
         },
         "fingerprint": "coala:fingerprint",
         "isManifestation": "coala:isManifestation",
+        "manifestationOfWork": {
+            "@id": "coala:manifestationOfWork",
+            "@type": "@id"
+        },
         "numberOfUses": "coala:numberOfUses",
         "percentageShares": "coala:percentageShares",
         "rightContext": "coala:rightContext",
@@ -50,10 +54,6 @@
 
         "author": {
             "@id": "schema:author",
-            "@type": "@id"
-        },
-        "exampleOfWork": {
-            "@id": "schema:exampleOfWork",
             "@type": "@id"
         },
         "founder": {
