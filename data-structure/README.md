@@ -289,8 +289,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "CreativeWork",
     "@id": "<URI pointing to this object>",
-    "name": "Lord of the Rings",
-    "author": "<URI pointing to a Person or Organization object>"
+    "name": "Lord of the Rings"
 }
 
 // Digital Manifestation
@@ -305,6 +304,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "exampleOfWork": "<URI pointing to a CreativeWork object>",
     "isManifestation": true,
     "isPartOf" "<URI pointing to a CreativeWork object>",
+    "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
     "locationCreated": "<URI pointing to a Place object>",
     "url": "<URI pointing to digital representation>"
@@ -322,6 +322,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "exampleOfWork": "<URI pointing to a CreativeWork object>",
     "isManifestation": true,
     "isPartOf" "<URI pointing to a CreativeWork object>",
+    "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
     "locationCreated": "<URI pointing to a Place object>"
 }
@@ -334,8 +335,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "CreativeWork",
-    "name": "Lord of the Rings",
-    "author": { "/": "<hash pointing to a Person or Organization object>" }
+    "name": "Lord of the Rings"
 }
 
 // Digital Manifestation
@@ -349,6 +349,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "exampleOfWork": { "/": "<hash pointing to a CreativeWork object>" },
     "isManifestation": true,
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
+    "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",
     "locationCreated": { "/": "<hash pointing to a Place object>" },
     "url": { "/": "<hash pointing to a file on e.g. IPFS>" }
@@ -365,6 +366,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "exampleOfWork": { "/": "<hash pointing to a CreativeWork object>" },
     "isManifestation": true,
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
+    "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",
     "locationCreated": { "/": "<hash pointing to a Place object>" },
     "url": { "/": "<hash pointing to a file on e.g. IPFS>" }
