@@ -466,7 +466,10 @@ An example of adding fingerprinting information for a digital `Manifestation`:
 ```javascript
 // In JSON-LD
 {
-    "@context": "<coalaip placeholder>",
+    "@context": [
+        "http://schema.org/",
+        "<coalaip placeholder>"
+    ],
     "@type": "DigitalFingerprint",
     "@id": "<URI pointing to this object>",
     "fingerprintOf": "<URI pointing to a CreativeWork object or media blob>",
@@ -475,7 +478,10 @@ An example of adding fingerprinting information for a digital `Manifestation`:
 
 // In IPLD
 {
-    "@context": { "/": "<hash pointing to COALA IP's context>" }, // For now, these could also be a URI to the context
+    "@context": [ // For now, these could also be a URI to the context
+        { "/": "<hash pointing to schema.org's context>" },
+        { "/": "<hash pointing to COALA IP's context>" }
+    ],
     "@type": "DigitalFingerprint",
     "fingerprintOf": "<hash pointing to a CreativeWork object or media blob>",
     "fingerprint": "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY"
@@ -668,7 +674,7 @@ An example of a `Right`:
 {
     "@context": [
         "http://schema.org/",
-        <coalaip placeholder>
+        "<coalaip placeholder>"
     ],
     "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
@@ -749,7 +755,10 @@ An example of an `RightsAssignment` payload:
 ```javascript
 // In JSON-LD
 {
-    "@context": <coalaip placeholder>,
+    "@context": [
+        "http://schema.org/",
+        "<coalaip placeholder>"
+    ],
     "@id": "<URI pointing to this object>",
     "@type": "RightsTransferAction",
     "transferContract": [
@@ -762,7 +771,10 @@ An example of an `RightsAssignment` payload:
 
 // In IPLD
 {
-    "@context": { "/": "<hash pointing to COALA IP's context>" }, // For now, these could also be a URI to the context
+    "@context": [ // For now, these could also be a URI to the context
+        { "/": "<hash pointing to schema.org's context>" },
+        { "/": "<hash pointing to COALA IP's context>" }
+    ],
     "@type": "RightsTransferAction",
     "transferContract": [
         { "/": "<hash pointing to a CreativeWork object or file on e.g. IPFS>" },
