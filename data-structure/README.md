@@ -140,7 +140,7 @@ and [Organization](http://schema.org/Organization).
 and are likely to be modified in the future. Additional properties or even new class definitions may
 be used to create better representations in the future.
 
-##### Person
+#### Person
 
 See the [schema.org/Person definition](http://schema.org/Person) for the Linked Data context.
 
@@ -169,7 +169,7 @@ An example of a `Person`:
 }
 ```
 
-##### Organization
+#### Organization
 
 See the [schema.org/Organization definition](http://schema.org/Organization) for the Linked Data
 context.
@@ -371,7 +371,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
 }
 ```
 
-##### Licensing
+#### Licensing
 
 Although CreativeWorks are able to hold licensing information through a [`license`](http://schema.org/license)
 property, we recommend implementations to ignore this property and instead use the RRM's [`Right`
@@ -379,7 +379,7 @@ entity](#rrm-right) with their [suggested ownership semantics](../README.md#the-
 This recommendation comes especially strong if `Creation`s will be registered on an immutable
 ledger.
 
-##### Fingerprinting
+#### Fingerprinting
 
 Fingerprinting information can be registered for `Creation`s separately by using our own vocabulary
 definitions:
