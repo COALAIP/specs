@@ -4,7 +4,7 @@
 links when moving repos.*
 
 The definitive [JSON-LD](http://json-ld.org/) and [IPLD](https://github.com/ipld/specs/tree/master/ipld)
-entity schemata (and their Linked Data contexts) for [COALA IP](https://github.com/ascribe/specs/tree/master/coala-ip).
+entity schemata (and their Linked Data contexts) for [COALA IP](../README.md).
 
 Includes:
 
@@ -31,7 +31,7 @@ Includes:
 ## Overview
 
 An overview and explaination of each representation can be found in the [COALA IP Specification,
-under the section "Remodeling the LCC RRM with Linked Data"](https://github.com/ascribe/specs/tree/master/coala-ip#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
+under the section "Remodeling the LCC RRM with Linked Data"](../README.md#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
 
 ### Vocabularies
 
@@ -55,8 +55,8 @@ Although JSON-LD and IPLD are similar, there are a number of specific difference
 two from being used together at the moment (JSON-LD parsers are currently missing an IPLD resolving
 mechanism; specifically, `"@id"` cannot contain a merkle-link object). However, as we expect the two
 to be compatible in the future and have already relied on various IPLD properties throughout the
-[COALA IP Specification](https://github.com/ascribe/specs/tree/master/coala-ip), we provide the IPLD
-schemata in addition to the JSON-LD schemata.
+[COALA IP Specification](../README.md), we provide the IPLD schemata in addition to the JSON-LD
+schemata.
 
 In general, the IPLD schemata are identical to the JSON-LD schemata with the exception of [terms](https://www.w3.org/TR/json-ld/#dfn-term)
 that have type `"@id"` (i.e. holding a [node identifier](https://www.w3.org/TR/json-ld/#node-identifiers)):
@@ -136,7 +136,7 @@ Signatures schema](https://web-payments.org/specs/source/ld-signatures/).
 and [Organization](http://schema.org/Organization).
 
 **Note**: `Party`s are still a work-in-progress (see the list of requirements in the
-[spec](https://github.com/ascribe/specs/tree/master/coala-ip#the-lcc-party-entity)) and will be
+[spec](../README.md#the-lcc-party-entity)) and will be
 modified in the future. We will likely be adding properties or even define a new class to better
 represent them in the future.
 
@@ -375,9 +375,8 @@ Although CreativeWorks can hold licensing information through a [`license`](http
 property, we ignore this property for the purposes of rights management as the RRM models rights
 through a separate `Right` entity. Rather than using this property to register rights on a
 CreativeWork, we instead recommend implementors to follow the [COALA IP Specification's suggested
-flow for attaching rights](https://github.com/ascribe/specs/tree/master/coala-ip#the-notion-of-ownership).
-This recommendation comes especially strong if `Creation`s will be registered on an immutable
-ledger.
+flow for attaching rights](../README.md#the-notion-of-ownership). This recommendation comes
+especially strong if `Creation`s will be registered on an immutable ledger.
 
 ##### Fingerprinting
 
