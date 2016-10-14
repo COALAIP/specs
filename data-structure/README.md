@@ -777,8 +777,9 @@ An example of an `RightsAssignment` payload:
 
 - `transferContract` is defined to be of type `"@id"` for ease of use with URLs. A string value can
   be added by using an expanded property containing `"@value"`.
-- In the context of transferring rights through a ledger, the `object`, `agent`, and `participant`
-  properties are unnecessary as they are already implicitly defined in the containing transaction.
+- In the context of transferring rights through a ledger, the `object`, `agent`, `participant`,
+  `endTime`, and `startTime` properties are unnecessary as they are already implicitly defined in
+  the containing transaction.
 
 ### RRM Assertion
 
