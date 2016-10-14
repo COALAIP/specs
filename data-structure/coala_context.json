@@ -9,10 +9,15 @@
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
         "schema": "http://schema.org/",
 
+        "Copyright": "coala:Copyright",
         "DigitalFingerprint": "coala:DigitalFingerprint",
         "Right": "coala:Right",
         "RightsTransferAction": "coala:RightsTransferAction",
 
+        "allowedBy": {
+            "@id": "coala:allowedBy",
+            "@type": "@id"
+        },
         "asserter": {
             "@id": "coala:asserter",
             "@type": "@id"
