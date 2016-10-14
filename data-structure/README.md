@@ -63,7 +63,7 @@ instead of holding a URI pointing to the referenced object, these terms' values 
 
 ### Immutable Data Considerations
 
-As the [specification foresees implementations backed by immutable ledgers](link-me) and leverages
+As the [specification foresees implementations backed by immutable ledgers](#link-me) and leverages
 IPLD's guarantees of immutable data structures, all entity models have been designed to factor in
 their immutability post-creation. However, there are still a few recommended patterns to follow when
 working with, or extending, the models:
@@ -490,10 +490,20 @@ An example of adding fingerprinting information for a digital `Manifestation`:
 
 ### RRM Right
 
-As no existing schema.org vocabulary fits the RRM's notion of a `Right`, we define our own class
-with the following vocabulary:
+As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COALA IP's notion of a
+`Copyright`](#link-me), we define our own classes with the following vocabulary:
 
 ```javascript
+// Copyright Class
+{
+    "@id": "<coalaip placeholder>/Copyright",
+    "@type": "rdfs:Class",
+    "rdfs:subClassOf": {
+        "@id": "schema:Intangible"
+    },
+    ...
+}
+
 // Right Class
 {
     "@id": "<coalaip placeholder>/Right",
@@ -503,6 +513,22 @@ with the following vocabulary:
     },
     "owl:equivalentClass": {
         "@id": "dc:RightsStatement"
+    },
+    ...
+}
+
+// AllowedBy Property
+{
+    "@id": "<coalaip placeholder>/allowedBy",
+    "@type": "rdf:Property",
+    "schema:domainIncludes": {
+        "@id": "coala:Right"
+    },
+    "schema:rangeIncludes": {
+        "@id": "coala:Copyright"
+    },
+    "owl:equivalentProperty": {
+        "@id": "dc:source"
     },
     ...
 }
@@ -564,7 +590,7 @@ with the following vocabulary:
     "@id": "<coalaip placeholder>/rightsOf",
     "@type": "rdf:Property",
     "schema:domainIncludes": {
-        "@id": "coala:Right"
+        "@id": "coala:Copyright"
     },
     "schema:rangeIncludes": {
         "@id": "schema:CreativeWork"
@@ -579,9 +605,14 @@ with the following vocabulary:
 {
     "@id": "<coalaip placeholder>/territory",
     "@type": "rdf:Property",
-    "schema:domainIncludes": {
-        "@id": "coala:Right"
-    },
+    "schema:domainIncludes": [
+        {
+            "@id": "coala:Copyright"
+        },
+        {
+            "@id": "coala:Right"
+        }
+    ],
     "schema:rangeIncludes": {
         "@id": "schema:Place"
     },
@@ -610,6 +641,9 @@ with the following vocabulary:
     "@type": "rdf:Property",
     "schema:domainIncludes": [
         {
+            "@id": "coala:Copyright"
+        },
+        {
             "@id": "coala:Right"
         },
         {
@@ -636,6 +670,9 @@ with the following vocabulary:
     "@type": "rdf:Property",
     "schema:domainIncludes": [
         {
+            "@id": "coala:Copyright"
+        },
+        {
             "@id": "coala:Right"
         },
         {
@@ -659,18 +696,35 @@ with the following vocabulary:
 
 **Notes**:
 
-- Although the range of `creation` includes any CreativeWork, we expect that, for the most
-  part, only `Manifestation`s will be provided.
+- Although the range of `rightsOf` includes any CreativeWork, we expect that, for the most part,
+  only `Manifestation`s will be provided.
 - `percentageShares` must be a number between 0 and 100.
 - `rightContext` and `usageType` contain arbitrary strings that should be classified by the
-  registrar of the `Right`
-- `schema.org/license` can be used to provide a URL to the legal license document covering this
-  `Right`
+  registrar of a `Right`
+- `schema.org/license` can be used to provide a URL to the legal license document covering a `Right`
 
-An example of a `Right`:
+An example of a `Copyright` and a derived `Right`:
 
 ```javascript
+// Note: We assume that the data will be put on an immutable ledger, forcing all links to point "backwards."
+//       E.g. The Copyright is registered first and then the Right is linked back to the Copyright.
+
 // In JSON-LD
+// Copyright
+{
+    "@context": [
+        "http://schema.org/",
+        "<coalaip placeholder>"
+    ],
+    "@type": "<coalaip placeholder>/Copyright",
+    "@id": "<URI pointing to this object>",
+    "rightsOf": "<URI pointing to a CreativeWork object (usually should be a Manifestation)>",
+    "territory": "<URI pointing to a Place object>",
+    "validFrom": "2016-01-01",
+    "validThrough": "2066-01-01"
+}
+
+// Right
 {
     "@context": [
         "http://schema.org/",
@@ -678,6 +732,7 @@ An example of a `Right`:
     ],
     "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
+    "allowedBy": "<URI pointing to a Copyright object>",
     "usageType": ["all", "copy", "play"],
     "territory": "<URI pointing to a Place object>",
     "rightContext": ["inflight", "inpublic", "commercialuse"],
@@ -686,17 +741,31 @@ An example of a `Right`:
     "percentageShares": 30,
     "validFrom": "2016-01-01",
     "validThrough": "2016-02-01",
-    "rightsOf": "<URI pointing to a CreativeWork object (that should be a Manifestation)>",
     "license": "<URI pointing to a CreativeWork object or file (ideally on an immutable ledger)>" // Uses schema.org/license property
 }
 
 // In IPLD
+// Copyright
+{
+    "@context": [
+        "http://schema.org/",
+        "<coalaip placeholder>"
+    ],
+    "@type": "<coalaip placeholder>/Copyright",
+    "rightsOf": { "/": "<hash pointing to a CreativeWork object (that should be a Manifestation)>" },
+    "territory": { "/": "<hash pointing to a Place object>" },
+    "validFrom": "2016-01-01",
+    "validThrough": "2066-01-01"
+}
+
+// Right
 {
     "@context": [ // For now, these could also be a URI to the context
         { "/": "<hash pointing to schema.org's context>" },
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "<coalaip placeholder>/Right",
+    "allowedBy": { "/": "<hash pointing to a Copyright object>" },
     "usageType": ["all", "copy", "play"],
     "territory": { "/": "<hash pointing to a Place object>" },
     "rightContext": ["inflight", "inpublic", "commercialuse"],
@@ -705,10 +774,10 @@ An example of a `Right`:
     "percentageShares": 30,
     "validFrom": "2016-01-01",
     "validThrough": "2016-02-01",
-    "rightsOf": { "/": "<hash pointing to a CreativeWork object (that should be a Manifestation)>" },
     "license": { "/": "<hash pointing to a CreativeWork object or file on e.g. IPFS>" } // Uses schema.org/license property
 }
 ```
+
 
 ### RRM RightsAssignment
 

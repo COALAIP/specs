@@ -1,5 +1,6 @@
 {
     "@context": {
+        "coala": "<coalaip placeholder>",
         "dc": "http://purl.org/dc/terms/",
         "owl": "http://www.w3.org/2002/07/owl#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -15,6 +16,18 @@
             },
             "rdfs:comment": "Generic digital fingerprint for a Creation.",
             "rdfs:label": "DigitalFingerprint"
+        },
+        {
+            "@id": "<coalaip placeholder>/Copyright",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:Intangible"
+            },
+            "owl:equivalentClass": {
+                "@id": "dc:RightsStatement"
+            },
+            "rdfs:comment": "Describes the full copyright for a Creation.",
+            "rdfs:label": "Copyright"
         },
         {
             "@id": "<coalaip placeholder>/Right",
@@ -36,6 +49,21 @@
             },
             "rdfs:comment": "A transfer of Rights from one Party (or more) to another Party (or more).",
             "rdfs:label": "RightsTransferAction"
+        },
+        {
+            "@id": "<coalaip placeholder>/allowedBy",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Copyright"
+            },
+            "owl:equivalentProperty": {
+                "@id": "dc:source"
+            },
+            "rdfs:comment": "The object upon which another object was allowed By. For example, the souurce Copyright upon which a narrower Right was derived from.",
+            "rdfs:label": "allowedBy"
         },
         {
             "@id": "<coalaip placeholder>/asserter",
@@ -201,7 +229,7 @@
             "@id": "<coalaip placeholder>/rightsOf",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
-                "@id": "coala:Right"
+                "@id": "coala:Copyright"
             },
             "schema:rangeIncludes": {
                 "@id": "schema:CreativeWork"
@@ -209,15 +237,20 @@
             "owl:equivalentProperty": {
                 "@id": "dc:rights"
             },
-            "rdfs:comment": "The object upon which a Right is concerned with.",
+            "rdfs:comment": "The creation upon which a Copyright is concerned with.",
             "rdfs:label": "rightsOf"
         },
         {
             "@id": "<coalaip placeholder>/territory",
             "@type": "rdf:Property",
-            "schema:domainIncludes": {
-                "@id": "coala:Right"
-            },
+            "schema:domainIncludes": [
+                {
+                    "@id": "coala:Copyright"
+                },
+                {
+                    "@id": "coala:Right"
+                }
+            ],
             "schema:rangeIncludes": {
                 "@id": "schema:Place"
             },
@@ -264,6 +297,9 @@
             "@type": "rdf:Property",
             "schema:domainIncludes": [
                 {
+                    "@id": "coala:Copyright"
+                },
+                {
                     "@id": "coala:Right"
                 },
                 {
@@ -288,6 +324,9 @@
             "@id": "<coalaip placeholder>/validThrough",
             "@type": "rdf:Property",
             "schema:domainIncludes": [
+                {
+                    "@id": "coala:Copyright"
+                },
                 {
                     "@id": "coala:Right"
                 },
