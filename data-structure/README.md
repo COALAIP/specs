@@ -27,8 +27,8 @@ Includes:
 
 ## Overview
 
-An overview and explaination of each representation can be found in the [COALA IP Specification,
-under the section "Remodeling the LCC RRM with Linked Data"](../README.md#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
+An overview and explanation of each representation can be found in the [COALA IP Specification,
+under "Remodelling the LCC RRM with Linked Data"](../README.md#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
 
 ### Vocabularies
 
@@ -36,7 +36,8 @@ Whenever possible, we try to use the direct [schema.org](schema.org) representat
 this is not possible, we define our own classes and properties (see [top-level context](./coala_context.json)
 and [definitions](./vocab/coala.jsonld)) with the goal of eventually integrating them as a hosted
 extension under schema.org. Self defined properties and classes are built preferring existing
-vocabularies, such as [OWL](https://www.w3.org/OWL/) and [DC](http://dublincore.org/).
+vocabularies, such as [OWL](https://www.w3.org/OWL/) and [DC](http://dublincore.org/), over custom
+implementations.
 
 ### UX Considerations
 
@@ -56,31 +57,33 @@ to be compatible in the future and have already relied on various IPLD propertie
 schemata.
 
 In general, the IPLD schemata are identical to the JSON-LD schemata with the exception of [terms](https://www.w3.org/TR/json-ld/#dfn-term)
-that have type `"@id"` (i.e. holding a [node identifier](https://www.w3.org/TR/json-ld/#node-identifiers)):
-instead of holding a URI pointing to the referencd object, these terms' values instead hold
+that are of have type `"@id"` (i.e. holding a [node identifier](https://www.w3.org/TR/json-ld/#node-identifiers)):
+instead of holding a URI pointing to the referenced object, these terms' values instead hold
 [merkle-links](https://github.com/ipld/specs/tree/master/ipld#what-is-a-merkle-link) to the object.
 
 ### Immutable Data Considerations
 
-As the [Specification foresees implementations backed by immutable ledgers](link-me) and leverages
+As the [specification foresees implementations backed by immutable ledgers](link-me) and leverages
 IPLD's guarantees of immutable data structures, all entity models have been designed to factor in
-their immutability after being created. However, there are still a few recommended design patterns
-to use when working with the models:
+their immutability post-creation. However, there are still a few recommended patterns to follow when
+working with, or extending, the models:
 
-- Use flatter models and register nested models separately from their parents
-- Link nested models and their parents by providing links from the nested models
+- Prefer flat models and register nested models separately from their parents
+- Link any separated nested models (from above) back to their parents by adding "backward" links to
+  the nested models (rather than "forward" links to the parents)
 
-Adhering to these patterns avoids the creation of models that become too constrained when used in an
-immutable context. For example, consider the [`Creation`](#rrm-creation) entity: although the schema
-allows a Work to declare its manifestations through the [workExample property](http://schema.org/workExample),
-doing so would inherently lock the Work into only these Manifestations. You can avoid this problem
-by declaring your Works and Manifestations separately, using the [exampleOfWork property](http://schema.org/exampleOfWork)
-in the Manifestations to create a link to its Work. Another feature of this pattern is that you only
-have to declare a nested model once, even if multiple parents should be linked to it.
+Adhering to these patterns helps you to avoid the creation of models that are too constrained within
+an immutable context. For example, consider the [`Creation`](#rrm-creation) entity: although the
+schema allows a `Work` to declare its manifestations through the [workExample property](http://schema.org/workExample),
+doing so would inherently lock the `Work` into only these `Manifestation`s. You can avoid this
+problem by declaring your `Work`s and `Manifestation`s separately, using the [exampleOfWork
+property](http://schema.org/exampleOfWork) in the `Manifestation`s to create a link to its `Work`.
+Another feature of this pattern is that you only have to declare a nested model once, even if
+multiple parents should be linked to it.
 
-When adhering to these patterns (more specifically, relying on inter-object links rather than nested
-objects), you may find that some properties from schema.org expect an object or value rather than a
-link. To handle this, you can either use an expanded term with an `"@id"` key:
+When relying on inter-object links rather than nested objects, you may find that some properties
+from schema.org expect an object or value rather than a link. To handle this, you can either use an
+expanded term with an `"@id"` key:
 
 ```javascript
 // For example, an Organization:
@@ -88,7 +91,7 @@ link. To handle this, you can either use an expanded term with an `"@id"` key:
     "@context": "http://schema.org/",
     "@type": "Organization",
     "founder": {
-        "@id": "<URI pointing to a Person object>",
+        "@id": "<URI pointing to a Person object>"
     },
     ...
 }
@@ -102,8 +105,9 @@ Or override the property's type in your own context:
     "@context": [
         "http://schema.org/",
         {
+            "schema": "http://schema.org/",
             "founder": {
-                "@id": "founder",
+                "@id": "schema:founder",
                 "@type": "@id"
             }
         }
@@ -114,11 +118,11 @@ Or override the property's type in your own context:
 }
 ```
 
-For all schemata defined below, our [top-level context](./coala_context.json) has already overriden
+For all schemata defined below, our [top-level context](./coala_context.json) has already overridden
 any necessary properties to have `"@type": "@id"`. You can always override these again if you prefer
 to use a nested object.
 
-### Cryptographically Signed Entities
+### Cryptographically Signing Entities
 
 Although left optional for now, in the future we expect to make the signing of all COALA IP models
 mandatory. This can either be done by including properties based on the [Web of Trust RDF ontology](http://xmlns.com/wot/0.1/),
@@ -132,16 +136,15 @@ Signatures schema](https://web-payments.org/specs/source/ld-signatures/).
 `Party`s are represented simply by their corresponding schema.org vocabulary, [Person](http://schema.org/Person)
 and [Organization](http://schema.org/Organization).
 
-**Note**: `Party`s are still a work-in-progress (see the list of requirements in the
-[spec](../README.md#the-lcc-party-entity)) and will be
-modified in the future. We will likely be adding properties or even define a new class to better
-represent them in the future.
+**Note**: `Party`s are still a work-in-progress ([see the list of requirements](../README.md#the-lcc-party-entity))
+and are likely to be modified in the future. Additional properties or even new class definitions may
+be used to create better representations in the future.
 
-##### Person
+#### Person
 
 See the [schema.org/Person definition](http://schema.org/Person) for the Linked Data context.
 
-An example of a Person:
+An example of a `Person`:
 
 ```javascript
 // In JSON-LD
@@ -166,12 +169,12 @@ An example of a Person:
 }
 ```
 
-##### Organization
+#### Organization
 
 See the [schema.org/Organization definition](http://schema.org/Organization) for the Linked Data
 context.
 
-An example of an Organization:
+An example of an `Organization`:
 
 ```javascript
 // In JSON-LD
@@ -214,7 +217,7 @@ Localizable `Place`s are represented simply by their corresponding schema.org vo
 Virtual `Place`s are simply URIs or merkle-links. See the [schema.org/Place definition](http://schema.org/Place)
 for the Linked Data context.
 
-An example of a localizable Place:
+An example of a localizable `Place`:
 
 ```javascript
 // In JSON-LD
@@ -248,12 +251,13 @@ An example of a localizable Place:
 `Creation`s are represented by [schema.org/CreativeWork](http://schema.org/CreativeWork)s and its
 subtypes (such as [schema.org/Book](http://schema.org/Book)). To differentiate between the different
 `CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we treat any CreativeWork that does not contain
-an [`exampleOfWork`](http://schema.org/exampleOfWork) property as a Work and all other CreativeWorks
-(or subtypes) as Manifestations. Manifestations that include a [`url`](http://schema.org/url)
-property are considered digital Manifestations while all others are physical Manifestations. See the
-[schema.org/CreativeWork definition](http://schema.org/CreativeWork) for the Linked Data context.
+an [`exampleOfWork`](http://schema.org/exampleOfWork) property as a `Work` and all other
+CreativeWorks (or subtypes) as `Manifestation`s. `Manifestation`s that include a [`url`](http://schema.org/url)
+property are considered digital `Manifestation`s while all others are physical `Manifestation`s. See
+the [schema.org/CreativeWork definition](http://schema.org/CreativeWork) for the Linked Data
+context.
 
-To conveniently identify Manifestations, we also suggest adding a `isManifestation` property
+To conveniently identify `Manifestation`s, we also suggest adding a `isManifestation` property
 (*although this is not mandatory*):
 
 ```javascript
@@ -270,7 +274,7 @@ To conveniently identify Manifestations, we also suggest adding a `isManifestati
 }
 ```
 
-An example of a Creation, and its physical and digital Manifestations:
+An example of a `Work`, and its physical and digital `Manifestation`s:
 
 ```javascript
 // Note: We assume that the data will be put on an immutable ledger, forcing all links to point "backwards."
@@ -329,6 +333,7 @@ An example of a Creation, and its physical and digital Manifestations:
         { "/": "<hash pointing to schema.org's context>" },
         { "/": "<hash pointing to COALA IP's context>" }
     ],
+    "@type": "CreativeWork",
     "name": "Lord of the Rings",
     "author": { "/": "<hash pointing to a Person or Organization object>" }
 }
@@ -366,18 +371,17 @@ An example of a Creation, and its physical and digital Manifestations:
 }
 ```
 
-##### Licensing
+#### Licensing
 
-Although CreativeWorks can hold licensing information through a [`license`](http://schema.org/license)
-property, we ignore this property for the purposes of rights management as the RRM models rights
-through a separate `Right` entity. Rather than using this property to register rights on a
-CreativeWork, we instead recommend implementors to follow the [COALA IP Specification's suggested
-flow for attaching rights](../README.md#the-notion-of-ownership). This recommendation comes
-especially strong if `Creation`s will be registered on an immutable ledger.
+Although CreativeWorks are able to hold licensing information through a [`license`](http://schema.org/license)
+property, we recommend implementations to ignore this property and instead use the RRM's [`Right`
+entity](#rrm-right) with their [suggested ownership semantics](../README.md#the-notion-of-ownership).
+This recommendation comes especially strong if `Creation`s will be registered on an immutable
+ledger.
 
-##### Fingerprinting
+#### Fingerprinting
 
-Fingerprinting information can be separately registered for `Creation`s by using our own vocabulary
+Fingerprinting information can be registered for `Creation`s separately by using our own vocabulary
 definitions:
 
 ```javascript
@@ -434,7 +438,7 @@ definitions:
 }
 ```
 
-An example of adding fingerprinting information for a digital Manifestation:
+An example of adding fingerprinting information for a digital `Manifestation`:
 
 ```javascript
 // In JSON-LD
@@ -621,12 +625,12 @@ with the following vocabulary:
 **Notes**:
 
 - Although the range of `creation` includes any CreativeWork, we expect that, for the most
-  part, only Manifestations will be provided.
+  part, only `Manifestation`s will be provided.
 - `percentageShares` must be a number between 0 and 100.
 - `rightContext` and `usageType` contain arbitrary strings that should be classified by the
-  registrar of the Right
+  registrar of the `Right`
 
-An example of a Right:
+An example of a `Right`:
 
 ```javascript
 // In JSON-LD
@@ -709,7 +713,7 @@ parties; this is modelled as a `RightsTransferAction` class with the following v
 }
 ```
 
-An example of an RightsAssignment payload:
+An example of an `RightsAssignment` payload:
 
 ```javascript
 // In JSON-LD
@@ -741,9 +745,9 @@ An example of an RightsAssignment payload:
 **Notes**:
 
 - `transferContract` is defined to be of type `"@id"` for ease of use with URLs. A string value can
-  be added with expanded property containing `"@value"`.
-- In the context of transferring rights through a ledger, no `object`, `agent`, or `participant` is
-  required to be specified as they are already implicitly defined in the containing transaction.
+  be added by using an expanded property containing `"@value"`.
+- In the context of transferring rights through a ledger, the `object`, `agent`, and `participant`
+  properties are unnecessary as they are already implicitly defined in the containing transaction.
 
 ### RRM Assertion
 
@@ -806,6 +810,8 @@ familiar vocabulary for implementors, we expand `ReviewActions`s with the follow
 }
 ```
 
+An example of an `Assertion`:
+
 ```javascript
 // In JSON-LD
 {
@@ -814,6 +820,7 @@ familiar vocabulary for implementors, we expand `ReviewActions`s with the follow
         <coalaip placeholder>
     ],
     "@type": "ReviewAction",
+    "@id": "<URI pointing to this object>",
     "asserter": "<URI pointing to a Person or Organization object>",
     "assertionTruth": false,
     "assertionSubject": "<URI pointing to a schema:Thing object>",
@@ -839,8 +846,8 @@ familiar vocabulary for implementors, we expand `ReviewActions`s with the follow
 }
 ```
 
-Note that, in the event the assertion is false, the `error` property is left to the asserting party
-to explain the reason the subject is invalid (e.g. the `author` property is incorrect).
+**Note**: For falsy `Assertion`s, the `error` property is left to the asserting party to explain the
+reason the subject was invalid (e.g. the `author` property was incorrect).
 
 ### RRM RightsConflict
 
