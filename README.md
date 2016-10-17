@@ -250,7 +250,7 @@ This example triplet states licensing information about Lawrence Lessig's blog i
 way. Lessig's blog (the *subject*) is licensed (the *predicate*) under a [Creative Commons
 Attribution 3.0](https://creativecommons.org/licenses/by/3.0/) license (the *object*). Provided by
 Creative Commons, ccREL is just one example of a context-providing schema that is built on top of
-RDF. Others, such as the [Web Ontology Language](https://www.w3.org/TR/owl-features/) (OWL), also
+RDF. Others, such as the [Open Digital Rights Language](https://www.w3.org/ns/odrl/2/) (ODRL), also
 exist.
 
 RDF itself includes multiple implementations, each varying in their underlying data structures.
@@ -338,17 +338,19 @@ JSON-LD's `context` solves these problems by allowing for:
 To see how `context` achieves this, we need to explain how JSON-LD magically maps our example's
 self-defined keys (`givenName`, `familyName` and `birthDate`) to their matching properties on the
 `Person` schema. If you look at the [`Person` definition](http://schema.org/Person), you'll notice
-that we didn't choose random keys–these keys were already part of the schema definition. Because of
-this, JSON-LD parsers are able to automatically map and validate our example model's properties
-against their schema definitions.
+that we didn't choose random keys–they were already part of the schema definition. Because of this,
+JSON-LD parsers are able to automatically map and validate our example model's properties against
+their schema definitions.
 
 For more clarity, let's see how a JSON-LD parser would look at our example:
 
 1. Notice `@context` contains `http://schema.org/Person`
-1. `GET http://schema.org/Person`
-1. For each of the model's keys, check if they map to any keys provided in the schema
-    1. For each matched key, traverse the schema until the matching URI is found
-    1. "Expand" the data, replacing keys' names with URIs to their more granular schema definitions
+1. `GET http://schema.org/Person` and add it to `@context` as part of the schema
+1. For each of the model's keys, check if they map to any keys provided in the resolved `@context`
+    1. For each matched key (a ["term"](https://www.w3.org/TR/json-ld/#dfn-term)), traverse the
+       `@context` until a definition is found (a ["term definition"](https://www.w3.org/TR/json-ld/#the-context)),
+       usually as a leaf node in the `@context`
+    1. "Expand" the data, replacing keys' names with their URI definitions
 
 
 Continuing with our example, this is the result after expansion:
@@ -376,15 +378,16 @@ Continuing with our example, this is the result after expansion:
 
 
 The JSON-LD parser notices that the model contains keys matching the `Person` schema, and uses
-`http://schema.org/Person` to replace these matches with their more detailed schema definition URIs.
-The result, termed as ["Expanded Document Form"](https://www.w3.org/TR/json-ld/#expanded-document-form),
-is an automatically mapped set of data that uses an already available schema where each key points
-to the predicate node of an RDF triplet. Using this form, the parser can easily traverse the
-document and validate each of ocurrence of `@value`, as leaf nodes are only allowed to define the
-most basic types (e.g. string, boolean, integer, etc).
+`http://schema.org/Person` to replace these matches with an URI to their schema definition. The
+result, termed as ["Expanded Document Form"](https://www.w3.org/TR/json-ld/#expanded-document-form),
+is now a set of data that has been automatically mapped to the given schemata. This form can be
+considered the canonical version of the data: anyone can now take this form and understand its
+properties, regardless of the key names used in the original model. Moreover, as leaf `@value` nodes
+are only allowed to define the most basic types (e.g. string, boolean, integer, etc), this expanded
+form also enables a parser to easily traverse the document and validate each occurence of `@value`.
 
-As the rest of this document relies heavily on JSON-LD, we encourage you to learn more by reviewing
-the **Sources** below.
+As the rest of this document relies heavily on JSON-LD, we encourage you to learn more by
+reviewing the **Sources** below.
 
 **Sources:**
 
