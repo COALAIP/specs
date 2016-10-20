@@ -22,6 +22,19 @@ Don't be shy! Make sure to give us your questions, suggestions or feedback.
 Thank you!
 
 
+## Reference Implementations
+
+We're currently in the process on implementing this specification in Python. To learn more
+visit our repositories for:
+
+
+- [pycoalaip - A Python library for creating COALA IP models in JSON-LD and IPLD](https://github.com/bigchaindb/pycoalaip)
+- [pycoalaip-bigchaindb - A Python library for persisting COALA IP models on BigchainDB](https://github.com/bigchaindb/pycoalaip-bigchaindb)
+
+We'd love to see your contributions. As COALA IP is supposed to be a ledger-independent overlay
+protocol, other ledger plugins (e.g. pycoalaip-ipfs, pycoalaip-eth) would be more than welcome!
+
+
 ## READ THIS FIRST
 
 This document is a work in progress. Some sections contain the keyword "TODO" and a description of
