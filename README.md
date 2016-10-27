@@ -9,11 +9,11 @@ Want a summary? We've got you covered with presentations:
 
 ## Resources
 
-Reference implementations are [here](IMPLEMENTATIONS.md).
+Reference code implementations are [here](IMPLEMENTATIONS.md).
 
-And, [here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors to this doc are listed at the bottom (thanks all!).
+COALA IP is a community effort. [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors are listed at the bottom; thanks everyone!
 
-Don't be shy -- please give us your questions, suggestions or feedback. Thanks very much:)
+Don't be shy -- please give us your questions, suggestions or feedback:)
 
 ## Abstract
 
