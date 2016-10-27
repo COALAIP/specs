@@ -1,6 +1,6 @@
-# COALA Intellectual Property Specification
+# COALA IP Spec / Whiteppaer
 
-## TL;DR! I DON'T HAVE TIME FOR ALL OF THIS!
+## TL;DR
 
 Want a summary? We've got you covered with presentations:
 
@@ -11,7 +11,7 @@ Want a summary? We've got you covered with presentations:
 
 Reference implementations are [here](IMPLEMENTATIONS.md).
 
-And, [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to code. Main contributors to this doc are listed at the bottom (thanks all!).
+And, [here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors to this doc are listed at the bottom (thanks all!).
 
 Don't be shy -- please give us your questions, suggestions or feedback. Thanks very much:)
 
