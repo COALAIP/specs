@@ -2,7 +2,9 @@
 
 ## TL;DR
 
-Want a summary? We've got you covered with presentations:
+[COALA IP](www.coalaip.org) is a a blockchain-ready, community-driven protocol for intellectual property licensing.
+
+Want a summary? We've got you covered with presentations. 
 
 - [COALA IP (extended)](presentations/COALA%20IP%20-%20long.pdf)
 - [COALA IP](presentations/COALA%20IP%20-%20short.pdf)
@@ -11,9 +13,9 @@ Want a summary? We've got you covered with presentations:
 
 Reference code implementations are [here](IMPLEMENTATIONS.md).
 
-COALA IP is a community effort. [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors are listed at the bottom; thanks everyone!
+COALA IP is a community effort. [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to the code. Main contributors are listed at the bottom; thanks everyone! Don't be shy -- please give us your questions, suggestions or feedback:)
 
-Don't be shy -- please give us your questions, suggestions or feedback:)
+What follows here is the whitepaper, including full-on specifications. Here we go...
 
 ## Abstract
 
