@@ -7,16 +7,13 @@ Want a summary? We've got you covered with presentations:
 - [COALA IP (extended)](presentations/COALA%20IP%20-%20long.pdf)
 - [COALA IP](presentations/COALA%20IP%20-%20short.pdf)
 
-Don't be shy! Make sure to give us your questions, suggestions or feedback.
-
-Thank you!
-
 ## Resources
 
-Reference implementations are [IMPLEMENTATIONS.md](here).
+Reference implementations are [here](IMPLEMENTATIONS.md).
 
-And, [CONTRIBUTING.MD](Here's) how to contribute to this doc, or to code. Main contributors to this doc are listed at the bottom (thanks all!).
+And, [Here's](CONTRIBUTING.MD) how to contribute to this doc, or to code. Main contributors to this doc are listed at the bottom (thanks all!).
 
+Don't be shy -- please give us your questions, suggestions or feedback. Thanks very much:)
 
 ## Abstract
 
