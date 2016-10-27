@@ -1694,5 +1694,4 @@ Contributors to this document, in alphabetical order:
 - Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
 - Brett Sun: brett@bigchaindb.com
 
-We acknowledge the excellent work leading to this document from COALA and the COALA IP working group, including (in alphabetical order): Juan Benet, Constance Choi, Primavera de Filippi, Dor Konforty, Trent McConaghy, Simon de la Rouviere, Diana Stern.
 
