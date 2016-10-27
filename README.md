@@ -1,15 +1,5 @@
 # COALA Intellectual Property Specification
 
-
-Contributors to this document, in alphabetical order:
-
-- Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
-- Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
-- Brett Sun: brett@bigchaindb.com
-
-We acknowledge the excellent work leading to this document from COALA and the COALA IP working group, including (in alphabetical order): Juan Benet, Constance Choi, Primavera de Filippi, Dor Konforty, Trent McConaghy, Simon de la Rouviere, Diana Stern.
-
-
 ## TL;DR! I DON'T HAVE TIME FOR ALL OF THIS!
 
 Want a summary? We've got you covered with presentations:
@@ -21,57 +11,11 @@ Don't be shy! Make sure to give us your questions, suggestions or feedback.
 
 Thank you!
 
+## Resources
 
-## Reference Implementations
+Reference implementations are [IMPLEMENTATIONS.md](here).
 
-We're currently in the process on implementing this specification in Python. To learn more
-visit our repositories for:
-
-
-- [pycoalaip - A Python library for creating COALA IP models in JSON-LD and IPLD](https://github.com/bigchaindb/pycoalaip)
-- [pycoalaip-bigchaindb - A Python library for persisting COALA IP models on BigchainDB](https://github.com/bigchaindb/pycoalaip-bigchaindb)
-
-We'd love to see your contributions. As COALA IP is supposed to be a ledger-independent overlay
-protocol, other ledger plugins (e.g. pycoalaip-ipfs, pycoalaip-eth) would be more than welcome!
-
-
-## READ THIS FIRST
-
-This document is a work in progress. Some sections contain the keyword "TODO" and a description of
-what is required. Feel free to research an unfinished area and write the section yourself.
-
-If your contribution contains information from external sources, please link to those sources.
-
-If your contribution relies on a field that wasn't previously explained, please provide an overview
-of the field to give other readers the necessary background.
-
-This document has a soft limit of 100 characters-per-line. Respect the limit! For links, only the
-descriptor counts. The URI doesn't count.
-
-Make sure to follow the existing styles for formatting as closely as possible.
-
-As an overall guideline for contributions to this document document:
-
-- Think practical.
-- Think in technologies.
-- Don't reinvent the wheel. Use what's already out there and give proper attribution.
-- Write as if you had to implement next week.
-
-
-## General TODOs:
-
-- Improve consistency in use of defined terms. Synonyms for technical terms should be replaced
-  with the standard term throughout.
-- Before releasing this document to the public, write an introductory section explaining what COALA
-  is, what its general goals are, why this document matters, what is left to do, and so on...
-- Sometimes this document references internally to other sections ("as seen in the above section",
-  ...). Using relative links, we should point to the sections we're writing about
-
-
-## Table of Contents
-
-- TODO:
-    - link to the individual headlines in a tree structure
+And, [CONTRIBUTING.MD](Here's) how to contribute to this doc, or to code. Main contributors to this doc are listed at the bottom (thanks all!).
 
 
 ## Abstract
@@ -1745,3 +1689,14 @@ here in sequential order:
 
 
 Thanks for reading!
+
+# Contributors
+
+Contributors to this document, in alphabetical order:
+
+- Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
+- Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
+- Brett Sun: brett@bigchaindb.com
+
+We acknowledge the excellent work leading to this document from COALA and the COALA IP working group, including (in alphabetical order): Juan Benet, Constance Choi, Primavera de Filippi, Dor Konforty, Trent McConaghy, Simon de la Rouviere, Diana Stern.
+
