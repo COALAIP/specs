@@ -1,4 +1,4 @@
-# COALA IP Spec / Whiteppaer
+# COALA IP Spec / Whitepaper
 
 ## TL;DR
 
