@@ -4,7 +4,7 @@ We'd love to see your help in contributing to implementations, or the spec / whi
 
 ## Contributing to Implementations
 
-The implementations are listed [IMPLEMENTATIONS.md](here). 
+The implementations are listed [here](IMPLEMENTATIONS.md). 
 COALA IP designed as a ledger-independent overlay protocol. So, other ledger plugins (e.g. pycoalaip-ipfs, pycoalaip-eth) are more than welcome!
 
 ## Contributing to Spec / Whitepaper
