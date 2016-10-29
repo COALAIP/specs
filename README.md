@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-[COALA IP](www.coalaip.org) is a blockchain-ready, community-driven protocol for intellectual property licensing.
+[COALA IP](https://www.coalaip.org) is a blockchain-ready, community-driven protocol for intellectual property licensing.
 
 [This presentation](presentations/COALA%20IP%20-%20short.pdf) gives a quick summary. [Here's](presentations/COALA%20IP%20-%20long.pdf) an extended version.
 
