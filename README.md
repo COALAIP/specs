@@ -6,6 +6,8 @@
 
 [This presentation](presentations/COALA%20IP%20-%20short.pdf) gives a quick summary. [Here's](presentations/COALA%20IP%20-%20long.pdf) an extended version.
 
+[This academic paper](https://github.com/COALAIP/specs/blob/master/presentations/COALA%20IP%20Report%20-%20May%202016.pdf) is about how blockchains can support, complement, or supplement IP, authored by the COALA IP working group.
+
 ## Resources
 
 Reference code implementations are [here](IMPLEMENTATIONS.md).
