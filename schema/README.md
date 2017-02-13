@@ -1,6 +1,6 @@
 # COALA Intellectual Property JSON-LD / IPLD Definitions
 
-The definitive [JSON-LD](http://json-ld.org/) and [IPLD](https://github.com/ipld/specs/tree/master/ipld)
+The reference [JSON-LD](http://json-ld.org/) and [IPLD](https://github.com/ipld/specs/tree/master/ipld)
 entity schemata (and their Linked Data contexts) for [COALA IP](../README.md).
 
 Includes:
