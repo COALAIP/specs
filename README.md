@@ -1664,6 +1664,28 @@ TODO:
 - See other introductory sections of LCC entities. Use same structure to do the transformation
 
 
+### Generating Verifiable Claims
+
+As the COALA IP ontology may be potentially exposed to the public, users must have a mechanism of
+proving their actions to others. To provide this with cryptographic signatures is a two part
+challenge: we not only need to ensure that user identities can be associated with cryptographic
+identities (see [requirements of `Party`s](#transformation-of-rrm-party-to-an-rdf-person), but also
+that any submitted claim can be signed by those cryptographic identities. Although no optimal
+solution currently exists for associating identities, a number of pre-existing schemata are
+available for signing RDF-compatible data:
+
+- The [Web of Trust RDF ontology](http://xmlns.com/wot/0.1/) by the [Friend of a Friend Project](http://www.foaf-project.org/),
+  although this assumes the ontology is mutable; and
+- The [Linked Data Signatures schema](https://web-payments.org/specs/source/ld-signatures/) by the
+  [Web Payments Community Group](https://www.w3.org/community/webpayments/)
+
+Building on top of these two facets is the [Verifiable Claims Architecture](http://w3c.github.io/webpayments-ig/VCTF/architecture/)
+and its associated [data model](http://opencreds.org/specs/source/claims-data-model/) (currently
+using the Linked Data Signatures schema) that is being standardized by the [Verifiable Claims Task
+Force](http://w3c.github.io/vctf/). In the future, data from COALA IP could be used to generate, or
+even be created, in the format proposed.
+
+
 ### User Extensions
 
 TODO:
