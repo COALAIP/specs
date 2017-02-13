@@ -1302,6 +1302,14 @@ Note that a distinction has been made between `Work`s (typed as "coalaip.schema/
 manifestations can be represented, with digital manifestations containing a link to an example of
 the work as well as possibly being associated with a set of fingerprints.
 
+#### The Abstract Notion of `Work`s
+
+One can view a `Work` as the overarching creative concept that is brought to existence by a number
+of perceivable `Manifestations`. It is meant as an abstraction to connect a group of related
+`Manifestation`s together. As such, we argue that empty `Work`s–those not linked to from any
+`Manifestation`s–do not make much sense and recommend implementations to register `Work`s only with
+their initial `Manifestation`s.
+
 
 ### The RRM `Right` Entity
 
