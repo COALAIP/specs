@@ -836,6 +836,10 @@ To redefine the LCC's Rights Reference Model, we propose the following:
 - Resolve mismatches between the LCC RRM terminology and RDF schemata.
 
 
+For the purposes of demonstration, we put any new schemata into `http://coalaip.schema/` and assume
+that this document also contains all schema.org definitions (so we don't have to provide
+`http://schema.org/` as an additional context).
+
 A slight speed bump in the transformation process is ensuring support for links between entities.
 The RRM defines the existance of links in a generic manner, as one-to-many (i.e. `0 - n`)
 links. RDF and Linked Data require these links to be explicitly named so as to express specific
@@ -892,9 +896,10 @@ With schema.org's Place, the transformation of a *localizable* Place to RDF is s
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://schema.org/Place",
+    "@context": "http://schema.org/",
+    "@type": "Place",
     "geo": {
-        "@type": "http://schema.org/GeoCoordinates",
+        "@type": "GeoCoordinates",
         "latitude": "40.75",
         "longitude": "73.98"
     },
@@ -903,9 +908,10 @@ With schema.org's Place, the transformation of a *localizable* Place to RDF is s
 
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Place>" },
+    "@context": { "/": "<hash pointing to schema.org's context>" },
+    "@type": "Place",
     "geo": {
-        "@type": { "/": "<hash pointing to RDF-Schema of GeoCoordinates>" },
+        "@type": "GeoCoordinates",
         "latitude": "40.75",
         "longitude": "73.98"
     },
@@ -1003,7 +1009,8 @@ us:
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://schema.org/Person",
+    "@context": "http://schema.org/",
+    "@type": "Person",
     "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
     "birthDate": "1928-08-06",
     "deathDate": "1987-02-22"
@@ -1011,7 +1018,8 @@ us:
 
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Person>" },
+    "@context": { "/": "<hash pointing to schema.org's context>" },
+    "@type": "Person",
     "@id": "https://en.wikipedia.org/wiki/Andy_Warhol",
     "birthDate": "1928-08-06",
     "deathDate": "1987-02-22"
@@ -1088,7 +1096,8 @@ identity service):
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://coalaip.schema/Identity",
+    "@context": "http://coalaip.schema/",
+    "@type": "Identity",
     "@id": "<URI pointing to this object>",
     "givenName": "Andy",
     "familyName": "Warhol",
@@ -1106,7 +1115,9 @@ identify itself by its own hash. Thus, we get:
 ```javascript
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Identity>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Identity",
+    "@id": "",
     "givenName": "Andy",
     "familyName": "Warhol",
     "birthDate": "1928-08-06",
@@ -1141,25 +1152,26 @@ like this as an schema.org Organization.
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://schema.org/Organization",
-    "@id": "http://identityservice.com/organizations/w3c",
+    "@context": "http://coalaip.schema/",
+    "@type": "Organization",
+    "@id": "<URI pointing to this object>",
     "name": "World Wide Web Consortium",
     "founder": {
-        "@type": "http://linkedcontentcoalition.com/Identity",
-        "@id": "https://identityservice.com/identities/12bS2BTF4j8kkmNqoyQRwzKy76EXQWRVWJ",
+        "@type": "Identity",
+        "@id": "<URI pointing to the founder Party>"
     },
     "member": [
         {
-            "@type": "http://linkedcontentcoalition.com/Identity",
-            "@id": "https://identityservice.com/identities/152xhUAJBGEht9Jwerv1omFV82xaRcyzHH",
+            "@type": "Identity",
+            "@id": "<URI pointing to a member Party"
         },
         {
-            "@type": "http://linkedcontentcoalition.com/Identity",
-            "@id": "https://identityservice.com/identities/1Je5tHHkHcs1ioLZmiBFSuyiXdwd76xf4D",
+            "@type": "Identity",
+            "@id": "<URI pointing to a member Party"
         },
         {
-            "@type": "http://linkedcontentcoalition.com/Identity",
-            "@id": "https://identityservice.com/identities/1QDtDjNgBx6242VakTTkFMn5HmkibzrsR8",
+            "@type": "Identity",
+            "@id": "<URI pointing to a member Party"
         }
     ]
 }
@@ -1229,16 +1241,17 @@ Transforming to JSON-LD, we get:
 // Note: We assume that the data will be put on an immutable ledger and so all links must point
 //       "backwards"
 {
+    "@context": "http://coalaip.schema/",
     "@graph": [
         {
             "@id": "#creation",
-            "@type": "http://coalaip.schema/Work",
+            "@type": "Work",
             "name": "Lord of the Rings",
-            "author": "<URI pointing to the author Person>"
+            "author": "<URI pointing to the author Party>"
         },
         {
             "@id": "#digitalManifestation",
-            "@type": "http://coalaip.schema/Manifestation",
+            "@type": "Manifestation",
             "name": "The Fellowship of the Ring",
             "manifestationOfWork": "#creation",
             "digitalWork": "<URI pointing to file>",
@@ -1250,7 +1263,7 @@ Transforming to JSON-LD, we get:
         },
         {
             "@id": "#physicalManifestation",
-            "@type": "http://coalaip.schema/Manifestation",
+            "@type": "Manifestation",
             "name": "The Fellowship of the Ring",
             "manifestationOfWork": "#creation",
             "datePublished": "29-07-1954",
@@ -1268,14 +1281,16 @@ linked with hashes:
 ```javascript
 // A Work object in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Work>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Work",
     "name": "Lord of the Rings",
-    "author": { "/": "<hash pointing to the author Person>" }
+    "author": { "/": "<hash pointing to the author Party>" }
 }
 
 // A digital Manifestation of the Work in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Manifestation (can be any subtype of CreativeWork)>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Manifestation",
     "name": "The Fellowship of the Ring",
     "manifestationOfWork": { "/": "<hash pointing to the Work>" },
     "digitalWork": { "/": "<hash pointing to a file on e.g. IPFS>" },
@@ -1283,16 +1298,17 @@ linked with hashes:
         "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
         "<multihash/fingerprint value>"
     ],
-    "locationCreated": { "/": "<URI pointing to a Place>" }
+    "locationCreated": { "/": "<hash pointing to a Place>" }
 }
 
 // A physical Manifestation of the Work in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Manifestation>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Manifestation",
     "name": "The Fellowship of the Ring",
     "manifestationOfWork": { "/": "<hash pointing to the Work>" },
     "datePublished": "29-07-1954",
-    "locationCreated": { "/": "<URI pointing to a Place>" }
+    "locationCreated": { "/": "<hash pointing to a Place>" }
 }
 ```
 
@@ -1425,17 +1441,24 @@ propose the following schema that satisfies the consolidated requirements of:
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://coalaip.schema/Right",
+    "@context": "http://coalaip.schema/",
+    "@type": "Right",
     "@id": "<URI pointing to this object>",
     "usages": "all|copy|play|stream|...",
     "territory": "<URI pointing to a Place>",
     "context": "inflight|inpublic|commercialuse...",
     "exclusive": true|false,
-    "numberOfUses: "1, 2, 3, ...",
+    "numberOfUses": "1, 2, 3, ...",
     "share": "1, 2, 3, ..., 100",
-    "validFrom": { "@type": "http://schema.org/Date" },
-    "validTo": { "@type": "http://schema.org/Date" },
-    "manifestation": "<URI pointing to the Manifestation object>",
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    },
+    "manifestation": "<URI pointing to a Manifestation>",
     "license": "<URI pointing to a license on an immutable ledger>"
 }
 ```
@@ -1450,17 +1473,24 @@ this in mind, an implementation in IPLD/IPFS is favored:
 ```javascript
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Right>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Right",
     "usages": "all|copy|play|stream|...",
     "territory": { "/": "<hash pointing to a Place>" },
     "context": "inflight|inpublic|commercialuse...",
     "exclusive": true|false,
-    "numberOfUses: "1, 2, 3, ...",
+    "numberOfUses": "1, 2, 3, ...",
     "share": "1, 2, 3, ..., 100",
-    "validFrom": { "/": "<hash pointing to RDF-Schema of Date" },
-    "validTo": { "/": "<hash pointing to RDF-Schema of Date" },
-    "manifestation": { "/": "<hash pointing to the a Manifestation>" },
-    "license": { "/": "<hash pointing to the license>" }
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    },
+    "manifestation": { "/": "<hash pointing to a Manifestation>" },
+    "license": { "/": "<hash pointing to a license>" }
 }
 ```
 
@@ -1538,7 +1568,8 @@ related Parties and information about the RightAssignment's status:
 ```javascript
 // In JSON-LD
 {
-    "@type": "http://coalaip.schema/Transfer(Payload?)",
+    "@context": "http://coalaip.schema/",
+    "@type": "Transfer",
     "contract": "<URI pointing to a contract on a ledger>"
 }
 ```
@@ -1549,7 +1580,8 @@ and in IPLD:
 ```javascript
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Transfer(Payload?)>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Transfer",
     "contract": { "/": "<hash pointing to a contract>" }
 }
 ```
@@ -1626,23 +1658,24 @@ Merkle-path feature, we are able to achieve exactly that by defining an Assertio
 ```javascript
 // In IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Assertion>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Assertion",
     "truth": "false",
     "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
-        "/": "<IPLD hash pointing to Work: The Scream's author property>"
-        // e.g. /ipdb/<hash of work>/author
+        "/": "<hash pointing to Work: The Scream's author property>" // e.g. /ipdb/<hash of work>/author
     }
 }
 
 // and
 
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Assertion>" },
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Assertion",
     "truth": "true",
     "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
-        "/": "<IPLD hash pointing to Work: 32 Campbell's Soup Cans's author property>"
+        "/": "<hash pointing to Work: 32 Campbell's Soup Cans's author property>"
     }
 }
 ```
