@@ -1181,9 +1181,34 @@ of individuals. Using the minimum number of properties listed in the RRM, an `lc
         }
     ]
 }
+
+// In IPLD
+{
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Organization",
+    "@id": "",
+    "name": "World Wide Web Consortium",
+    "founder": {
+        "@type": "Identity",
+        "@id": { "/": "<hash pointing to the founder Party" }
+    },
+    "member": [
+        {
+            "@type": "Identity",
+            "@id": { "/": "<hash pointing to a member Party" }
+        },
+        {
+            "@type": "Identity",
+            "@id": { "/": "<hash pointing to a member Party" }
+        },
+        {
+            "@type": "Identity",
+            "@id": { "/": "<hash pointing to a member Party" }
+        }
+    ]
+}
 ```
 
-- TODO: Also define how the object would look like in IPLD.
 - TODO: This needs a lot of speccing out. How can members of an organization collectively sign
   something they're submitting? Is there a single public key address assigned to an organization or
   does the organization just bundle members that act like they were in an organization but act
