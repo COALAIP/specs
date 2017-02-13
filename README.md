@@ -1742,18 +1742,39 @@ information to the blockchain–we can validate the truthiness of specific state
 `Assertion`s.
 
 `Assertion`s are applied towards entire entities and evaluate whether an asserting `Party`
-("Asserter") agrees or disagrees with the claim made by the entity.
+("Asserter") agrees or disagrees with the claim made by the entity. Schema.org's [ReviewAction](http://schema.org/ReviewAction)
+provides a good base to work off of, albeit with less-than-ideal property names that don't map well
+to the RRM's definitions. We assume that "coala.schema" will alias some of these properties and get:
 
 ```javascript
+// In JSON-LD
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "Assertion",
+    "asserter": "<URI pointing to a Party>",
+    "assertionTruth": false,
+    "assertionSubject": "<URI pointing to Creation: The Scream>",
+    "error": "author"
+}
+
+// and
+
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "Assertion",
+    "asserter": "<URI pointing to a Party>",
+    "assertionTruth": true,
+    "assertionSubject": "<URI pointing to Creation: 32 Campbell's Soup Cans>"
+}
+
 // In IPLD
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Assertion",
-    "truth": "false",
-    "asserter": { "/": "<hash pointing to a Party>" },
-    "subject": {
-        "/": "<hash pointing to Creation: The Scream's author property>" // e.g. /ipdb/<hash_of_creation>/author
-    }
+    "asserter": { "/": "<hash pointing to a Party" },
+    "assertionTruth": false,
+    "assertionSubject": { "/": "<hash pointing to Creation: The Scream>" },
+    "error": "author"
 }
 
 // and
@@ -1761,14 +1782,28 @@ information to the blockchain–we can validate the truthiness of specific state
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Assertion",
-    "truth": "true",
-    "asserter": { "/": "<hash pointing to a Party>" },
-    "subject": {
-        "/": "<hash pointing to Creation: 32 Campbell's Soup Cans's author property>"
-    }
+    "asserter": { "/": "<hash pointing to a Party" },
+    "assertionTruth": true,
+    "assertionSubject": { "/": "<hash pointing to Creation: 32 Campbell's Soup Cans>" }
 }
 ```
 
+*Note: On IPLD, you have the option of applying additional granularity to the `Assertion` by
+directly referring to an entity's property as the "assertionSubject". For example, if you wanted to
+assert that "The Scream"'s "author" property is incorrect, you could do so with*
+
+```javascript
+{
+    ...
+    "assertionTruth": "false",
+    "assertionSubject": { "/": "/ipdb/<hash_of_creation>/author" },
+    "error": "...",
+    ...
+}
+```
+
+*Although this doesn't directly apply the `Assertion` against the entire `Creation` entity, we still
+have a link to the `Creation` in the IPLD hash and can associate this `Assertion` to it.*
 
 We end up with the following:
 
