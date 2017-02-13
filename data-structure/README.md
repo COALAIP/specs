@@ -255,7 +255,8 @@ an `manifestationOfWork` (equivalent to [`exampleOfWork`](http://schema.org/exam
 as a `Work` and all other CreativeWorks (or subtypes) as `Manifestation`s. `Manifestation`s that
 include a [`url`](http://schema.org/url) property are considered digital `Manifestation`s while all
 others are physical `Manifestation`s. See the [schema.org/CreativeWork definition](http://schema.org/CreativeWork)
-for the Linked Data context.
+for the Linked Data context. Note that, elsewhere in the text, we use `Creation` to encompass both
+`Work`s and `Manifestation`s.
 
 The `manifestationOfWork` property definition:
 
