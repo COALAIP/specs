@@ -1594,9 +1594,9 @@ IPFS, can be used instead if cross-protocol links are supported (i.e. multiaddr)
 ### The RRM `RightsAssignment` Entity
 
 According to the RRM, a `RightsAssignment` describes an event that results in the existence or
-non-existence of a `Right.` Depending on the type, a `RightsAssignment` may be linked from an
-assigning `Party` ("Assigner") to a receiving `Party` ("Assignee"). From the RRM, a
-`RightsAssignment` can have the following properties:
+non-existence of a `Right` (or `Copyright`). Depending on the type, a `RightsAssignment` may
+be linked from an assigning `Party` ("Assigner") to a receiving `Party` ("Assignee"). From the RRM,
+a `RightsAssignment` can have the following properties:
 
 - **RightsAssignmentType**: Defines the type of `RightsAssignment`; one of:
     - **RightsLaw:** Represents the creation of a `Right` by law (e.g. the US Copyright Act of 1976);
@@ -1642,16 +1642,18 @@ following requirements to be met by every ledger capable of transferring `Right`
       ("hashlock conditions");
 
 
-With these assumptions, we can model a minimally transformed RRM `RightsAssignment` to be part of a
-transfer-transaction's payload on a ledger, and automatically include links to related `Party`s and
-information about the `RightAssignment`'s status:
+With these assumptions, we can model a minimally transformed RRM `RightsAssignment` on top of
+[schema.org/TransferAction](http://schema.org/TransferAction) and include it as the payload of a
+ledger's transfer-transaction. Piggybacking on a transfer-transaction allows the rights transfer to
+automatically be included with information such as the current and new rightsholders, time of
+execution, and status of execution (valid or rejected by the ledger).
 
 
 ```javascript
 // In JSON-LD
 {
     "@context": "http://coalaip.schema/",
-    "@type": "Transfer",
+    "@type": "RightsAssignment",
     "contract": "<URI pointing to a contract on a ledger>"
 }
 ```
@@ -1663,7 +1665,7 @@ and in IPLD:
 // In IPLD
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
-    "@type": "Transfer",
+    "@type": "RightsAssignment",
     "contract": { "/": "<hash pointing to a contract>" }
 }
 ```
