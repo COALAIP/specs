@@ -237,7 +237,7 @@
             "owl:equivalentProperty": {
                 "@id": "dc:rights"
             },
-            "rdfs:comment": "The creation upon which a Copyright is concerned with.",
+            "rdfs:comment": "The Creation upon which a Copyright is concerned with.",
             "rdfs:label": "rightsOf"
         },
         {

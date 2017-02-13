@@ -86,7 +86,7 @@ as a general guide toward achieving the following goals:
    translate between schema that have been authorized by relevant parties;
 1. The provenance of Rights has to be made explicit;
 1. Any participant has the ability to make standardized, machine-readable statements about
-   rightholdings in creations;
+   rightholdings in Creations;
 1. Conflicts in rights declarations should be automatically identifiable; and
 1. Registered Creations have links to corresponding digital "fingerprints" or "watermarks".
 
@@ -1221,18 +1221,21 @@ Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/Creati
 quite extensive, there are also a number of subtypes that can be used to define specifics about a
 creation (e.g. [schema.org/Book](http://schema.org/Book)). However, one distinction to highlight is
 how an RRM Creation has two `CreationMode`s: one for perceivable Creations (called `Manifestation`s)
-and one for abstract Creations (called `Work`s). Transforming to JSON-LD, we get:
+and one for abstract Creations (called `Work`s). Note that in the rest of the text, we use
+`Creation` to refer to the entity type which encompasses both `Work`s and `Manifestation`s.
+
+Transforming to JSON-LD, we get:
 
 
 ```javascript
-// A Creation object and its Manifestations in JSON-LD
+// A Work and its Manifestations in JSON-LD
 // Note: We assume that the data will be put on an immutable ledger and so all links must point
 //       "backwards"
 {
     "@graph": [
         {
             "@id": "#creation",
-            "@type": "http://coalaip.schema/Creation",
+            "@type": "http://coalaip.schema/Work",
             "name": "Lord of the Rings",
             "author": "<URI pointing to the author Person>"
         },
@@ -1240,8 +1243,8 @@ and one for abstract Creations (called `Work`s). Transforming to JSON-LD, we get
             "@id": "#digitalManifestation",
             "@type": "http://coalaip.schema/Manifestation",
             "name": "The Fellowship of the Ring",
-            "creation": "#creation",
-            "digital_work": "<URI pointing to file>",
+            "manifestationOfWork": "#creation",
+            "digitalWork": "<URI pointing to file>",
             "fingerprints": [
                 "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
                 "<multihash/fingerprint value>"
@@ -1252,7 +1255,7 @@ and one for abstract Creations (called `Work`s). Transforming to JSON-LD, we get
             "@id": "#physicalManifestation",
             "@type": "http://coalaip.schema/Manifestation",
             "name": "The Fellowship of the Ring",
-            "creation": "#creation",
+            "manifestationOfWork": "#creation",
             "datePublished": "29-07-1954",
             "locationCreated": "<URI pointing to a Place>"
         }
@@ -1266,19 +1269,19 @@ linked with hashes:
 
 
 ```javascript
-// A Creation object in IPLD
+// A Work object in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Creation (can be any subtype of CreativeWork)>" },
+    "@type": { "/": "<hash pointing to RDF-Schema of Work>" },
     "name": "Lord of the Rings",
     "author": { "/": "<hash pointing to the author Person>" }
 }
 
-// A a digital Manifestation of the Creation in IPLD
+// A digital Manifestation of the Work in IPLD
 {
-    "@type": { "/": "<hash pointing to RDF-Schema of Manifestation>" },
+    "@type": { "/": "<hash pointing to RDF-Schema of Manifestation (can be any subtype of CreativeWork)>" },
     "name": "The Fellowship of the Ring",
-    "creation": { "/": "<hash pointing to the Creation>" },
-    "digital_work": { "/": "<hash pointing to a file on e.g. IPFS>" },
+    "manifestationOfWork": { "/": "<hash pointing to the Work>" },
+    "digitalWork": { "/": "<hash pointing to a file on e.g. IPFS>" },
     "fingerprints": [
         "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
         "<multihash/fingerprint value>"
@@ -1286,22 +1289,23 @@ linked with hashes:
     "locationCreated": { "/": "<URI pointing to a Place>" }
 }
 
-// A a physical Manifestation of the Creation in IPLD
+// A physical Manifestation of the Work in IPLD
 {
     "@type": { "/": "<hash pointing to RDF-Schema of Manifestation>" },
     "name": "The Fellowship of the Ring",
-    "creation": { "/": "<hash pointing to the Creation>" },
+    "manifestationOfWork": { "/": "<hash pointing to the Work>" },
     "datePublished": "29-07-1954",
     "locationCreated": { "/": "<URI pointing to a Place>" }
 }
 ```
 
 
-Note that a distinction has been made between works (typed as `Creation`s)
+Note that a distinction has been made between works (typed as `Work`s)
 and manifestations (typed as `Manifestation`s). Both physical and digital manifestations can be
 represented, with digital manifestations including a set of fingerprints as well as a link pointing
-to an example of the work. In the future, we plan to subtype both a `Creation` and a
-`Manifestation` type from schema.org's CreativeWork to allow the easy addition of properties.
+to an example of the work. In the future, we plan to subtype both a `Work` and a
+`Manifestation` type from schema.org's `CreativeWork` to allow their properties to be easily
+customizable.
 
 
 #### The Copyright Transfer
@@ -1380,8 +1384,8 @@ distribute a Manifestation's Rights to a multitude of interested Parties must ta
 steps:
 
 1. Register their Party identifier on a global registry;
-1. Register their Creation on a global registry and link it to their Party identifier;
-1. Register Manifestations to the Creation on a global registry;
+1. Register their Creation as a Work on a global registry and link it to their Party identifier;
+1. Register Manifestations to the Work on a global registry;
 1. Register any number of Rights tailored to interested Parties on a global registry; and
 1. Register RightAssignments to assign these Rights to interested Parties.
 
@@ -1601,10 +1605,10 @@ but rather on a model's attributes and links.
 Think about the following scenario:
 
 > Andy Warhol decides to use the COALA IP protocol to register his work on a blockchain. He's
-  registering one of his works called "32 Campbell's Soup Cans" as a Creation and attaches a poster
+  registering one of his works called "32 Campbell's Soup Cans" as a Work and attaches a poster
   of the work as a Manifestation of it. He also creates a Right defining the licensing terms of
   buying the poster and attaches it to the Manifestation. Since Andy is not really good with
-  computers—they were never really his type of medium—he accidentally registers a Creation
+  computers—they were never really his type of medium—he accidentally registers a Work
   of Edvard Munch's "The Scream" under his name.
 
 Visually, this is what we'd end up with:
@@ -1618,7 +1622,7 @@ content-addressed storage. In contrast to a traditional SQL database, it is impo
 the transactions. We can only append to a blockchain. The solution is to append an Assertion
 validating specific statements that are true.
 
-Instead of falsifying the existence of the Creation "The Scream", the solution recommended by the
+Instead of falsifying the existence of the Work "The Scream", the solution recommended by the
 LCC RRM, COALA IP suggests making an Assertion about "The Scream"'s Author property. With IPLD's
 Merkle-path feature, we are able to achieve exactly that by defining an Assertion object:
 
@@ -1629,8 +1633,8 @@ Merkle-path feature, we are able to achieve exactly that by defining an Assertio
     "truth": "false",
     "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
-        "/": "<IPLD hash pointing to Creation: The Scream's author property>"
-        // e.g. /ipdb/<hash_of_creation>/author
+        "/": "<IPLD hash pointing to Work: The Scream's author property>"
+        // e.g. /ipdb/<hash of work>/author
     }
 }
 
@@ -1641,7 +1645,7 @@ Merkle-path feature, we are able to achieve exactly that by defining an Assertio
     "truth": "true",
     "asserter": { "/": "<hash pointing to a Party>" },
     "subject": {
-        "/": "<IPLD hash pointing to Creation: 32 Campbell's Soup Cans's author property>"
+        "/": "<IPLD hash pointing to Work: 32 Campbell's Soup Cans's author property>"
     }
 }
 ```
