@@ -1860,7 +1860,7 @@ basis of an RDF ontology for managing digital rights with immutable data stores.
 implement an open standard for rights management, a number of efforts are to follow:
 
 - Define a production-ready RDF-compatible schema based on the proposed transformations (see
-  [`data-structure/`](data-structure/))
+  [`schema/`](schema/))
 - Complete a reference implementation using the RDF-compatible schema (see
   [implementations](IMPLEMENTATIONS.md))
 - Include or build open source communities around COALA IP
