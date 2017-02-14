@@ -1602,15 +1602,15 @@ IPFS, can be used instead if cross-protocol links are supported (i.e. multiaddr)
 
 ### The LCC RightsAssignment `Entity`
 
-According to the RRM specification, an RRM RightsAssignment describes an event that results in the
-existence or non-existence of a Right. Depending on the type, a RightsAssignment may be linked from
-an assigning Party (Assigner) to a receiving Party (Assignee). From the RRM, a RightsAssignment can
-have the following properties:
+According to the RRM, a `RightsAssignment` describes an event that results in the existence or
+non-existence of a `Right` (or `Copyright`). Depending on the type, a `RightsAssignment` may
+be linked from an assigning `Party` ("Assigner") to a receiving `Party` ("Assignee"). From the RRM,
+a `RightsAssignment` can have the following properties:
 
-- **RightsAssignmentType**: Defines the type of RightsAssignment. It can be one of:
-    - **RightsLaw:** Represents the creation of a Right by law (e.g. the US Copyright Act of 1976);
-    - **RightsPolicy:** Represents the assignment of a Right from an authorized Party to another
-      Party without requiring the latter's agreement (e.g. security level for user access of a
+- **RightsAssignmentType**: Defines the type of `RightsAssignment`; one of:
+    - **RightsLaw:** Represents the creation of a `Right` by law (e.g. the US Copyright Act of 1976);
+    - **RightsPolicy:** Represents the assignment of a `Right` from an authorized `Party` to another
+      `Party` without requiring the latter's agreement (e.g. security level for user access of a
       computer system); or
     - **RightsAgreement:** Represents an agreement between two Parties regarding a Right (e.g. a
       license, publishing agreement, etc.).
@@ -1657,16 +1657,18 @@ by every COALA IP-compatible ledger:
 - TODO: Are there more requirements COALA IP asks from a ledger?
 
 
-With this assumption, we can model a minimally transformed RRM RightsAssignment to be part of
-the payload of a ledger-specific transfer-transaction, and automatically include links to
-related Parties and information about the RightAssignment's status:
+With these assumptions, we can model a minimally transformed RRM `RightsAssignment` on top of
+[schema.org/TransferAction](http://schema.org/TransferAction) and include it as the payload of a
+ledger's transfer-transaction. Piggybacking on a transfer-transaction allows the rights transfer to
+automatically be included with information such as the current and new rightsholders, time of
+execution, and status of execution (valid or rejected by the ledger).
 
 
 ```javascript
 // In JSON-LD
 {
     "@context": "http://coalaip.schema/",
-    "@type": "Transfer",
+    "@type": "RightsAssignment",
     "contract": "<URI pointing to a contract on a ledger>"
 }
 ```
@@ -1678,7 +1680,7 @@ and in IPLD:
 // In IPLD
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
-    "@type": "Transfer",
+    "@type": "RightsAssignment",
     "contract": { "/": "<hash pointing to a contract>" }
 }
 ```
