@@ -15,10 +15,6 @@
         "Right": "coala:Right",
         "RightsTransferAction": "coala:RightsTransferAction",
 
-        "allowedBy": {
-            "@id": "coala:allowedBy",
-            "@type": "@id"
-        },
         "asserter": {
             "@id": "coala:asserter",
             "@type": "@id"
@@ -43,6 +39,10 @@
         "rightContext": "coala:rightContext",
         "rightsOf": {
             "@id": "coala:rightsOf",
+            "@type": "@id"
+        },
+        "source": {
+            "@id": "coala:source",
             "@type": "@id"
         },
         "territory": {

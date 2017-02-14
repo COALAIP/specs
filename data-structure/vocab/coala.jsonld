@@ -60,7 +60,7 @@
             "rdfs:label": "RightsTransferAction"
         },
         {
-            "@id": "<coalaip placeholder>/allowedBy",
+            "@id": "<coalaip placeholder>/source",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -71,8 +71,8 @@
             "owl:equivalentProperty": {
                 "@id": "dc:source"
             },
-            "rdfs:comment": "The object upon which another object was allowed By. For example, the souurce Copyright upon which a narrower Right was derived from.",
-            "rdfs:label": "allowedBy"
+            "rdfs:comment": "The source object upon which another object was derived from. For example, the source Copyright upon which a narrower Right was allowed by.",
+            "rdfs:label": "source"
         },
         {
             "@id": "<coalaip placeholder>/asserter",

@@ -514,22 +514,6 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     ...
 }
 
-// AllowedBy Property
-{
-    "@id": "<coalaip placeholder>/allowedBy",
-    "@type": "rdf:Property",
-    "schema:domainIncludes": {
-        "@id": "coala:Right"
-    },
-    "schema:rangeIncludes": {
-        "@id": "coala:Copyright"
-    },
-    "owl:equivalentProperty": {
-        "@id": "dc:source"
-    },
-    ...
-}
-
 // Exclusive Property
 {
     "@id": "<coalaip placeholder>/exclusive",
@@ -594,6 +578,22 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     },
     "owl:equivalentProperty": {
         "@id": "dc:rights"
+    },
+    ...
+}
+
+// Source Property
+{
+    "@id": "<coalaip placeholder>/source",
+    "@type": "rdf:Property",
+    "schema:domainIncludes": {
+        "@id": "coala:Right"
+    },
+    "schema:rangeIncludes": {
+        "@id": "coala:Copyright"
+    },
+    "owl:equivalentProperty": {
+        "@id": "dc:source"
     },
     ...
 }
@@ -729,7 +729,7 @@ An example of a `Copyright` and a derived `Right`:
     ],
     "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
-    "allowedBy": "<URI pointing to a Copyright object>",
+    "source": "<URI pointing to a Copyright object>",
     "usageType": ["all", "copy", "play"],
     "territory": "<URI pointing to a Place object>",
     "rightContext": ["inflight", "inpublic", "commercialuse"],
@@ -762,7 +762,7 @@ An example of a `Copyright` and a derived `Right`:
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "<coalaip placeholder>/Right",
-    "allowedBy": { "/": "<hash pointing to a Copyright object>" },
+    "source": { "/": "<hash pointing to a Copyright object>" },
     "usageType": ["all", "copy", "play"],
     "territory": { "/": "<hash pointing to a Place object>" },
     "rightContext": ["inflight", "inpublic", "commercialuse"],
