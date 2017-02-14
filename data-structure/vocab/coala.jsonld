@@ -18,15 +18,6 @@
             "rdfs:label": "AbstractWork"
         },
         {
-            "@id": "<coalaip placeholder>/DigitalFingerprint",
-            "@type": "rdfs:Class",
-            "rdfs:subClassOf": {
-                "@id": "schema:Intangible"
-            },
-            "rdfs:comment": "Generic digital fingerprint for a Creation.",
-            "rdfs:label": "DigitalFingerprint"
-        },
-        {
             "@id": "<coalaip placeholder>/Copyright",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
@@ -37,6 +28,15 @@
             },
             "rdfs:comment": "Describes the full copyright for a Creation.",
             "rdfs:label": "Copyright"
+        },
+        {
+            "@id": "<coalaip placeholder>/DigitalFingerprint",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:Intangible"
+            },
+            "rdfs:comment": "Generic digital fingerprint for a Creation.",
+            "rdfs:label": "DigitalFingerprint"
         },
         {
             "@id": "<coalaip placeholder>/Right",
