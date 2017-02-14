@@ -9,6 +9,7 @@
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
         "schema": "http://schema.org/",
 
+        "AbstractWork": "coala:AbstractWork",
         "Copyright": "coala:Copyright",
         "DigitalFingerprint": "coala:DigitalFingerprint",
         "Right": "coala:Right",
@@ -33,7 +34,6 @@
             "@type": "@id"
         },
         "fingerprint": "coala:fingerprint",
-        "isManifestation": "coala:isManifestation",
         "manifestationOfWork": {
             "@id": "coala:manifestationOfWork",
             "@type": "@id"
