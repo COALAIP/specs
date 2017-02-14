@@ -1404,44 +1404,15 @@ cases:
 - **RightSet:** A collection of Rights bundled as a single Right
 
 
-For now, we've decided to leave these special types out of the specificiation:
+We utilize `lcc:SourceRight`s in our notion of [`Copyright`s](#copyright-semantics) as well as our
+`Right` transformation, but, for now, we leave the other types out of the specification:
 
-- **SourceRight** and **SuperSededRight**: Although both can be easily represented with an ontology,
-  they would greatly complicate the ownership logic of an immutable ledger.
-- **RightSet**: In the context of putting Rights onto a global registry, this is specifically a
-  problem: most decentralized ledgers cannot guarantee, and especially synchronize, the concurrent
-  transfer of multiple assets.
-    - TODO: Tim: I talked to Dimi about this, and we were trying to figure this out with
-      cryptoconditions, but it seems that at this stage it is not possible.
-
-
-##### The Notion of Ownership
-
-As RRM Rights are specific to the RRM Party they're provided for, any digital creator that wants to
-distribute a Manifestation's Rights to a multitude of interested Parties must take the following
-steps:
-
-1. Register their Party identifier on a global registry;
-1. Register their Creation as a Work on a global registry and link it to their Party identifier;
-1. Register Manifestations to the Work on a global registry;
-1. Register any number of Rights tailored to interested Parties on a global registry; and
-1. Register RightAssignments to assign these Rights to interested Parties.
-
-
-This highlights that Rights are not strictly limited to only registrations. Rights contain
-properties of ownership and can be transferred from one Party to another via RightsAssignments.
-
-Manifestations are not limited to a single Right. Parties are able to attach as many
-Rights as necessary to a Manifestation. There are a few edge cases to consider when licensing
-information is stored:
-
-- Specific licenses can imply an agreement between the issuer of the Right and the commons; to
-  handle this intention to grant Rights to literally everyone, a special Party symbolizing the
-  commons could be created to receive and hold such Rights. Following the assignment of this Right,
-  other, arbitrary, transfers of Rights of the license to specific Persons or must be disallowed.
-  Finally, Parties must also be disallowed from attaching new Rights with licenses that conflict
-  with the "commons license" to the Manifestation.
-- TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
+- `lcc:SupersededRight`: Although representable, reversible rights complicate the ownership logic of
+  an immutable ledger; and
+- `lcc:RightSet`: In the context of putting `Right`s onto a global distributed ledger, bundling
+  multiple rights together presents a specific problem: most decentralized ledgers cannot guarantee,
+  and especially synchronize, the concurrent transfer of multiple assets (in the future, this may be
+  possible with cryptoconditions).
 
 
 #### Proposed Transformation
@@ -1453,10 +1424,12 @@ Right can:
 - Be a SourceRight, SuperSeededRight or RightSet.
 
 
-In order for Rights to be atomically transferrable units, we ignore the latter requirement and
-focus on modelling Rights to be transferrable containers of specific licensing information.
-To the best of our knowledge there is not an appropriate RDF schema creates such containers, so we
-propose the following schema that satisfies the consolidated requirements of:
+For the purposes of storing `Right`s on decentralized ledgers, we ignore the requirements of the
+`lcc:RightSet` and model `Right`s as atomically transferrable containers of licensing information.
+To make a distinction between derived licensing information and a full copyright, we separately
+[explore the semantics of copyright later](#copyright-semantics). To the best of our knowledge,
+there are no existing RDF schemata for creating such containers, so we propose the following to
+satisfy the consolidated requirements of:
 
 - [LCC: Rights Reference Model](http://doi.org/10.1000/284);
 - [W3C: Open Digital Rights Language](https://www.w3.org/TR/odrl/); and
@@ -1483,7 +1456,7 @@ propose the following schema that satisfies the consolidated requirements of:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "manifestation": "<URI pointing to a Manifestation>",
+    "source": "<URI pointing to a Copyright>",
     "license": "<URI pointing to a license on an immutable ledger>"
 }
 ```
@@ -1514,18 +1487,117 @@ this in mind, an implementation in IPLD/IPFS is favored:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "manifestation": { "/": "<hash pointing to a Manifestation>" },
+    "source": { "/": "<hash pointing to a Copyright>" },
     "license": { "/": "<hash pointing to a license>" }
 }
 ```
 
+In our transformation, it is important to highlight that every `Right` must include a `source` (or
+equivalent) property that links it to an enabling `Copyright` or parent `Right`. With use on an
+immutable ledger in mind, the `source` property implements support for `lcc:SourceRight`s–albeit in
+a "backwards" relation in comparison to the RRM's definition–a `Right` containing a `source`
+property is the derivation while the pointed-to entity is the `lcc:SourceRight`.
 
-[RRM Rights can be linked to Parties through cryptographic ownership](#the-notion-of-ownership).
-Only the individuals or organizations with access to a private key corresponding to a
-Right-transaction's public key are able to repurpose the Right by, for example, initiating a
-RightsAssignment to a third Party. Ownership transactions (i.e. RRM RightsAssignments) of every
-form (e.g. transfers, loans consignments, etc.) must be stored in an ordered fashion to preserve a
-valid chain of provenance for each right.
+#### Copyright Semantics
+
+Although RRM `Right`s are capable of representing both full copyrights as well as derived licenses
+to `Creation`s, we split these two concepts into different entities to better represent them within
+distributed ledgers. We base the structure of the `Copyright` entity on the `Right` entity's, but as
+only a subset of the `Right`'s properties pertain to `Copyright`s (e.g. "territory", "validFrom",
+etc.), we do not require implementations to subtype `Copyright`s from `Right`s. However,
+semantically, and for the purposes of discussion, we treat `Copyright`s as a subtype of `Right`s.
+Similarly to `Right`s, we propose that `Copyright`s be stored on decentralized ledgers for
+maintaining ownership and provenance.
+
+We propose:
+
+```javascript
+// In JSON-LD
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "Copyright",
+    "rightsOf": "<URI pointing to a Creation (usually a Manifestation)>",
+    "territory": "<URI pointing to a Place>",
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    }
+}
+
+// In IPLD
+{
+    "@context": { "/": "<hash pointing to coalaip.schema's context>" },
+    "@type": "Copyright",
+    "rightsOf": { "/": "<hash pointing to a Creation (usually a Manifestation)>" },
+    "territory": { "/": "<hash pointing to a Place>" },
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    }
+}
+```
+
+For implementations, we recommend that `Copyright`s be automatically registered with their
+`Manifestation`s so as to immediately state the `Manifestation`'s copyright holder and allow other
+`Right`s to be derived from the `Copyright`. Given that multiple `Copyright`s may be needed, e.g.
+for multiple regions, there is no limit to the number of `Copyright`s that can be attached to a
+given `Manifestation` (for potential conflicts, see [`Assertion`s](#the-rrm-assertion-entity) and
+[`RightsConflict`s](#the-rrm-rightsconflict-entity).
+
+#### The Notion of Ownership
+
+Given that `Right`s and `Copyright`s are designed to be stored on decentralized ledgers, we propose
+to link these entities with their related rightsholding `Party`s by cryptographic ownership.
+Assuming the ledger natively supports cryptographic ownership of assets, this results in only the
+owners of a `Right` or `Copyright` on the ledger to be maintained as the rightsholders. Moreover,
+this means that only these owners are able to repurpose the `Right` by, for example, initiating a
+[`RightsAssignment`](#the-rrm-rightsassignment) to a another `Party`. Ledgers should be chosen so
+that all forms (e.g. transfers, loans, consignments, etc.) of these transactions (i.e. RRM
+`RightsAssignment`s) can be stored in an ordered fashion to maintain each right's chain of
+provenance.
+
+With RRM `Right`s modelled in such a fashion, any digital creator that wants to register and
+distribute the `Right`s of a `Manifestation` to interested `Party`s must:
+
+1. Register their `Party` identifier on a global registry;
+1. Register their `Creation` as a `Work` on a global registry and link it to their `Party`
+   identifier;
+1. Register `Manifestation`s to the `Work` on a global registry;
+1. Register a `Copyright` for the `Manifestation` on a global registry;
+1. Derive any number of `Right`s tailored to interested `Party`s from the `Copyright` and register
+   them on a global registry; and
+1. Register `RightAssignment`s to assign these `Right`s to interested `Party`s.
+
+
+The above steps highlight how a `Right` is not only limited to registration; with the use of a
+ledger, `Right`s also contain properties of ownership and can be transferred from one `Party` to
+another via `RightsAssignment`s. The owner of a `Right` or `Copyright` on the ledger is maintained
+to be the rightsholder.
+
+However, there are a few edge cases to consider when licensing information is stored this way:
+
+- Specific licenses can imply an agreement between the issuer of the `Right` and the commons; to
+  handle this intention to grant `Right`s to literally everyone, a special `Party` symbolizing the
+  commons could be created to receive and hold such `Right`s. Following the assignment of this
+  `Right`, other, arbitrary, transfers of `Right`s of the license to specific `Party`s must be
+  disallowed. Finally, `Party`s must also be disallowed from attaching new `Right`s with licenses
+  that conflict with the "commons license" to the `Manifestation`.
+- TODO: Maybe there are more edge cases like this. If so, enumerate and discuss/propose solutions.
+
+
+It is important to note that with these ownership semantics for copyrights and licenses, the
+ownership of a `Work` or `Manifestation` is essentially meaningless: these entities simply contain
+information about a creative work and are used as pointers for `Copyright`s and `Right`s. As such,
+storing `Work`s and `Manifestation`s in ledgers is unnecessary and an immutable data store, e.g.
+IPFS, can be used instead if cross-protocol links are supported (i.e. multiaddr).
 
 
 ### The LCC RightsAssignment `Entity`
