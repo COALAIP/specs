@@ -1748,20 +1748,40 @@ content-addressed storage. In contrast to a traditional SQL database, it is impo
 the transactions. We can only append to a blockchain. The solution is to append an Assertion
 validating specific statements that are true.
 
-Instead of falsifying the existence of the Work "The Scream", the solution recommended by the
-LCC RRM, COALA IP suggests making an Assertion about "The Scream"'s Author property. With IPLD's
-Merkle-path feature, we are able to achieve exactly that by defining an Assertion object:
+`Assertion`s are applied towards entire entities and evaluate whether an asserting `Party`
+("Asserter") agrees or disagrees with the claim made by the entity. Schema.org's [ReviewAction](http://schema.org/ReviewAction)
+provides a good base to work off of, albeit with less-than-ideal property names that don't map well
+to the RRM's definitions. We assume that "coala.schema" will alias some of these properties and get:
 
 ```javascript
+// In JSON-LD
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "Assertion",
+    "asserter": "<URI pointing to a Party>",
+    "assertionTruth": false,
+    "assertionSubject": "<URI pointing to Work: The Scream>",
+    "error": "author"
+}
+
+// and
+
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "Assertion",
+    "asserter": "<URI pointing to a Party>",
+    "assertionTruth": true,
+    "assertionSubject": "<URI pointing to Work: 32 Campbell's Soup Cans>"
+}
+
 // In IPLD
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Assertion",
-    "truth": "false",
-    "asserter": { "/": "<hash pointing to a Party>" },
-    "subject": {
-        "/": "<hash pointing to Work: The Scream's author property>" // e.g. /ipdb/<hash of work>/author
-    }
+    "asserter": { "/": "<hash pointing to a Party" },
+    "assertionTruth": false,
+    "assertionSubject": { "/": "<hash pointing to Work: The Scream>" },
+    "error": "author"
 }
 
 // and
@@ -1769,14 +1789,28 @@ Merkle-path feature, we are able to achieve exactly that by defining an Assertio
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Assertion",
-    "truth": "true",
-    "asserter": { "/": "<hash pointing to a Party>" },
-    "subject": {
-        "/": "<hash pointing to Work: 32 Campbell's Soup Cans's author property>"
-    }
+    "asserter": { "/": "<hash pointing to a Party" },
+    "assertionTruth": true,
+    "assertionSubject": { "/": "<hash pointing to Work: 32 Campbell's Soup Cans>" }
 }
 ```
 
+*Note: On IPLD, you have the option of applying additional granularity to the `Assertion` by
+directly referring to an entity's property as the "assertionSubject". For example, if you wanted to
+assert that "The Scream"'s "author" property is incorrect, you could do so with*
+
+```javascript
+{
+    ...
+    "assertionTruth": "false",
+    "assertionSubject": { "/": "/ipdb/<hash of work>/author" },
+    "error": "...",
+    ...
+}
+```
+
+*Although this doesn't directly apply the `Assertion` against the entire `Work` entity, we still
+have a link to the `Work` in the IPLD hash and can associate this `Assertion` to it.*
 
 We end up with the following:
 
