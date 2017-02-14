@@ -9,6 +9,15 @@
     },
     "@graph": [
         {
+            "@id": "<coalaip placeholder>/AbstractWork",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "schema:CreativeWork"
+            },
+            "rdfs:comment": "Abstract concept of a manifested Creation.",
+            "rdfs:label": "AbstractWork"
+        },
+        {
             "@id": "<coalaip placeholder>/DigitalFingerprint",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
@@ -163,25 +172,13 @@
             "rdfs:label": "fingerprint"
         },
         {
-            "@id": "<coalaip placeholder>/isManifestation",
-            "@type": "rdf:Property",
-            "schema:domainIncludes": {
-                "@id": "schema:CreativeWork"
-            },
-            "schema:rangeIncludes": {
-                "@id": "schema:Boolean"
-            },
-            "rdfs:comment": "A convenience flag for indicating if a Creation is a Manifestation.",
-            "rdfs:label": "isManifestation"
-        },
-        {
             "@id": "<coalaip placeholder>/manifestationOfWork",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "schema:CreativeWork"
             },
             "schema:rangeIncludes": {
-                "@id": "schema:CreativeWork"
+                "@id": "coala:AbstractWork"
             },
             "owl:equivalentProperty": {
                 "@id": "schema:exampleOfWork"

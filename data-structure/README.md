@@ -250,17 +250,32 @@ An example of a localizable `Place`:
 
 `Creation`s are represented by [schema.org/CreativeWork](http://schema.org/CreativeWork)s and its
 subtypes (such as [schema.org/Book](http://schema.org/Book)). To differentiate between the different
-`CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we treat any CreativeWork that does not contain
-an `manifestationOfWork` (equivalent to [`exampleOfWork`](http://schema.org/exampleOfWork)) property
-as a `Work` and all other CreativeWorks (or subtypes) as `Manifestation`s. `Manifestation`s that
-include a [`url`](http://schema.org/url) property are considered digital `Manifestation`s while all
-others are physical `Manifestation`s. See the [schema.org/CreativeWork definition](http://schema.org/CreativeWork)
-for the Linked Data context. Note that, elsewhere in the text, we use `Creation` to encompass both
-`Work`s and `Manifestation`s.
+`CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we define our own AbstractWork class
+(subclassed from schema.org's CreativeWork) for `Work`s and allow `Manifestation`s to be of
+CreativeWork (or any non-AbstractWork subtype of CreativeWork).
 
-The `manifestationOfWork` property definition:
+`Manifestation`s that include a [`url`](http://schema.org/url) property are considered digital
+`Manifestation`s while all others are physical `Manifestation`s. See the [schema.org/CreativeWork
+definition](http://schema.org/CreativeWork) for the Linked Data context.
+
+An additional `manifestationOfWork` (equivalent to [`exampleOfWork`](http://schema.org/exampleOfWork))
+property is defined to link `Manifestation`s back to their `Work`. `Manifestation`s must contain
+a valid link in this property, and `Work`s must not contain this property.
+
+Our own vocabulary definitions for `Creation`s:
 
 ```javascript
+// AbstractWork Class
+{
+    "@id": "<coalaip placeholder>/AbstractWork",
+    "@type": "rdfs:Class",
+    "rdfs:subClassOf": {
+        "@id": "schema:CreativeWork"
+    },
+    ...
+}
+
+// ManifestationOfWork Property
 {
     "@id": "<coalaip placeholder>/manifestationOfWork",
     "@type": "rdf:Property",
@@ -268,27 +283,10 @@ The `manifestationOfWork` property definition:
         "@id": "schema:CreativeWork"
     },
     "schema:rangeIncludes": {
-        "@id": "schema:CreativeWork"
+        "@id": "coala:AbstractWork"
     },
     "owl:equivalentProperty": {
         "@id": "schema:exampleOfWork"
-    },
-    ...
-}
-```
-
-To conveniently identify `Manifestation`s, we also suggest adding a `isManifestation` property
-(*although this is not mandatory*):
-
-```javascript
-{
-    "@id": "<coalaip placeholder>/isManifestation",
-    "@type": "rdf:Property",
-    "schema:domainIncludes": {
-        "@id": "schema:CreativeWork"
-    },
-    "schema:rangeIncludes": {
-        "@id": "schema:Boolean"
     },
     ...
 }
@@ -307,7 +305,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
         "http://schema.org/",
         "<coalaip placeholder>"
     ],
-    "@type": "CreativeWork",
+    "@type": "AbstractWork",
     "@id": "<URI pointing to this object>",
     "name": "Lord of the Rings",
     "creator": "<URI pointing to a Person or Organization object>"
@@ -322,8 +320,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": "<URI pointing to a CreativeWork object>",
-    "isManifestation": true,
+    "manifestationOfWork": "<URI pointing to a AbstractWork object>",
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
@@ -340,8 +337,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": "<URI pointing to a CreativeWork object>",
-    "isManifestation": true,
+    "manifestationOfWork": "<URI pointing to a AbstractWork object>",
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
@@ -355,7 +351,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
         { "/": "<hash pointing to schema.org's context>" },
         { "/": "<hash pointing to COALA IP's context>" }
     ],
-    "@type": "CreativeWork",
+    "@type": "AbstractWork",
     "name": "Lord of the Rings",
     "creator": { "/": "<hash pointing to a Person or Organization object>" },
 }
@@ -368,8 +364,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to a CreativeWork object>" },
-    "isManifestation": true,
+    "manifestationOfWork": { "/": "<hash pointing to a AbstractWork object>" },
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",
@@ -385,8 +380,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to a CreativeWork object>" },
-    "isManifestation": true,
+    "manifestationOfWork": { "/": "<hash pointing to a AbstractWork object>" },
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",
@@ -394,6 +388,8 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "url": { "/": "<hash pointing to a file on e.g. IPFS>" }
 }
 ```
+
+Note that, elsewhere in the text, we use `Creation` to encompass both `Work`s and `Manifestation`s.
 
 #### Licensing
 
