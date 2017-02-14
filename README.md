@@ -51,7 +51,7 @@ COALA IP's vision will be realized through three key efforts:
    to represent intellectual property rights on distributed ledgers (see [Introduction](#introduction));
 1. Defining a technology-specific, but ledger-agnostic, free and open messaging and communication
    protocol for intellectual property rights and licensing transactions (see [Implementing the
-   RRM](#coala-ip-implementing-the-lcc-rrm-with-linked-data); and
+   RRM](#coala-ip-implementing-the-lcc-rrm-with-linked-data)); and
 1. Building a community to define a minimally-viable set of data for the description of intellectual
    property rights and licensing agreements.
 
@@ -743,18 +743,17 @@ content-addressed location on IPFS, etc.).
 
 ### Fingerprinting
 
-Determining the originality and provenance of a physical object is challenging, but there are
-almost always subtle differences between an original physical object and copies. Digital files
-can be copied perfectly, down to the bit. Furthermore, it is difficult for a computer to determine
-that two files actually represent the same photograph or song if the files are different sizes or
-other subtle modifications have been made, while a human would have no difficulty making the
-connection.
+Determining the originality and provenance of a creation is challenging. This is true of physical
+creations, but even more so for digital creations which face the challenges of being perfectly
+copyable as well as easily modifiable. Although computers are good at determining perfect copies,
+they struggle if subtle modifications, such as compressing image quality or cropping an image, are
+made–even if a human would have no difficulties in making a connection.
 
-The LCC takes these problems into account. In their "Ten Targets" document, they propose
-cross-standard identifiers that can, if needed, be *transformed* into alternative identifiers. This
-section discusses a similar idea: the existence of an arbitrarily complex vector that can be used
-to link all the alternative identifiers of a single work to a single identifier on a global
-rights registry.
+The LCC takes these problems into account. In their ["Ten Targets" document](#the-lccs-ten-targets),
+they propose cross-standard identifiers that can, if needed, be *transformed* into alternative
+identifiers. This section discusses a similar idea: the existence of an arbitrarily complex graph
+that can be used to link all the alternative identifiers of a single work to a single identifier on
+a global rights registry.
 
 Any function that takes a digital asset as an input and yields a fixed-length value could
 potentially be used as a **fingerprinting function**. This could be as simple as a hash function
@@ -762,26 +761,24 @@ that inspects the arrangement of bytes in a digital asset and returns a integer,
 elaborate versions:
 
 - [Image-match](https://github.com/ascribe/image-match): An approximate image match algorithm
-  implemented in Python.
-- [pHash](http://www.phash.org/): A hashing method using various features of a digital asset.
+  implemented in Python;
+- [pHash](http://www.phash.org/): A hashing method using various features of a digital asset;
 - [dejavu](https://github.com/worldveil/dejavu): An audio fingerprinting and recognition algorithm
-  implemented in Python.
-- TODO: List more libraries
-    - Find popular ones that do fingerprinting for all kinds of media types
+  implemented in Python;
+- And many more
 
 
 While a manifestation of a digital creation may initially only have a single fingerprint generated
 by an arbitrary hashing function, more elaborate fingerprinting schemes could later be used to help
-automatically identify other occurrences of the creation on the internet. Paired with linked data,
-fingerprinting schemes could allow the storage and tracking of all information about the use of a
-work in an arbitrarily complex graph. Copies, remixes, mash-ups, and modified versions of the work
-could be identified automatically as paths in the graph. Traversing these paths would reveal the
-original instance of the work, possibly identifying the creator and providing opportunities for
-compensation.
+automatically identify other occurrences of the creation on the internet. Paired with Linked Data,
+fingerprinting schemes would allow an arbitrarily complex graph to store and track all the
+information related to the use of a work: copies, remixes, mash-ups, and modified versions could all
+be identified automatically as paths in the graph. A traversal up a path would reveal the original
+instance of the work and possibly identify the creator as well as an opportunity for compensation.
 
-As rights information becomes more transparent and users can easily license the rights they want
-to obtain, participants in the system would be incentivized to create more elaborate fingerprinting
-systems to further increase transparency.
+Based on this, as rights information becomes more transparent and rights easily licensable by users,
+participants in the system would be incentivized to create more elaborate fingerprinting systems to
+further increase transparency.
 
 
 ### The Interledger Protocol
@@ -789,7 +786,6 @@ systems to further increase transparency.
 - TODO:
     - This section should briefly explain what Interledger and the Interledger Protocol is about and
       how COALA IP could potentially use it.
-    - Same formalities as in all the sections before apply.
 
 
 ## COALA IP: Remodeling the LCC RRM with Linked Data
@@ -1809,41 +1805,48 @@ We end up with the following:
 ![](media/lccrrmassertionexample2.png)
 
 
-As changing any of the objects values of key would provoke a change in the object's IPLD hash, and
-since changing data is not possible, we could also simply point the assertion to the object
-itself. However, we'd probably lose valuable metadata and it would be difficult to find out
-why an object was flagged by an asserter.
+As a recommendation, we add that using IPLD with `Assertion`s is ideal, as it enforces the
+immutability of an asserted object (as well as the assertion itself); with IPLD, objects cannot be
+silently changed after-the-fact as any changes will cause their IPLD hashes to also change.
 
 
-
-### The LCC RightsConflict `Entity`
+### The RRM `RightsConflict` Entity
 
 TODO:
-    - See other introductory sections of LCC models. Use same structure to describe the model
+
+- See other introductory sections of LCC entities. Use same structure to describe the entity
 
 
 #### Proposed Transformation
 
 TODO:
-    - See other introductory sections of LCC models. Use same structure to do the transformation
+
+- See other introductory sections of LCC entities. Use same structure to do the transformation
+
+
+### User Extensions
+
+TODO:
+
+- Explain how users could extend the given entities with their own properties
 
 
 ## Future
 
-This document outlined general guidelines on using the LCC Framework to define an RDF ontology for
-managing digital rights on top of immutable data stores. As the goal is to implement an open
-standard for rights management, there are a number of events that are to follow; they are outlined
-here in sequential order:
+This document has outlined general technologies and guidelines on using the LCC Framework as the
+basis of an RDF ontology for managing digital rights with immutable data stores. As the goal is to
+implement an open standard for rights management, a number of efforts are to follow:
 
-- Define a working RDF schema based on this specification
-- Include or build open source communities around it
-- Using the RDF schema, implement this specification
-- Identify a standards commite to send this to
-- Take the RDF schema, take the proposed transformations here and put them in a format of a standard
-  proposal
+- Define a production-ready RDF-compatible schema based on the proposed transformations (see
+  [`data-structure/`](data-structure/))
+- Complete a reference implementation using the RDF-compatible schema (see
+  [implementations](IMPLEMENTATIONS.md))
+- Include or build open source communities around COALA IP
+- Identify a standards committee to work with
+- Reformat the proposed transformations and their resulting schemata to that of a standard proposal
 
 
-Thanks for reading!
+Thank you for reading!
 
 # Contributors
 
@@ -1851,6 +1854,4 @@ Contributors to this document, in alphabetical order:
 
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
 - Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
-- Brett Sun: brett@bigchaindb.com
-
-
+- Brett Sun: qisheng.brett.sun@gmail.com, brett@bigchaindb.com
