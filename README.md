@@ -510,15 +510,15 @@ five and six of the LCC's "Ten Targets":
 
 ### Interplanetary Linked Data
 
-This section describes the functionality of Interplanetary Linked Data (IPLD) and its use in working
-with immutable data stores and Linked Data.
+This section describes the functionality of [Interplanetary Linked Data](https://github.com/ipld/specs/tree/master/ipld)
+(IPLD) and its use when working with immutable data stores and [Linked Data](#linked-data). IPLD is
+an attempt to put Linked Data on distributed ledgers by using hashes as content-addressed links, a
+technique referred to as "Merkle Links." Merkle links provide a number of interesting properties,
+foremost of which is the ability to cryptographically check the data referred to by a link.
 
 #### Motivation for IPLD
 
-IPLD is an attempt to put Linked Data on distributed ledgers using hashes for linking, a technique
-referred to as "Merkle links".
-
-Let's go back to our Warhol example:
+If we go back to our Andy Warhol example:
 
 
 ```javascript
@@ -529,7 +529,7 @@ Let's go back to our Warhol example:
 }
 ```
 
-In addition, we have a set of data describing one of his works:
+Let's add a set of data describing one of his works:
 
 
 ```javascript
@@ -540,33 +540,32 @@ In addition, we have a set of data describing one of his works:
 }
 ```
 
-Note that neither object contains a link to the other. There is no way to tell that Andy Warhol
-is the creator of "32 Campbell's Soup Cans." We could use JSON-LD to create a link between the
-objects by making both of the objects resolvable on the internet. We could do this by adding `@id`s
-to the objects' bodies, and an `author` property to the creation that points to a resolvable
-location of the person object.
+Note that neither object contains a link to the other. There is no way for someone to tell that Andy
+Warhol is the creator of "32 Campbell's Soup Cans" from just the data alone. We could solve this by
+using [JSON-LD](#json-linked-data): we could make both of the objects resolvable on the internet,
+add `@id`s to the objects' bodies, and add an `author` property to the creation object that points
+to the person object's location.
 
-The problem is we have to trust the hosts that make these objects resolvable. Hosts might return
-the correct objects at first, but that could change. Since there is no way for resolving actors to
-check the integrity of the object they're requesting, a host could return arbitrary data and the
-actor wouldn't know. In addition, internal linking within objects or internal linking from URIs
-is challenging using linked data protocols like JSON-LD.
-
-The rest of this section explores the features of IPLD that promise to solve these problems.
+However, this result runs into the problem of implicitly trusting the hosts that make these objects
+resolvable. Hosts might return the correct objects at first, but that could change. Even worse,
+resolving actors have no way of checking the integrity of an object they're requesting; a host could
+return arbitrary, or even wrong, data that will stay undetected by the resolver. IPLD solves these
+problems by using a hash-based, content-addressed linking format.
 
 
 #### IPLD by Example
 
-The following sections give a brief overview of IPLD's functionality. More information is available
-in the [IPLD specification draft](https://github.com/ipfs/specs/tree/master/ipld).
+For these examples, we use [py-ipld](https://github.com/bigchaindb/py-ipld), an existing Python
+implementation of IPLD, to handle IPLD specifics and data transformations. Other implementations,
+such as [js-ipld](https://github.com/ipld/js-ipld) also exist.
 
 
 ##### Creation of Linked Objects
 
-We can us IPLD to link the person and creation objects discussed earlier with the following steps:
+We can use IPLD to link the person and creation objects discussed earlier with the following steps:
 
-1. Serialize the person's object to a canonical form of [Concise Binary Object Representation](http://cbor.io/)
-   (CBOR):
+1. Serialize the person object to its canonical [Concise Binary Object Representation](http://cbor.io/)
+   (CBOR) form:
 
 
     ```python
@@ -582,14 +581,12 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     Out[3]: b'\xa3ibirthDatej1928-08-06jfamilyNamefWarholigivenNamedAndy'
     ```
 
-    For this demonstration, we use [py-ipld](https://github.com/bigchaindb/py-ipld), an
-    existing Python library, to handle IPLD specifics and data transformations. In this
-    case, `ipld.marshal` is used to serialize the `person` object using a [CBOR
-    reference implementation](https://bitbucket.org/bodhisnarkva/cbor). The result is a byte array.
+    `ipld.marshal` serializes the `person` object to a CBOR byte array, using the [CBOR reference
+    implementation](https://bitbucket.org/bodhisnarkva/cbor).
 
 
-1. Hash the serialized byte array using [multihash](https://github.com/jbenet/multihash) and encode
-   the hash to base58
+1. Hash the serialized byte array using [multihash](https://github.com/jbenet/multihash), encoding
+   the hash to base58:
 
 
     ```python
@@ -598,16 +595,8 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
-    [Multihash](https://github.com/jbenet/multihash) is a protocol for differentiating outputs from
-    various well-established cryptographic hash functions. It adds a
-    [hexadecimal prefix](https://github.com/jbenet/multihash#table-for-multihash-v100-rc-semver)
-    to each hash generated indicate the hash function used. This lets users identify the hash
-    functions in the future in case of upgrades, and allows for multiple hash functions to coexist
-    within and across applications.
-
-
-1. Now that we have derived an IPLD from the person object, we can link it to the creation as its
-   author:
+1. Now that we've derived an IPLD hash from the person object, we can use it to define an author for
+   the creation:
 
 
     ```python
@@ -620,8 +609,8 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
-    We've now connected the creation to a person by using the person's hash value, thereby creating
-    a "Merkle link". Generally, Merkle links can be schematized like this:
+    We've now connected the creation to its author by using a person's hash value for the `author`
+    property, creating our first "Merkle Link." Generally, merkle links can be schematized as:
 
 
     ```javascript
@@ -636,8 +625,8 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
-1. Finally, to make this creation object resolvable, we repeat the first two steps. We serialize the creation
-   object to a canonical form of CBOR:
+1. Finally, to obtain a resolvable hash for the creation, we repeat the first two steps. First
+   serialize the creation object its canonical CBOR form:
 
 
     ```python
@@ -646,13 +635,7 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
-    Note this is a special case, with the Merkle link contained in `creation` replaced by
-    an [unassigned CBOR tag (258)](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml) to
-    make the link more easily retrievable on deserialization.
-
-
-1. Hash the resulting serialized byte array using [multihash](https://github.com/jbenet/multihash)
-   and encode the hash to base58:
+    And then hash the resulting serialized byte array using multihash and a base58 encoding:
 
 
     ```python
@@ -661,15 +644,20 @@ We can us IPLD to link the person and creation objects discussed earlier with th
     ```
 
 
+    *Note: The creation's CBOR form replaced the original merkle link contained in `author` with an
+    [unassigned CBOR tag (258)](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml) to make
+    the link more easily retrievable on deserialization.*
+
+
 ##### Retrieval of Linked Objects
 
-To further explore IPLD, let's assume we've put these objects into a data store. We'll use IPFS
-since its identifiers are compatible with the hashes we created previously.
+To further explore IPLD, let's assume we've put these objects into a data store and try to retrieve
+them. We'll use [IPFS](https://ipfs.io/) for the data store as its identifiers are compatible with
+our previously created hashes.
 
-We can use paths of Merkle links (Merkle paths) to resolve any object within IPFS using its hash
-value, and also further de-reference any of the object's connecting edges by following its Merkle
-links. Given the example above, the `author` of the creation could be found through this Merkle
-path:
+We can use paths of merkle links ("Merkle Paths") to resolve any object within IPFS from their hash
+value, as well as further de-reference any nested merkle links in the dereferenced object. Given the
+example above, the `author` of the creation could be found through this merkle path:
 
 
 ```python
@@ -681,63 +669,65 @@ Out [8]:
 ```
 
 
-IPLD resolves any Merkle link, in this case the creation's author, with the actual object,
-making traversing a Merkle link feel similar to regular property access in objects. To link
-across network addresses, we can use [multiaddr](https://github.com/jbenet/multiaddr), which
-allows the construction of resource paths to reach across protocols. Doing so
-would allow an IPLD object to maintain resolvable links even if its Merkle links point to
-separate ledgers (e.g. IPFS, BigchainDB, Bitcoin, etc).
+IPLD resolves any merkle link, in this case the creation's author, to the actual object before any
+further dereferences are made, allowing the creation and traversal of merkle links to feel similar
+to Unix paths or accessing properties in nested objects. To link across network addresses, we can
+use [multiaddr](https://github.com/jbenet/multiaddr) to construct resource paths across protocols.
+Such links would allow an IPLD object to maintain resolvable links even if those links point to
+separate ledgers (e.g. [IPFS](https://ipfs.io/), [BigchainDB](https://www.bigchaindb.com/),
+[Ethereum](https://www.ethereum.org/), [Bitcoin](https://bitcoin.org/en/), etc.).
 
 
 #### Evaluation of IPLD
 
-In summary, IPLD is a promising new technology, with a few cavets:
+In summary, IPLD looks to be a promising new data format suited for our needs, albeit with a few
+cavets:
 
 - **Benefits:**
-    - Provides cryptographic integrity checks of data using upgradable hash functions (multihash).
-    - Uses content addressed storage instead of location addressed storage (compare to URL).
-    - Enables cross-ledger/database resolvability of data (multiaddr and merkle-paths).
-    - Unifies object identifiers through a canonicalized hashing strategy.
-    - Imposes immutability by using a merkle-dag data structure.
-    - Future-proofs underlying concepts (multi-x).
-    - Enables wide compatibility, even down to the UNIX file system path.
-    - Relies on lightweight protocol drafts and implementations.
-    - Deserializes to a multitude of other data serialization formats (YAML, JSON, XML, etc).
+    - Provides cryptographic integrity checks of data using upgradable hash functions (multihash);
+    - Uses content-addressed storage instead of location addressed storage (merkle links vs. [URLs](https://tools.ietf.org/html/rfc1738));
+    - Enables cross-ledger/database links ([multiaddr](https://github.com/jbenet/multiaddr) and
+      merkle paths);
+    - Unifies object identifiers through a canonicalized hashing strategy;
+    - Imposes immutability through the underlying [merkle-dag](https://github.com/ipld/specs/tree/master/ipld#what-is-a-merkle-graph-or-a-merkle-dag)
+      data structure;
+    - Future-proofs underlying concepts ([multi-x](https://github.com/multiformats));
+    - Enables wide compatibility, even down to the UNIX file system path; and
+    - Deserializes to a multitude of other data serialization formats (YAML, JSON, etc.).
 - **Caveats:**
-    - Non-standardized protocols (multi-x).
+    - Non-standardized protocols ([multi-x](https://github.com/multiformats));
         - [Overlaps](https://interledger.org/five-bells-condition/spec.html#crypto-conditions-type-registry)
-          with other protocols that are being standardized.
-        - Breaks with exisiting and well-established protocols (e.g. URI vs. multiaddr).
-    - Does not comply with existing linked data ontologies due to immutability.
-    - Opinionated CBOR serialization.
+          with other protocols that are being standardized
+        - Breaks with existing and well-established protocols (e.g. [URI](https://tools.ietf.org/html/rfc3986)
+          vs. [multiaddr](https://github.com/jbenet/multiaddr))
+    - Does not comply with most existing Linked Data ontologies due to immutability constraints; and
+    - Uses an opinionated [CBOR](http://cbor.io/) serialization strategy.
 
 
 #### Compatibility of IPLD and JSON-LD
 
-Although the naming and concept of IPLD was inspired by JSON-LD, the two have different sets of
-functionality. This section highlights the limitations imposed on JSON-LD by IPLD.
+Although the naming and concept of IPLD was inspired by [JSON-LD](#json-linked-data), the two have
+different sets of functionality. In particular, while the two can be used together, IPLD imposes a
+number of limitations on JSON-LD's feature set.
 
 
-#### Self-identifying JSON-LD Objects
+##### Self-identifying JSON-LD Objects
 
-JSON-LD objects can maintain a self-identifying link using the `@id` property. This allows the
-object to directly express its location. The same is impossible for IPLD objects. Since IPLD objects
-are supposed to only be retrieved by the corresponding hash of the their data, the hash itself
-cannot be part of the object as it would be a very difficult to solve cryptographic puzzle. The
-amount of processing required would be incredible, rendering the identification of objects extremely
-inefficient. Instead, we prevent JSON-LD objects with IPLD links from self-identifying themselves
-using an `@id` property. This is not usually a problem as objects can also identify themselves
-through content addressing.
+With an `@id`, JSON-LD objects are able to maintain a self-identifying link and directly express
+their resolvable location to users. However, the same is impossible for IPLD objects: as IPLD
+objects are designed to be retrieved only by the canonical hash of their data, this hash cannot be
+included as part of the pre-hashed data (trying to do so would amount to solving a cryptographic
+puzzle). To avoid this, we use an [empty `@id`](https://www.w3.org/TR/json-ld/#base-iri) on IPLD
+objects to resolve these objects to their current document bases (i.e. their resolvable,
+content-addressed location on IPFS, etc.).
 
 
 **Sources:**
 
-- [IPLD Specification Draft](https://github.com/ipfs/specs/tree/master/ipld), June 2016
+- [IPLD Specification Draft](https://github.com/ipld/specs/tree/master/ipld), June 2016
 - [IPLD Python Reference Implementation](https://github.com/bigchaindb/py-ipld), June 2016
 - [Multihash Specification](https://github.com/jbenet/multihash), June 2016
 - [Multiaddr Specification](https://github.com/jbenet/multiaddr), June 2016
-- [Interledger: Crypto-Conditions](https://interledger.org/five-bells-condition/spec.html), June
-  2016
 - [Concise Binary Object Representation](http://cbor.io/), June 2016
 - [IANA: CBOR Tags Registry](https://www.iana.org/assignments/cbor-tags/cbor-tags.xhtml), June 2016
 
