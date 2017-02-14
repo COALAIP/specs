@@ -383,8 +383,8 @@ result, termed as ["Expanded Document Form"](https://www.w3.org/TR/json-ld/#expa
 is now a set of data that has been automatically mapped to the given schemata. This form can be
 considered the canonical version of the data: anyone can now take this form and understand its
 properties, regardless of the key names used in the original model. Moreover, as leaf `@value` nodes
-are only allowed to define the most basic types (e.g. string, boolean, integer, etc), this expanded
-form also enables a parser to easily traverse the document and validate each occurence of `@value`.
+are only allowed to define the most basic types (e.g. string, boolean, integer, etc.), this expanded
+form also enables a parser to easily traverse the document and validate each occurrence of `@value`.
 
 As the rest of this document relies heavily on JSON-LD, we encourage you to learn more by
 reviewing the **Sources** below.
@@ -407,20 +407,21 @@ reviewing the **Sources** below.
 
 
 Schema.org is a collaborative initiative with the mission to create, maintain and promote schemata
-for structured data on the internet. Its vocabulary is defined as an ontology, connecting different
-concepts using links. It can be used with different encodings, including RDFa, Microdata, and
-*JSON-LD*.
+for structured data on the internet. Its schemata are defined through ontologies, with concepts
+connected to each other through links. A number of encoding formats are supported, including RDFa,
+Microdata, and [JSON-LD](#json-linked-data).
 
 
-##### Available Schemas
+##### Available Schemata
 
-Schema.org includes the following schemata that are closely related to LCC RRM's `Entity` types.
-Potentially, these could be used later to help define the COALA IP specification:
+Schema.org includes the following *core* schemata that are closely related to LCC RRM's entity
+types:
 
-- [schema.org/Person](http://schema.org/Person): See LCC RRM `Party`
-- [schema.org/Organization](http://schema.org/Organization): See LCC RRM `Party` (A `Person` can be
-  a member of an `Organization`)
-- [schema.org/CreativeWork](http://schema.org/CreativeWork): See LCC RRM `Creation`
+- [schema.org/Place](http://schema.org/Place): [LCC RRM `Place`](#the-rrm-place-entity)
+- [schema.org/Person](http://schema.org/Person): [LCC RRM `Party`](#the-rrm-party-entity)
+- [schema.org/Organization](http://schema.org/Organization): [LCC RRM `Party`](#the-rrm-party-entity)
+  (A `Person` can be a member of an `Organization`)
+- [schema.org/CreativeWork](http://schema.org/CreativeWork): [LCC RRM `Creation`](#the-rrm-creation-entity)
     - [schema.org/Article](http://schema.org/Article)
     - [schema.org/Blog](http://schema.org/Blog)
     - [schema.org/Book](http://schema.org/Book)
@@ -439,7 +440,7 @@ Potentially, these could be used later to help define the COALA IP specification
     - [schema.org/Thesis](http://schema.org/Thesis)
     - [schema.org/VisualArtwork](http://schema.org/VisualArtwork)
 - [schema.org/Action](http://schema.org/Action)
-    - [schema.org/AssessAction](http://schema.org/AssessAction): See LCC RRM `Assertion`
+    - [schema.org/AssessAction](http://schema.org/AssessAction): [LCC RRM `Assertion`](#the-rrm-assertion-entity)
         - [schema.org/ReviewAction](http://schema.org/ReviewAction)
         - [schema.org/ReactAction](http://schema.org/ReactAction)
             - [schema.org/AgreeAction](http://schema.org/AgreeAction)
@@ -448,56 +449,50 @@ Potentially, these could be used later to help define the COALA IP specification
         - [schema.org/BuyAction](http://schema.org/BuyAction)
         - [schema.org/SellAction](http://schema.org/SellAction)
         - [schema.org/RentAction](http://schema.org/RentAction)
-    - [schema.org/TransferAction](http://schema.org/TransferAction)
-- [schema.org/Place](http://schema.org/Place): See LCC RRM `Place`
+    - [schema.org/TransferAction](http://schema.org/TransferAction): [LCC RRM 'RightsAssignment'](#the-rrm-rights-assignment-entity)
 
--*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
-
+*The full list of all core schemata is available at [schema.org/docs/full.html](https://schema.org/docs/full.html).*
 
 In summary:
 
 - **What schema.org helps us with:**
-    - **LCC Party:** [schema.org/Organization](http://schema.org/Organization) and
-      [schema.org/Person](http://schema.org/Person)
-    - **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its
-      subschemata could be used
     - **LCC Place:** [schema.org/Place](http://schema.org/Place)
-    - **LCC Assertion:** [schema.org/AssessAction](http://schema.org/AssessAction)
+    - **LCC Party:** [schema.org/Person](http://schema.org/Person) and [schema.org/Organization](http://schema.org/Organization)
+    - **LCC Creation:** [schema.org/CreativeWork](http://schema.org/CreativeWork) and all its
+      subschemata
+    - **LCC RightsAssignment:** [schema.org/TransferAction](http://schema.org/TransferAction)
+    - **LCC Assertion:** [schema.org/ReviewAction](http://schema.org/ReviewAction)
 - **What schema.org *doesn't* help us with (yet?):**
     - **LCC Right**
-    - **LCC RightsAssignment**
     - **LCC RightsConflict**
-
-
-*A full list of all core schema.org schemata can be found [here](https://schema.org/docs/full.html).*
 
 
 ##### Extensibility of schema.org
 
-Although some of the `Entity` types do not yet exist in schema.org (specifically Rights,
-RightsAssignment and RightsConflict), the schema.org schemata are easily extensible. We can
-create our own schemata to fit the needs of LCC. Schema.org [even encourages](http://schema.org/docs/extension.html)
-others to subclass their *core* schemata into what it calls "*hosted*" and "*external*" extensions.
-There are three basic types of schemata on schema.org:
+Despite an exhaustive list of schemata provided by schema.org, we still have a few use cases that
+have not been covered: the missing `Right` and `RightsConflict` entity types, as well as any
+additional RRM properties that have not been defined in the existing schemata. Thankfully,
+schema.org was designed with extensibility in mind–we can modify existing, and even create new,
+schemata to fit our needs. Schema.org even encourages others to subclass the *core* schemata into
+"*hosted*" and "*external*" extensions, making available three types of schemata:
 
-- **Core:** A basic vocabulary for describing the kind of entities most common web applications
-  need.
-- **Hosted:** Subclassed models from Core which have their own namespace on schema.org (e.g.
-  http://health-lifesci.schema.org/) and are reviewed by the schema.org community. Hosted schemata
-  should be application-agnostic.
-- **External:** Subclassed models from Core or Hosted which have an application-specific namespace (e.g.
-  http://schema.coala.global). External schemata may be application-specific.
+- **Core:** A set of basic vocabulary for describing the kind of entities needed by most web
+  applications;
+- **Hosted:** Application-agnostic schemata deriving from *core* which have their own namespace on
+  schema.org (e.g. http://health-lifesci.schema.org/) and are reviewed by the schema.org community;
+  and
+- **External:** Schemata from *core* or *hosted* which have an application-specific namespace (e.g.
+  http://schema.coala.global) and may be application-specific
 
 
-Applied to the context of the COALA IP specification, application-agnostic schemata (including all
-of LCC RRM) would ideally become a *hosted* extension. Application-specific schemata, data models
-that are specific for a specific application or service, would become *external* schemata.
-Fortunately, leveraging schema.org in this way maintains compliance with rules
-five and six of the LCC's "Ten Targets":
+In the context of COALA IP, any application-agnostic schemata, including all [schemata derived from
+the LCC RRM](#coala-ip-implementing-the-lcc-rrm-with-linked-data), would become a *hosted*
+extension. Fortunately, leveraging schema.org in this way maintains compliance with rules five and
+six of the [LCC's "Ten Targets"](#the-lccs-ten-targets):
 
-- Rule 5: Links between identifiers are system agnostic and need to be authorized by participating
+- **Rule 5**: Links between identifiers are system agnostic and must be authorized by participating
   consortiums.
-- Rule 6: Metadata is system agnostic and its schema has to be authorized by participating parties
+- **Rule 6**: Metadata is system agnostic and its schema must be authorized by participating parties
   or consortiums.
 
 
@@ -788,71 +783,74 @@ further increase transparency.
       how COALA IP could potentially use it.
 
 
-## COALA IP: Remodeling the LCC RRM with Linked Data
+## COALA IP: Implementing the LCC RRM with Linked Data
 
-In this section we describe how the LCC RRM can be modeled using JSON-LD, IPLD, and schema.org.
-We will go over each model description given in the LCC Rights Reference
-Model document and discuss how the respective model can be translated into Linked Data.
+In this section we describe how the [LCC Rights Reference Model](##the-lcc-rights-reference-model)
+can be modelled into a [Linked Data](#linked-data) representation by using [schema.org](#schemaorg)
+as a building block. We go over each entity described in the RRM and discuss their translations into
+[JSON-LD](#json-linked-data) and [IPLD](#interplanetary-linked-data). Linked Data, JSON-LD, and IPLD
+have been chosen as they offer a number of advantageous properties for modelling global intellectual
+property claims on distributed ledgers; for more information, see their respective sections above.
+
+**Note**: The JSON-LD and IPLD models given in this section are not meant to be used directly. They
+may also grow outdated with time. These models are primarily provided as simple examples for how a
+given transformation may be implemented; consequently, they may be more incomplete and abstract than
+a production-ready implementation. For the reference implementation of these models, see the
+[reference JSON-LD / IPLD entity schemata](./schema).
 
 
 ### What Linked Data Gives Us Out of the Box
 
-As a building block of RRM, the LCC first defines a generic, linkable Entity Model whose entities
-can be combined to create an extendable data model for intellectual property. However, by
-using an RDF-based data structure, we can skip the transformation of these basic entities as RDF
-already provides us with a base data structure for linking entities.
+As a building block of the RRM, the LCC first defined a generic, linkable [Entity Model](#the-lcc-entity-model)
+whose entities could be combined to create an extendable data model for intellectual property.
+However, by implementing into a [Linked Data](#linked-data)-based data structure, we can ignore
+these basic entities as Linked Data already provides us with the linkable base data
+structure–[RDF](#the-resource-description-framework-rdf).
 
 
 ### General Approach
 
-The section describes how to get from a LCC RRM model to a RDF-compatible JSON-LD/IPLD
-model. As discussed, the "[LCC: Entity Model](http://doi.org/10.1000/285)" defines a generic model
-as a base for the Rights Reference Model. The document describes how to implement a fully
-extensible data model using a multitude of linked entities. Using an RDF-based data structure
-means that defining a base data structure for linking entities is not necessary—this is what RDF
-is all about.
+Our approach to implementing the RRM is as follows:
 
-To redefine the LCC's Rights Reference Model, we propose the following:
+1. Identify existing RDF-compatible schemata that map to RRM entities;
+     - If no appropriate schemata exists:
+         - Compose new RDF types from existing schemata; or
+         - Define entirely new schemata
+1. Define how entities can be identified and resolved;
+1. Resolve any mismatches between the RRM terminology and chosen RDF-compatible schemata; and
+1. Modify the chosen schemata's semantics for use on a distributed ledger, if necessary.
 
-- Identify RDF schemata that map to entities defined in the LCC RRM specification.
-    - If appropriate RDF schemata are not available:
-        - Compose new RDF types from multiple RDF schemata; and
-        - Define new RDF schemata.
-- Define how entities are identified and resolved.
-- Resolve mismatches between the LCC RRM terminology and RDF schemata.
 
+A slight speed bump in the schematization process comes when we try to maintain support for generic
+links between entities. The RRM defines the existence of links in a generic, one-to-many (i.e. `0 -
+n`) manner. However, RDF and Linked Data require these links to be explicitly named so as to express
+specific facts within their ontologies. For example, schema.org's schemata often include a finite
+set of links that can be mapped to the RRM's links, but cannot directly support the possibly
+infinite number of links allowed by the RRM. To overcome this limitation, users can extend the [base
+schemata we've provided](./schema) with their own requirements (see [User Extensions](#user-extensions)).
 
 For the purposes of demonstration, we put any new schemata into `http://coalaip.schema/` and assume
 that this document also contains all schema.org definitions (so we don't have to provide
 `http://schema.org/` as an additional context).
 
-A slight speed bump in the transformation process is ensuring support for links between entities.
-The RRM defines the existance of links in a generic manner, as one-to-many (i.e. `0 - n`)
-links. RDF and Linked Data require these links to be explicitly named so as to express specific
-facts within their ontologies. For example: schema.org's schemata often include a finite
-set of links that can be mapped to the RRM's links, but cannot directly support the possibly
-infinite number of links required by the RRM. However, we can overcome this limitation
-by extending the base JSON-LD schemata, or its underlying RDF implementation. Extensions
-could be hosted by schema.org as a *hosted* extension, or by others as *extended* extensions.
 
+### The RRM `Place` Entity
 
-### The LCC Place `Entity`
-
-In the LCC RRM, a Place describes a localizable or virtual place. It contains the following
+In the LCC RRM, a `Place` describes a localizable or virtual place. It contains the following
 property:
 
-- **PlaceType:** Defines the type of a Place; is one of:
-    - `lcc:LocalizablePlace`: A Place in the physical universe that can be located by spatial
-      coordinates
-    - `lcc:VirtualPlace`: A non-localizable Place at which a resource may be located at
+- **PlaceType:** Defines the type of a `Place`; one of:
+    - `lcc:LocalizablePlace`: A `Place` in the physical universe locatable by spatial coordinates;
+      or
+    - `lcc:VirtualPlace`: A non-localizable `Place` at which a resource may be located
 
 
-In addition, a Place can have the following outgoing links to other entities:
+In addition, a `Place` can have the following outgoing links to other entities:
 
-- Links to other Places (`0 - n`; one-to-many): *RelatedPlace*
+- Links to other `Place`s (`0 - n`; one-to-many): *RelatedPlace*
 
 
-Visualized, an RRM Place looks like:
+Visualized, an RRM `Place` looks like:
 
 
 ![](media/rrmplace.png)
@@ -860,23 +858,18 @@ Visualized, an RRM Place looks like:
 
 #### Proposed Transformation
 
-Compared to schema.org's definition of a Place, the LCC RRM Place can describe both a physical and
-a virtual Place. In this specification, we need to separate the two concepts explicitly to avoid
-confusion later in the transformation process. Neither a URI nor a IPLD Merkle link is able to
-represent a physical location, which is why in the context of this specification, these will be
-links pointing to resources, while the LCC Place model will be used
-only to refer to a physical place.
+In contrast to schema.org's definition of a [Place](http://schema.org/Place), an RRM `Place` is able
+to describe both physical and virtual places. To avoid confusion in the transformation process of
+later entities, we explicitly separate the two concepts here. We use an:
 
-For reference:
-
-- **LLC RRM Place or Place** will be used to describe a localizable Place, meaning a physical Place
-  in the universe that can be described using spatial coordinates.
-- **Universal Resource Identifier** or **IPLD Merkle link** will be used to describe a virtual
-  place where a resource can be found.
+- **RRM Place** to describe a localizable, or physical, place in the universe that can be described
+  by spatial coordinates; and an
+- **Universal Resource Identifier** or **IPLD merkle link** to describe a virtual place where a
+  resource may be found.
 
 
-With schema.org's Place, the transformation of a *localizable* Place to RDF is straight forward
-(example adapted from schema.org):
+With schema.org's Place, the transformation of a *localizable* `Place` is straight-forward (example
+adapted from schema.org):
 
 
 ```javascript
@@ -905,14 +898,14 @@ With schema.org's Place, the transformation of a *localizable* Place to RDF is s
 }
 ```
 
-To support links to other Places, one can use either of the two already-defined properties on a
-schema.org Place: `containsPlace` or `containedInPlace`, or extend the schema with their own
+To support links to other `Place`s, one can use either of the two pre-defined properties on
+schema.org's Place–`containsPlace` or `containedInPlace`–or extend the schema with their own
 properties.
 
 
-### The LCC Party `Entity`
+### The RRM `Party` Entity
 
-The LCC recommends that a Party should be able to represent any of the following classes of parties:
+The LCC recommends a `Party` to be capable of representing any of the following classes of parties:
 
 - Rightsholders;
 - Licensors;
@@ -921,20 +914,21 @@ The LCC recommends that a Party should be able to represent any of the following
 - Any other participants related to rights.
 
 
-RRM Parties must have the following properties:
+RRM `Party`s must have the following properties:
 
-- **PartyType:** Defines if the Party is an individual or a group of individuals;
-- **DateOfBirth:** Party's date of birth; only if `PartyType == 'lcc:Individual'`; and
-- **DateOfDeath:** Party's date of death; only if `PartyType == 'lcc:Individual'`.
-
-
-Additionally, a Party can have the following outgoing links to other entities:
-
-- Links to other Parties (`0 - n`; one-to-many): *RelatedParty*
-- Links to Places (`0 - n`; one-to-many): *RelatedPlace*
+- **PartyType:** Defines if the `Party` is an individual (`lcc:Individual`) or a group of
+  individuals (`lcc:Organization`);
+- **DateOfBirth:** `Party`'s date of birth; only if `PartyType == 'lcc:Individual'`; and
+- **DateOfDeath:** `Party`'s date of death; only if `PartyType == 'lcc:Individual'`.
 
 
-Visualized, an RRM Party looks like:
+Additionally, a `Party` can have the following outgoing links to other entities:
+
+- Links to other `Party`s (`0 - n`; one-to-many): *RelatedParty*
+- Links to `Place`s (`0 - n`; one-to-many): *RelatedPlace*
+
+
+Visualized, an RRM `Party` looks like:
 
 
 ![](media/rrmparty.png)
@@ -942,22 +936,21 @@ Visualized, an RRM Party looks like:
 
 #### Proposed Transformation
 
-*Note: We will describe the transformation of a RRM Party into a JSON-LD/IPLD Person and
-Organization very literally, so as to provide reasoning for the steps taken in the
-transformation. This will only be the case for this `Entity`, as the rationale for transforming
-later `Entity` types will be similar.*
+*Note: We describe the transformation of a RRM `Party` into a JSON-LD/IPLD Person and Organization
+very literally here, so as to provide reasoning for the steps taken in the transformation. Other
+entities omit similar descriptions and focus on providing rationale for the transformations that are
+specific to them.*
 
-Schema.org makes both a [schema.org/Person](http://schema.org/Person) and an [schema.org/Organization](http://schema.org/Organization)
+Schema.org makes both a [Person](http://schema.org/Person) and an [Organization](http://schema.org/Organization)
 available; hence, there is no need to define either concept as a single model differentiated by
-`PartyType`. To keep the transformation of the `Entity` into an RDF schema simple, let us first
-transform a RRM Party with `PartyType == 'lcc:Individual'` and then apply the learnings to an RRM
-Party with `PartyType == 'lcc:Organization'`.
+`PartyType`. To keep the transformation simple, let us first transform an `Party` with `PartyType ==
+'lcc:Individual'` and then apply the learnings to an `Party` with `PartyType == 'lcc:Organization'`.
 
 
-##### Transformation of RRM Party to an RDF Person
+##### Transformation of RRM `Party` to an RDF Person
 
-Using the minimum number of properties described in the RRM, an RRM Party with `PartyType ==
-'lcc:Individual'` could look like this as a schema.org Person:
+Using the minimum number of properties described in the RRM, an RRM `Party` with `PartyType ==
+'lcc:Individual'` could be modelled with mappings to schema.org/Person like so:
 
 
 ```javascript
@@ -985,11 +978,10 @@ Using the minimum number of properties described in the RRM, an RRM Party with `
 ```
 
 
-While there's nothing technically wrong with the above, you may notice on a close inspection of
-schema.org/Person that the schema already contains the `birthDate` and `deathDate` properties.
-Rather than reinventing the wheel and remapping `DayOfBirth` and `DayOfDeath` to these properties,
-we can remove the aliasing and use the properties directly defined on schema.org/Person. This gets
-us:
+While there is nothing technically wrong with the above, you may notice that schema.org/Person
+already contains the `birthDate` and `deathDate` properties. Rather than reinventing the wheel and
+remapping `DayOfBirth` and `DayOfDeath` to these properties, we can remove the aliasing and use the
+properties directly on our model. This gets us:
 
 
 ```javascript
@@ -1013,27 +1005,27 @@ us:
 ```
 
 
-In the example, we've used Andy Warhol's Wikipedia page as his Party identifier (`@id`). As an `@id`
-value is only required to be a resolvable URI or IPLD merkle-link, a JSON-LD parser would validate
-this without complaining; however, `@id` would ideally point to the location of the data itself to
-show the JSON-LD parser where it could be resolved within the internet. Unfortunately, Wikipedia
-doesn't support this, so that `https://en.wikipedia.org/wiki/Andy_Warhol` doesn't return the required
-data, which is why we'll have to look for another solution.
+In the example, we've used Andy Warhol's Wikipedia page as his identifier (`@id`). As an `@id` value
+is only required to be a well-formed URI or IPLD merkle-link, a JSON-LD parser would validate this
+without complaining; however, `@id` would ideally point to a location that holds the JSON-LD data
+itself. Unfortunately, this functionality isn't supported by
+Wikipedia–`https://en.wikipedia.org/wiki/Andy_Warhol` doesn't return a JSON-LD representation–and we
+have to look for another solution.
 
-To start off with, lets look at some limitations and requirements derived from the RRM and JSON-LD /
-IPLD:
+To start, lets look at some limitations and requirements derived from the LCC, JSON-LD, IPLD, and
+immutable ledgers:
 
 
-- **LCC's Ten Targets:**
+- [**LCC's Ten Targets**](#the-lccs-ten-targets):
     - A Party's identifier should be linked to the [International Standard Name Identifier](http://www.iso.org/iso/catalogue_detail?csnumber=44292)
       (ISNI) hub.
     - A Party's identifier should have an URI representation, so that it can be resolved predictably
       and persistently within the Internet.
-- **LCC's Principles of identification:**
-    - A Party should have at least one persistent unique public identifier that is both human- and
-      machine-readable.
-    - If a Party has multiple public identifiers, there should be a way to automatically
-      transform one identifier to another.
+- [**LCC's Principles of Identification**](#the-lcc-principles-of-identification):
+    - A Party should be associated with at least one persistent unique public identifier that is
+      both human- and machine-readable.
+    - If a Party is associated with multiple public identifiers, there should be a way to
+      automatically transform one identifier to another.
     - A Party's identifier can have multiple designations (e.g. ISBN-10, ISBN-13, ISBN-A, etc.).
     - A Party's identifier should have an URI representation.
     - A Party's identifier should not have any intended meaning that could be misinterpreted by
@@ -1041,29 +1033,27 @@ IPLD:
     - A Party's identifier should not include any information about the Party itself or its
       registration date.
     - **TODO: There are even more requirements in this document that should be listed here!**
-- **JSON-LD:**
+- [**JSON-LD**](#json-linked-data):
     - An `@id` value must be represented as an absolute or relative
       [Internationalized Resource Identifier](https://tools.ietf.org/html/rfc3987) (IRI).
-- **IPLD:**
+- [**IPLD**](#interplanetary-linked-data):
     - Any object must be addressable using its [multihashed](https://github.com/jbenet/multihash)
-      value (encoded in base58).
-        - Multihash allows different hash functions to interoperate and stay upgradeable.
-- And finally, our own requirements to allow for any linked entity data to be put on public ledgers
-  (e.g. blockchains or registries):
-    - Elements of the Party's identifier can represent the public part of an asymmetric cryptographic
-      key-pair.
-        - If so, the public key should be represented by a unified encoding method. See
-        [Bitcoin's public key addressing](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses).
+      value.
+- **Immutable Ledgers**:
+    - Elements of the Party's identifier must be capable of representing the public part of an
+      asymmetric cryptographic key-pair.
+        - Any public key represented in this way must also be representable by a unified encoding
+          method (see [Bitcoin's public key addressing](https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)).
     - A Party can only be created when at least one valid cryptographic key-pair is provided.
 
-Currently there is no system that is able to fulfill all of these requirements
-and become a registry for RRM Party data. Let's pretend, for the sake of completeness, that we have
-access to such an identity service in the following examples—preferably a decentralized
-not-for-profit service! It will let users:
+Unfortunately, there are no currently available systems that are able to fulfill all of these
+requirements and become a registry for RRM `Party` data. However, let's pretend, for the sake of
+completeness, that we have access to such an identity service—preferably a decentralized
+not-for-profit service!–in the following examples. It will let users:
 
-- Issue an identity that can be resolved using JSON-LD ([Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html))
+- Issue an identity that can be resolved using JSON-LD (with [Content Negotiation](https://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html))
   or IPLD; and
-- Attach the public part of their key pairs to their identity.
+- Attach the public part of their key-pairs to their identity.
 
 
 Services that could be extended to support our use case include:
@@ -1074,7 +1064,7 @@ Services that could be extended to support our use case include:
 - https://ipdb.foundation/
 
 
-Equipped with this identity service, we can go back to the example's JSON-LD representation and
+Equipped with this identity service, we can go back to our example's JSON-LD representation and
 replace its `@id` value with an URI pointing to the dataset (the dataset itself living on the
 identity service):
 
@@ -1093,9 +1083,7 @@ identity service):
 ```
 
 
-On IPLD, we remove the `@id` property. Not only are we restricted from using self-referencing
-links in IPLD, but such links are unnecessary, as any object is able to
-identify itself by its own hash. Thus, we get:
+On IPLD, we use an empty `@id` to identify an object by its own hash. Thus, we get:
 
 
 ```javascript
@@ -1112,27 +1100,27 @@ identify itself by its own hash. Thus, we get:
 ```
 
 
-Finally, to complete the transformation, we need to include support for the possible outgoing links
-of an RRM Party: links to other Parties (*RelatedParty*) and links to Places (*RelatedPlace*). To
+And finally, to complete the transformation, we include support for the possible outgoing links of
+an RRM `Party`: links to other `Party`s (*RelatedParty*) and links to `Place`s (*RelatedPlace*). To
 give some context, a few potential use cases for these links include:
 
-- Multiple Parties sharing a relationship (e.g. Party A and Party B created Creation C);
-- Parties providing Places as part of their metadata (e.g. home location, contact place, or billing
+- Multiple `Party`s sharing a relationship (e.g. `Party` A and `Party` B created `Creation` C);
+- `Party`s providing Places as part of their metadata (e.g. home location, contact place, or billing
   address); or
-- Multiple Parties being bundled together as an Organization.
+- Multiple `Party`s being bundled together as an Organization.
 
 
 A few linking possibilities are already covered by schema.org, such as a Person's home address
 (schema.org/Person's `homeLocation`; specifying a Place) or parents (schema.org/Person's `parent`;
-specifying a Party). If we wanted to define relations that schema.org hadn't already provided, we
-could also extend schema.org/Person with our own RDF schema.
+specifying a `Party`). If one wanted to use relations that schema.org hadn't already provided,
+schema.org/Person could be extended with new properties.
 
 
-##### Transformation of RRM Party to an RDF Organization
+##### Transformation of RRM `Party` to an RDF Organization
 
-An RRM Party with `PartyType == lcc:Organization` describes a single entity representing a group of
-individuals. Using the minimum number of properties listed in the RRM, the `Entity` type could look
-like this as an schema.org Organization.
+An RRM `Party` with `PartyType == lcc:Organization` describes a single entity representing a group
+of individuals. Using the minimum number of properties listed in the RRM, an `lcc:Organization`
+`Party` could look like this as a schema.org/Organization:
 
 
 ```javascript
@@ -1195,40 +1183,25 @@ like this as an schema.org Organization.
   independently?
 
 
-##### Allowing Parties to Sign Metadata
+### The RRM `Creation` Entity
 
-As we envision future identity registries built on top of public ledgers, we need to ensure
-that users are able to include a cryptographic identity with any registered identities, allowing
-them to sign any submitted metadata. Luckily, the [Friend of a Friend Project](http://www.foaf-project.org/)
-has already thought about this and provide the [Web of Trust RDF ontology](http://xmlns.com/wot/0.1/)
-for signing RDF documents with public-key cryptography. Integrating this ontology into our identity
-model, we could get something like:
+An RRM `Creation` entity describes creations that are directly or indirectly made by human beings.
+The specification proposes a single required property:
 
-- TODO:
-    - Give an code example how WOT could look like in an immutable ledger.
-    - Make sure that the *immutability* is not violated, the WOT ontology as of now only work with
-      mutability.
-
-
-### The LCC Creation `Entity`
-
-An RRM Creation model describes something directly or indirectly made by human beings. According
-to the specification, it has a single required property:
-
-- **CreationMode:** Describes the mode of creation; one of:
+- **CreationMode:** Defines the mode of the `Creation`; one of:
     - `lcc:Manifestation`: A perceivable manifestation of a `Work`; or
-    - `lcc:Work`: A distinct, abstract Creation whose existence is revealed through one or more
-      manifestations.
+    - `lcc:Work`: A distinct, abstract `Creation` whose existence is revealed through one or more
+      `Manifestation`s.
 
 
-Additionally, a Creation can have the following outgoing links to other entities:
+Additionally, a `Creation` can have the following outgoing links to other entities:
 
-- Links to other Creations (`0 - n`; one-to-many): *RelatedCreation*
-- Links to Places (`0 - n`; one-to-many): *RelatedPlace*
-- Links to Parties (`0 - n`; one-to-many): *RelatedParty*
+- Links to other `Creation`s (`0 - n`; one-to-many): *RelatedCreation*
+- Links to `Place`s (`0 - n`; one-to-many): *RelatedPlace*
+- Links to `Party`s (`0 - n`; one-to-many): *RelatedParty*
 
 
-Visualized, an RRM Creation looks like:
+Visualized, an RRM `Creation` looks like:
 
 
 ![](media/rrmcreation.png)
@@ -1236,13 +1209,13 @@ Visualized, an RRM Creation looks like:
 
 #### Proposed Transformation
 
-Schema.org's existing schemata already covers a large number of the RRM Creation's use cases.
-Not only is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork)
-quite extensive, there are also a number of subtypes that can be used to define specifics about a
-creation (e.g. [schema.org/Book](http://schema.org/Book)). However, one distinction to highlight is
-how an RRM Creation has two `CreationMode`s: one for perceivable Creations (called `Manifestation`s)
-and one for abstract Creations (called `Work`s). Note that in the rest of the text, we use
-`Creation` to refer to the entity type which encompasses both `Work`s and `Manifestation`s.
+Schema.org's existing schemata already covers a large number of the `Creation`'s use cases. Not only
+is the vocabulary of [schema.org/CreativeWork](http://schema.org/CreativeWork) quite extensive,
+there are also a number of subtypes that can be used for specific creation mediums or types (e.g.
+[schema.org/Book](http://schema.org/Book)). However, one distinction to highlight is how an RRM
+`Creation` encompasses both the perceivable `Manifestation`s and abstract `Work`s (through
+`CreationMode`). Note that in the rest of the text, we use `Creation` as an entity type that
+encompasses both `Work`s and `Manifestation`s.
 
 Transforming to JSON-LD, we get:
 
@@ -1324,63 +1297,66 @@ linked with hashes:
 ```
 
 
-Note that a distinction has been made between works (typed as `Work`s)
-and manifestations (typed as `Manifestation`s). Both physical and digital manifestations can be
-represented, with digital manifestations including a set of fingerprints as well as a link pointing
-to an example of the work. In the future, we plan to subtype both a `Work` and a
-`Manifestation` type from schema.org's `CreativeWork` to allow their properties to be easily
-customizable.
+Note that a distinction has been made between `Work`s (typed as "coalaip.schema/Works"s) and
+`Manifestation`s (typed as "coalaip.schema/Manifestation"s). Both physical and digital
+manifestations can be represented, with digital manifestations containing a link to an example of
+the work as well as possibly being associated with a set of fingerprints.
 
 
-### The LCC Right `Entity`
+### The RRM `Right` Entity
 
-In comparison to all other RRM `Entity` types, the Right is by far the most interconnected. A
+In comparison to all other RRM entity types, the `Right` is by far the most interconnected. A
 minimal set of required properties include:
 
-- **RightType:** Defines the type of Right (e.g. all uses, license, copy, play, stream,
-  administration, lcc:RightSet, etc)
-- **ToolType:** Defines the type of medium that must be employed when exercising the Right (e.g.
+- **RightType:** Defines the type of `Right` (e.g. all uses, license, copy, play, stream,
+  administration, an `lcc:RightSet`, etc.);
+- **ToolType:** Defines the type of medium that must be employed when exercising the `Right` (e.g.
   only watch on mobile phone or only use a brush to produce manifestations). `ToolType`s are not
-  consumed as part of exercising the Right.
+  consumed as part of exercising the `Right`;
 - **MaterialType:** Defines the type of material that may be employed when exercising the right
-  (e.g. only use watercolour paint to produce manifestations). `MaterialType`s are consumed as part
-  of exercising the Right and become part of the result.
-- **ValidContextType:** Defines the type of context in which the Right may be exercised (e.g. in
-  flight, public, commercial use, academic research, etc.).
-- **IsExclusive:** Indicates whether the Right is exclusive to the Rightsholder (e.g. `true` or
-  `false).
-- **PercentageShare:** Defines the percentage share of the Right controlled (e.g. 51%, 100%, etc.).
-- **NumberOfUses:** Defines the number of uses permitted by the Right (e.g. 3, 5, unlimited uses,
-  etc.).
-- **ValidPeriod:** Defines the period during which the Right is valid. (e.g. 2015-2016).
-- **Territory:** Defines the Place where the Right is may be exercised (e.g. North America).
+  (e.g. only use watercolour paint to produce manifestations). `MaterialType`s are consumed during
+  the exercising of a `Right` and become part of the result;
+- **ValidContextType:** Defines the type of context in which the `Right` may be exercised (e.g. in
+  flight, public, commercial use, academic research, etc.);
+- **IsExclusive:** Indicates whether the `Right` is exclusive to the rightsholder (e.g. `true` or
+  `false`);
+- **PercentageShare:** Defines the percentage share of the `Right` controlled (e.g. 51%, 100%,
+  etc.);
+- **NumberOfUses:** Defines the number of uses permitted by the `Right` (e.g. 3, 5, unlimited uses,
+  etc.);
+- **ValidPeriod:** Defines the period during which the `Right` is valid. (e.g. 2015-2016); and
+- **Territory:** Defines the Place where the `Right` may be exercised (e.g. North America).
 
 
-In addition, a Right can have the following outgoing links to other entities:
+*Note: For the sake of simplicity, we ignore the HostCreationType and OutputCreationType.*
 
-- Links to other Rights (`0 - n`; one-to-many): *RelatedRight*.
-- Links to Parties (`0 - n`; one-to-many): *RelatedParty*.
-- Links to Creations (`0 - n`; one-to-many): *RelatedCreations*.
-- Links to Places (`0 - n`; one-to-many): *RelatedPlace*.
-- Links to RightAssignments (`0 - n`; one-to-many): *RelatedContext*.
-- Links to Assertions (`0 - n`; one-to-many): *RelatedContext*.
-- Links to RightsConflicts (`0 - n`; one-to-many): *RelatedContext*.
+In addition, a `Right` can have the following outgoing links to other entities:
+
+- Links to other `Right`s (`0 - n`; one-to-many): *RelatedRight*
+- Links to `Party`s (`0 - n`; one-to-many): *RelatedParty*
+- Links to `Creation`s (`0 - n`; one-to-many): *RelatedCreations*
+- Links to `Place`s (`0 - n`; one-to-many): *RelatedPlace*
+- Links to `RightAssignment`s (`0 - n`; one-to-many): *RelatedContext*
+- Links to `Assertion`s (`0 - n`; one-to-many): *RelatedContext*
+- Links to `RightsConflict`s (`0 - n`; one-to-many): *RelatedContext*
 
 
-Visualized, an RRM Right looks like:
+*Note: The `Context` entity has been expanded to its non-`Right` subclasses: `RightsAssignment`s,
+`Assertion`s, and `RightsConflict`s.*
+
+Visualized, an RRM `Right` looks like:
 
 
 ![](media/rrmright.png)
 
 
-##### Additional Types of Rights
+#### Additional Types of `Right`s
 
-The RRM specifies three special types of Rights intended for specific use
-cases:
+The RRM specifies three special types of `Right`s intended for specific use cases:
 
-- **SourceRight:** A Right from which another Right is derived
-- **SuperSededRight:** A Right to invalidate a referenced Right
-- **RightSet:** A collection of Rights bundled as a single Right
+- `lcc:SourceRight`: A `Right` from which another `Right` is allowed by or created from;
+- `lcc:SupersededRight`: A `Right` to invalidate a referenced `Right`; and
+- `lcc:RightSet`: A collection of `Right`s bundled as a single `Right`.
 
 
 We utilize `lcc:SourceRight`s in our notion of [`Copyright`s](#copyright-semantics) as well as our
@@ -1396,11 +1372,11 @@ We utilize `lcc:SourceRight`s in our notion of [`Copyright`s](#copyright-semanti
 
 #### Proposed Transformation
 
-Transforming the RRM Right `Entity` poses some challenges. According to the RRM specification, an RRM
-Right can:
+Transforming the RRM `Right` entity poses some challenges. According to the RRM specification, a
+`Right` can:
 
 - Represent both copyright as well as licensing information; and
-- Be a SourceRight, SuperSeededRight or RightSet.
+- Be a `lcc:SourceRight`, `lcc:SuperSeededRight`, or `lcc:RightSet`.
 
 
 For the purposes of storing `Right`s on decentralized ledgers, we ignore the requirements of the
@@ -1441,10 +1417,10 @@ satisfy the consolidated requirements of:
 ```
 
 
-RRM Rights are just links between `Manifestation`s and licenses. Licenses are usually intended to be
-read by humans, so the license should be stored on a technology that prevents changes to the
-license. This could be an immutable ledger or blockchain, or be linked by Content-Addressing. With
-this in mind, an implementation in IPLD/IPFS is favored:
+The `Right` can be seen as the link between a `Manifestation` and its licenses. To prevent
+undetected changes to these linked licenses, the licenses would ideally be stored on an immutable
+ledger or content-addressed storage layer. With this in mind, the implementation in IPLD (on IPFS)
+is favoured:
 
 
 ```javascript
@@ -1579,7 +1555,7 @@ storing `Work`s and `Manifestation`s in ledgers is unnecessary and an immutable 
 IPFS, can be used instead if cross-protocol links are supported (i.e. multiaddr).
 
 
-### The LCC RightsAssignment `Entity`
+### The RRM `RightsAssignment` Entity
 
 According to the RRM, a `RightsAssignment` describes an event that results in the existence or
 non-existence of a `Right` (or `Copyright`). Depending on the type, a `RightsAssignment` may
@@ -1591,21 +1567,22 @@ a `RightsAssignment` can have the following properties:
     - **RightsPolicy:** Represents the assignment of a `Right` from an authorized `Party` to another
       `Party` without requiring the latter's agreement (e.g. security level for user access of a
       computer system); or
-    - **RightsAgreement:** Represents an agreement between two Parties regarding a Right (e.g. a
+    - **RightsAgreement:** Represents an agreement between two `Party`s regarding a `Right` (e.g. a
       license, publishing agreement, etc.).
-- **RightsAssignmentStatus**: Defines the status of the RightsAssignment. It can be one of:
-    - `lcc:Offer`: An open RightsAssignment proposed by a prospective Assigner;
-    - `lcc:Request`: An open RightsAssignment proposed by a prospective Assignee; or
-    - `lcc:Executed`: An executed assignment of Rights.
+- **RightsAssignmentStatus**: Defines the status of the `RightsAssignment`; one of:
+    - `lcc:Offer`: An open `RightsAssignment` proposed by a prospective Assigner;
+    - `lcc:Request`: An open `RightsAssignment` proposed by a prospective Assignee; or
+    - `lcc:Executed`: An executed assignment of rights.
+- **RightsAssignmentTime**: Defines the the at which the `RightsAssignment` was made.
 
 
-The RRM RightsAssignment has the following outgoing references:
+The RRM `RightsAssignment` can have the following outgoing references:
 
-- Links to RRM Parties (`0 - n`; one-to-many): *RelatedParty*; and
-- Links to RRM Rights (`0 - n`; one-to-many): *RelatedRight*.
+- Links to `Party`s (`0 - n`; one-to-many): *RelatedParty*
+- Links to `Right`s (`0 - n`; one-to-many): *RelatedRight*
 
 
-Visualized, an RRM RightsAssignment looks like:
+Visualized, an RRM `RightsAssignment` looks like:
 
 
 ![](media/rrmrightsassignment.png)
@@ -1613,34 +1590,27 @@ Visualized, an RRM RightsAssignment looks like:
 
 #### Proposed Transformation
 
-Existing schemata for transferring assets could provide a source for transformations, but because of
-our unique requirements we do not use those schemata. We expect RightsAssignments to be registered
-on immutable ledgers that can already handle asset transfers. COALA IP has chosen to use both IPLD
-and the Interledger protocol in the hopes of establishing a metadata and licensing ontology that can
-span multiple ledgers and immutable data stores. We assume the following requirements will be met
-by every COALA IP-compatible ledger:
+Based on our expectation that `Right`s will be registered to immutable ledgers, we expect the
+following requirements to be met by every ledger capable of transferring `Right`s:
 
-- Assets must only be transferrable if cryptographic key-pair signatures are used on the transaction
+- Assets are only transferrable if cryptographic key-pair signatures are used on the transaction
   level;
-- Transactions must be able to define a JSON-serializable payload;
-- Assets' provenance chains must be easily comprehensible by any user;
-- The Divisibility of Assets must be defined during registration;
-- Transactions must support IPLD as well as ILP's [Crypto-Conditions
-  specification](https://interledger.org/five-bells-condition/spec.html);
+- Asset transactions must be able to contain a JSON-serializable payload;
+- Assets' provenance chains must be easily comprehensible for any user;
+- Asset divisibility must be defined during registration;
+- Transactions must support IPLD as well as [Crypto-Conditions](https://interledger.org/five-bells-condition/spec.html);
 - Transfer transactions must support different modes, including:
     - Transfers from a group of individuals to a single individual (and vice-versa);
-    - Transfers that are only claimable during a certain time span (timelock conditions); and
+    - Transfers that are only claimable during a certain time span ("timelock conditions"); and
     - Transfers that are only claimable by an individual or group that knows a certain secret key
-      (hashlock conditions);
-    - TODO: Are there more modes?
-- TODO: Are there more requirements COALA IP asks from a ledger?
+      ("hashlock conditions");
 
 
 With these assumptions, we can model a minimally transformed RRM `RightsAssignment` on top of
 [schema.org/TransferAction](http://schema.org/TransferAction) and include it as the payload of a
 ledger's transfer-transaction. Piggybacking on a transfer-transaction allows the rights transfer to
-automatically be included with information such as the current and new rightsholders, time of
-execution, and status of execution (valid or rejected by the ledger).
+automatically include information such as the current and new rightsholders, time of execution, and
+status of execution (valid or rejected by the ledger).
 
 
 ```javascript
@@ -1665,37 +1635,45 @@ and in IPLD:
 ```
 
 
-Although not required, we include the `contract` property in this schema to frame the rights that
-are available to be transferred. A Party is not able to transfer more Rights than they have
-themselves, so a transfer of Rights can only contain permissions that are a subset of the Rights
-contained in the original creation of the Right or previous transfer-transaction.
+Although not required, we include the `contract` property to allow a `RightsAssignment` to more
+specifically frame the transferred rights (e.g. with additional clauses). A `Party` can only
+transfer the `Right`s they own, so a transfer of `Right`s will contain only the permissions that are
+available in the original `Right` or previous transfer-transactions.
 
 
-### The LCC Assertion `Entity`
+### The RRM `Assertion` Entity
 
-Assets registered under the COALA IP ontology are registered by independent users, not by a trusted
-central authority (like a rightsholder) or a decentralized network (like the Bitcoin network) that
-can guarantee the validity of the data. We must assume that some records based on the COALA IP
-ontology will contain inaccurate or even fraudulent statements made by users. To counteract this,
-the LCC RRM recommends the implementation of an RRM Assertion `Entity` that evaluates claims made
-about the truth or falsehood of statements from participating Parties within the ontology.
+Entities under the COALA IP ontology are registered by independent users, rather than trusted
+central authorities (such as rightsholders) or decentralized networks (such as the Bitcoin network)
+that are able to provide guarantees for the validity of the data. As the ontology may potentially be
+exposed to an open internet and its users, we must assume that some records will contain inaccurate
+or even fraudulent claims. To counteract this, the RRM recommends the implementation of an
+`Assertion` entity that evaluates the truthiness of claims made by participating `Party`s. These
+`Assertion`s provide a healing mechanism that can be used by interpreters of the data to retrieve
+trustable results.
 
-The LCC's minimum set of required properties includes:
+The RRM's minimum set of required properties include:
 
-- **TruthValue**: Indicates the level of trust or "truthiness" of the claim; and
+- **TruthValue**: Indicates the "truthiness" of the claim; and
 - **ValidPeriod**: Defines the time period during which the claim is maintained (e.g from 01.01.2011
-  to 01.01.2015)
+  to 01.01.2015).
 
 
-Additionally, an RRM Assertion can have the following outgoing references:
+Additionally, an RRM `Assertion` can have the following outgoing references:
 
-- Links to Parties (`0 - n`; one-to-many): *Asserter*;
-- Links to RightsAssignments (`0 - n`; one-to-many): *SubjectOfAssertion*;
-- Links to Assertions (`0 - n`; one-to-many): *SubjectOfAssertion*; and
-- Links to RightsConflicts (`0 - n`; one-to-many): *SubjectOfAssertion*.
+- Links to `Party`s (`0 - n`; one-to-many): *Asserter*
+- Links to `Creation`s (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to `Rights`s (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to `RightsAssignment`s (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to `Assertion`s (`0 - n`; one-to-many): *SubjectOfAssertion*
+- Links to `RightsConflict`s (`0 - n`; one-to-many): *SubjectOfAssertion*
 
 
-Visualized, an RRM Assertion `Entity` looks like:
+*Note: Differing slightly from the RRM, we have added `Creation`s as a possible
+`SubjectOfAssertion.` The `Context` entity has also been expanded into its subclasses: `Right`s,
+`RightsAssignment`s, `Assertion`s, and `RightsConflict`s.*
+
+Visualized, an RRM `Assertion` entity looks like:
 
 
 ![](media/rrmassertion.png)
@@ -1703,31 +1681,29 @@ Visualized, an RRM Assertion `Entity` looks like:
 
 #### Proposed Transformation
 
-Since the ontology will potentially be exposed to an open internet and its users, an Assertion model
-in the ontology is necessary. It provides a healing mechanism interpreters of the data can use to
-retrieve a statistical truth. COALA IP proposes that assertions should not be made on actual models,
-but rather on a model's attributes and links.
-
+Our transformation proposes that assertions should be made directly on an entity itself rather than
+the single properties within an entity.
 
 Think about the following scenario:
 
-> Andy Warhol decides to use the COALA IP protocol to register his work on a blockchain. He's
-  registering one of his works called "32 Campbell's Soup Cans" as a Work and attaches a poster
-  of the work as a Manifestation of it. He also creates a Right defining the licensing terms of
-  buying the poster and attaches it to the Manifestation. Since Andy is not really good with
-  computers—they were never really his type of medium—he accidentally registers a Work
-  of Edvard Munch's "The Scream" under his name.
+> Andy Warhol decides to use the COALA IP protocol to register his work on a blockchain. He
+  registers "32 Campbell's Soup Cans," one of his works, as a `Work` and attaches a poster as a
+  `Manifestation`. He then assigns a `Right` to the poster, defining the licensing terms of
+  purchase, by creating and attaching the `Right` to the `Manifestation`. Mistakenly, as Andy is not
+  really good with computers—they were never really his type of medium—he also accidentally
+  registers a `Work` of Edvard Munch's "The Scream" under his name.
 
-Visually, this is what we'd end up with:
+Visually, this is what's been registered:
 
 
 ![](media/lccrrmassertionexample1.png)
 
 
-This creates an awkward situation. We've stored our ontology on a blockchain supporting IPLD and
-content-addressed storage. In contrast to a traditional SQL database, it is impossible to revert
-the transactions. We can only append to a blockchain. The solution is to append an Assertion
-validating specific statements that are true.
+This creates an awkward situation: we've stored our ontology on a blockchain that supports IPLD and
+content-addressed storage, so, in contrast to a traditional SQL database, we can't correct the
+mistaken transactions by simply reverting them. The only action we can take is to append more
+information to the blockchain–we can validate the truthiness of specific statements by appending
+`Assertion`s.
 
 `Assertion`s are applied towards entire entities and evaluate whether an asserting `Party`
 ("Asserter") agrees or disagrees with the claim made by the entity. Schema.org's [ReviewAction](http://schema.org/ReviewAction)
