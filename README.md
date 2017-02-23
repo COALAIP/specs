@@ -490,11 +490,9 @@ the LCC RRM](#coala-ip-implementing-the-lcc-rrm-with-linked-data), would become 
 extension. Fortunately, leveraging schema.org in this way maintains compliance with rules five and
 six of the [LCC's "Ten Targets"](#the-lccs-ten-targets):
 
-- **Rule 5**: Links between identifiers are system agnostic and must be authorized by participating
-  consortiums.
-- **Rule 6**: Metadata is system agnostic and its schema must be authorized by participating parties
-  or consortiums.
-
+- **Rule 5**: Links between identifiers are platform agnostic and non-proprietary.
+- **Rule 6**: Metadata is platform agnostic or interoperable; mappings should be available to translate
+  between schemata authorized by multiple parties.
 
 **Sources:**
 
@@ -1426,9 +1424,9 @@ satisfy the consolidated requirements of:
 
 
 The `Right` can be seen as the link between a `Manifestation` and its licenses. To prevent
-undetected changes to these linked licenses, the licenses would ideally be stored on an immutable
-ledger or content-addressed storage layer. With this in mind, the implementation in IPLD (on IPFS)
-is favoured:
+undetected changes to these linked licenses—which are usually intended to be read by humans—the
+licenses would ideally be stored on an immutable ledger or content-addressed storage layer. With
+this in mind, the implementation in IPLD (on IPFS) is favoured:
 
 
 ```javascript
