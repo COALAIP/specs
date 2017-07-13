@@ -1332,13 +1332,6 @@ to an example of the work. In the future, we plan to subtype both a `Work` and a
 customizable.
 
 
-#### The Copyright Transfer
-
-- TODO:
-    - When a Creation is being transferred, expresses a Copyright transfer between parties
-    - Outline how this is working, what implications it has and so on
-
-
 ### The LCC Right `Entity`
 
 In comparison to all other RRM `Entity` types, the Right is by far the most interconnected. A
