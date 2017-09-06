@@ -10,6 +10,7 @@
         "schema": "http://schema.org/",
 
         "AbstractWork": "coala:AbstractWork",
+        "Manifestation": "coala:Manifestation",
         "Copyright": "coala:Copyright",
         "DigitalFingerprint": "coala:DigitalFingerprint",
         "Right": "coala:Right",
@@ -30,8 +31,8 @@
             "@type": "@id"
         },
         "fingerprint": "coala:fingerprint",
-        "manifestationOfWork": {
-            "@id": "coala:manifestationOfWork",
+        "manifestationOf": {
+            "@id": "coala:manifestationOf",
             "@type": "@id"
         },
         "numberOfUses": "coala:numberOfUses",

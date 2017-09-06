@@ -18,6 +18,15 @@
             "rdfs:label": "AbstractWork"
         },
         {
+            "@id": "coala:Manifestation",
+            "@type": "rdfs:Class",
+            "rdfs:subClassOf": {
+                "@id": "coala:AbstractWork"
+            },
+            "rdfs:comment": "A perceivable manifestation of an AbstractWork.",
+            "rdfs:label": "Manifestation"
+        },
+        {
             "@id": "coala:Copyright",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
@@ -172,10 +181,10 @@
             "rdfs:label": "fingerprint"
         },
         {
-            "@id": "coala:manifestationOfWork",
+            "@id": "coala:manifestationOf",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
-                "@id": "schema:CreativeWork"
+                "@id": "coala:Manifestation"
             },
             "schema:rangeIncludes": {
                 "@id": "coala:AbstractWork"
@@ -183,8 +192,8 @@
             "owl:equivalentProperty": {
                 "@id": "schema:exampleOfWork"
             },
-            "rdfs:comment": "The parent Work of this Manifestation.",
-            "rdfs:label": "manifestationOfWork"
+            "rdfs:comment": "The parent AbstractWork of this Manifestation.",
+            "rdfs:label": "manifestationOf"
         },
         {
             "@id": "coala:numberOfUses",
