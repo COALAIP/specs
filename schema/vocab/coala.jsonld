@@ -9,7 +9,7 @@
     },
     "@graph": [
         {
-            "@id": "<coalaip placeholder>/AbstractWork",
+            "@id": "coala:AbstractWork",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:CreativeWork"
@@ -18,7 +18,7 @@
             "rdfs:label": "AbstractWork"
         },
         {
-            "@id": "<coalaip placeholder>/Copyright",
+            "@id": "coala:Copyright",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:Intangible"
@@ -30,7 +30,7 @@
             "rdfs:label": "Copyright"
         },
         {
-            "@id": "<coalaip placeholder>/DigitalFingerprint",
+            "@id": "coala:DigitalFingerprint",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:Intangible"
@@ -39,7 +39,7 @@
             "rdfs:label": "DigitalFingerprint"
         },
         {
-            "@id": "<coalaip placeholder>/Right",
+            "@id": "coala:Right",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:Intangible"
@@ -51,7 +51,7 @@
             "rdfs:label": "Right"
         },
         {
-            "@id": "<coalaip placeholder>/RightsTransferAction",
+            "@id": "coala:RightsTransferAction",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
                 "@id": "schema:TransferAction"
@@ -60,7 +60,7 @@
             "rdfs:label": "RightsTransferAction"
         },
         {
-            "@id": "<coalaip placeholder>/source",
+            "@id": "coala:source",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -75,7 +75,7 @@
             "rdfs:label": "source"
         },
         {
-            "@id": "<coalaip placeholder>/asserter",
+            "@id": "coala:asserter",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "schema:ReviewAction"
@@ -90,7 +90,7 @@
             "rdfs:label": "asserter"
         },
         {
-            "@id": "<coalaip placeholder>/assertionSubject",
+            "@id": "coala:assertionSubject",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "schema:ReviewAction"
@@ -105,7 +105,7 @@
             "rdfs:label": "assertionSubject"
         },
         {
-            "@id": "<coalaip placeholder>/assertionTruth",
+            "@id": "coala:assertionTruth",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "schema:ReviewAction"
@@ -120,7 +120,7 @@
             "rdfs:label": "assertionTruth"
         },
         {
-            "@id": "<coalaip placeholder>/exclusive",
+            "@id": "coala:exclusive",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -132,7 +132,7 @@
             "rdfs:label": "exclusive"
         },
         {
-            "@id": "<coalaip placeholder>/fingerprintOf",
+            "@id": "coala:fingerprintOf",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:DigitalFingerprint"
@@ -152,7 +152,7 @@
             "rdfs:label": "fingerprintOf"
         },
         {
-            "@id": "<coalaip placeholder>/fingerprint",
+            "@id": "coala:fingerprint",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:DigitalFingerprint"
@@ -172,7 +172,7 @@
             "rdfs:label": "fingerprint"
         },
         {
-            "@id": "<coalaip placeholder>/manifestationOfWork",
+            "@id": "coala:manifestationOfWork",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "schema:CreativeWork"
@@ -187,7 +187,7 @@
             "rdfs:label": "manifestationOfWork"
         },
         {
-            "@id": "<coalaip placeholder>/numberOfUses",
+            "@id": "coala:numberOfUses",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -199,7 +199,7 @@
             "rdfs:label": "numberOfUses"
         },
         {
-            "@id": "<coalaip placeholder>/percentageShares",
+            "@id": "coala:percentageShares",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -211,7 +211,7 @@
             "rdfs:label": "percentageShares"
         },
         {
-            "@id": "<coalaip placeholder>/rightContext",
+            "@id": "coala:rightContext",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -223,7 +223,7 @@
             "rdfs:label": "rightContext"
         },
         {
-            "@id": "<coalaip placeholder>/rightsOf",
+            "@id": "coala:rightsOf",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Copyright"
@@ -238,7 +238,7 @@
             "rdfs:label": "rightsOf"
         },
         {
-            "@id": "<coalaip placeholder>/territory",
+            "@id": "coala:territory",
             "@type": "rdf:Property",
             "schema:domainIncludes": [
                 {
@@ -258,7 +258,7 @@
             "rdfs:label": "territory"
         },
         {
-            "@id": "<coalaip placeholder>/transferContract",
+            "@id": "coala:transferContract",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:RightsTransferAction"
@@ -278,7 +278,7 @@
             "rdfs:label": "transferContract"
         },
         {
-            "@id": "<coalaip placeholder>/usageType",
+            "@id": "coala:usageType",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
                 "@id": "coala:Right"
@@ -290,7 +290,7 @@
             "rdfs:label": "usageType"
         },
         {
-            "@id": "<coalaip placeholder>/validFrom",
+            "@id": "coala:validFrom",
             "@type": "rdf:Property",
             "schema:domainIncludes": [
                 {
@@ -318,7 +318,7 @@
             "rdfs:label": "valueFrom"
         },
         {
-            "@id": "<coalaip placeholder>/validThrough",
+            "@id": "coala:validThrough",
             "@type": "rdf:Property",
             "schema:domainIncludes": [
                 {
@@ -345,6 +345,5 @@
             "rdfs:comment": "The date after when the item is not valid.",
             "rdfs:label": "validThrough"
         }
-    ],
-    "@id": "<coala placeholder>#version"
+    ]
 }
