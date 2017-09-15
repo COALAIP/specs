@@ -76,10 +76,9 @@ Adhering to these patterns helps you to avoid the creation of models that are to
 an immutable context. For example, consider the [`Creation`](#rrm-creation) entity: although the
 schema allows a `Work` to declare its manifestations through the [workExample property](http://schema.org/workExample),
 doing so would inherently lock the `Work` into only these `Manifestation`s. You can avoid this
-problem by declaring your `Work`s and `Manifestation`s separately, using the [`manifestationOfWork`
-property](#rrm-creation) (alias of [`exampleOfWork`](http://schema.org/exampleOfWork)) in the
-`Manifestation`s to create a link to its `Work`. Another feature of this pattern is that you only
-have to declare a nested model once, even if multiple parents should be linked to it.
+problem by declaring your `Work`s and `Manifestation`s separately, using the `Manifestation` class
+and then link to `AbstractWork` using the `manifestationOf` (alias of [`exampleOfWork`](http://schema.org/exampleOfWork))
+property.
 
 When relying on inter-object links rather than nested objects, you may find that some properties
 from schema.org expect an object or value rather than a link. To handle this, you can either use an
@@ -250,16 +249,18 @@ An example of a localizable `Place`:
 
 `Creation`s are represented by [schema.org/CreativeWork](http://schema.org/CreativeWork)s and its
 subtypes (such as [schema.org/Book](http://schema.org/Book)). To differentiate between the different
-`CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we define our own AbstractWork class
-(subclassed from schema.org's CreativeWork) for `Work`s and allow `Manifestation`s to be of
-CreativeWork (or any non-AbstractWork subtype of CreativeWork).
+`CreationMode`s (`lcc:Manifestation` or `lcc:Work`), we define
+
+- our own `AbstractWork` class (subclassed from schema.org's CreativeWork) for in-perceivable creations;
+- and a `Manifestation` class (subclassed from `coala:AbstractWork`) for perceivable creations.
+
 
 `Manifestation`s that include a [`url`](http://schema.org/url) property are considered digital
 `Manifestation`s while all others are physical `Manifestation`s. See the [schema.org/CreativeWork
 definition](http://schema.org/CreativeWork) for the Linked Data context.
 
-An additional `manifestationOfWork` (equivalent to [`exampleOfWork`](http://schema.org/exampleOfWork))
-property is defined to link `Manifestation`s back to their `Work`. `Manifestation`s must contain
+An additional `manifestationOf` (equivalent to [`exampleOfWork`](http://schema.org/exampleOfWork))
+property is defined to link `Manifestation`s back to their `AbstractWork`. `Manifestation`s must contain
 a valid link in this property, and `Work`s must not contain this property.
 
 Our own vocabulary definitions for `Creation`s:
@@ -275,9 +276,19 @@ Our own vocabulary definitions for `Creation`s:
     ...
 }
 
-// ManifestationOfWork Property
+// Manifestation Class
 {
-    "@id": "<coalaip placeholder>/manifestationOfWork",
+    "@id": "<coalaip placeholder>/Manifestation",
+    "@type": "rdfs:Class",
+    "rdfs:subClassOf": {
+        "@id": "coala:AbstractWork"
+    },
+    ...
+}
+
+// ManifestationOf Property
+{
+    "@id": "<coalaip placeholder>/manifestationOf",
     "@type": "rdf:Property",
     "schema:domainIncludes": {
         "@id": "schema:CreativeWork"
@@ -320,7 +331,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": "<URI pointing to a AbstractWork object>",
+    "manifestationOf": "<URI pointing to a AbstractWork object>",
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
@@ -337,7 +348,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     "@type": "Book",
     "@id": "<URI pointing to this object>",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": "<URI pointing to a AbstractWork object>",
+    "manifestationOf": "<URI pointing to a AbstractWork object>",
     "isPartOf" "<URI pointing to a CreativeWork object>",
     "author": "<URI pointing to a Person or Organization object>",
     "datePublished": "29-07-1954",
@@ -364,7 +375,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to a AbstractWork object>" },
+    "manifestationOf": { "/": "<hash pointing to a AbstractWork object>" },
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",
@@ -380,7 +391,7 @@ An example of a `Work`, and its physical and digital `Manifestation`s:
     ],
     "@type": "Book",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to a AbstractWork object>" },
+    "manifestationOf": { "/": "<hash pointing to a AbstractWork object>" },
     "isPartOf" { "/": "<hash pointing to a CreativeWork object>" },
     "author": { "/": "<hash pointing to a Person or Organization object>" },
     "datePublished": "29-07-1954",

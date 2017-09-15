@@ -1264,7 +1264,7 @@ Transforming to JSON-LD, we get:
             "@id": "#digitalManifestation",
             "@type": "Manifestation",
             "name": "The Fellowship of the Ring",
-            "manifestationOfWork": "#creation",
+            "manifestationOf": "#creation",
             "digitalWork": "<URI pointing to file>",
             "fingerprints": [
                 "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
@@ -1276,7 +1276,7 @@ Transforming to JSON-LD, we get:
             "@id": "#physicalManifestation",
             "@type": "Manifestation",
             "name": "The Fellowship of the Ring",
-            "manifestationOfWork": "#creation",
+            "manifestationOf": "#creation",
             "datePublished": "29-07-1954",
             "locationCreated": "<URI pointing to a Place>"
         }
@@ -1303,7 +1303,7 @@ linked with hashes:
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Manifestation",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to the Work>" },
+    "manifestationOf": { "/": "<hash pointing to the Work>" },
     "digitalWork": { "/": "<hash pointing to a file on e.g. IPFS>" },
     "fingerprints": [
         "Qmbs2DxMBraF3U8F7vLAarGmZaSFry3vVY5zytuN3BxwaY",
@@ -1317,7 +1317,7 @@ linked with hashes:
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Manifestation",
     "name": "The Fellowship of the Ring",
-    "manifestationOfWork": { "/": "<hash pointing to the Work>" },
+    "manifestationOf": { "/": "<hash pointing to the Work>" },
     "datePublished": "29-07-1954",
     "locationCreated": { "/": "<hash pointing to a Place>" }
 }
