@@ -27,8 +27,8 @@ Includes:
 
 ## Overview
 
-An overview and explanation of each representation can be found in the [COALA IP Specification,
-under "Remodelling the LCC RRM with Linked Data"](../README.md#coala-ip-remodeling-the-lcc-rrm-with-linked-data).
+An overview and explaination of each representation can be found in the [COALA IP Specification,
+under the section "Implementing the LCC RRM with Linked Data"](../README.md#coala-ip-implementing-the-lcc-rrm-with-linked-data).
 
 ### Vocabularies
 
