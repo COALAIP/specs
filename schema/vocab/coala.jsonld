@@ -225,6 +225,18 @@
             "rdfs:label": "rightContext"
         },
         {
+            "@id": "coala:rightType",
+            "@type": "rdf:Property",
+            "schema:domainIncludes": {
+                "@id": "coala:Right"
+            },
+            "schema:rangeIncludes": {
+                "@id": "schema:Text"
+            },
+            "rdfs:comment": "Defines the type of the Right (e.g. Copyright, License)",
+            "rdfs:label": "rightType"
+        },
+        {
             "@id": "coala:territory",
             "@type": "rdf:Property",
             "schema:domainIncludes":{

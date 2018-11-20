@@ -37,6 +37,7 @@
         "numberOfUses": "coala:numberOfUses",
         "percentageShares": "coala:percentageShares",
         "rightContext": "coala:rightContext",
+        "rightType": "coala:rightType",
         "rightsOf": {
             "@id": "coala:rightsOf",
             "@type": "@id"
