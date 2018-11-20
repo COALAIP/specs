@@ -1386,11 +1386,11 @@ Transforming the RRM `Right` entity poses some challenges. According to the RRM 
 
 
 For the purposes of storing `Right`s on decentralized ledgers, we ignore the requirements of the
-`lcc:RightSet` and model `Right`s as atomically transferrable containers of licensing information.
-To make a distinction between derived licensing information and a full copyright, we separately
-[explore the semantics of copyright later](#copyright-semantics). To the best of our knowledge,
-there are no existing RDF schemata for creating such containers, so we propose the following to
-satisfy the consolidated requirements of:
+`lcc:RightSet` and model `Right`s as atomically transferrable containers of licensing and copyright
+information. To make a distinction between derived licensing information and a full copyright, we
+separately [explore the semantics of copyright later](#copyright-semantics). To the best of our
+knowledge, there are no existing RDF schemata for creating such containers, so we propose the
+following to satisfy the consolidated requirements of:
 
 - [LCC: Rights Reference Model](http://doi.org/10.1000/284);
 - [W3C: Open Digital Rights Language](https://www.w3.org/TR/odrl/); and
@@ -1403,6 +1403,7 @@ satisfy the consolidated requirements of:
     "@context": "http://coalaip.schema/",
     "@type": "Right",
     "@id": "<URI pointing to this object>",
+    "rightType": "License",
     "usages": "all|copy|play|stream|...",
     "territory": "<URI pointing to a Place>",
     "context": "inflight|inpublic|commercialuse...",
@@ -1417,7 +1418,7 @@ satisfy the consolidated requirements of:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "source": "<URI pointing to a Copyright>",
+    "rightsOf": "<URI pointing to a Copyright>",
     "license": "<URI pointing to a license on an immutable ledger>"
 }
 ```
@@ -1434,6 +1435,7 @@ this in mind, the implementation in IPLD (on IPFS) is favoured:
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Right",
+    "rightType": "License",
     "usages": "all|copy|play|stream|...",
     "territory": { "/": "<hash pointing to a Place>" },
     "context": "inflight|inpublic|commercialuse...",
@@ -1448,27 +1450,25 @@ this in mind, the implementation in IPLD (on IPFS) is favoured:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "source": { "/": "<hash pointing to a Copyright>" },
+    "rightsOf": { "/": "<hash pointing to a Copyright>" },
     "license": { "/": "<hash pointing to a license>" }
 }
 ```
 
-In our transformation, it is important to highlight that every `Right` must include a `source` (or
-equivalent) property that links it to an enabling `Copyright` or parent `Right`. With use on an
-immutable ledger in mind, the `source` property implements support for `lcc:SourceRight`s–albeit in
-a "backwards" relation in comparison to the RRM's definition–a `Right` containing a `source`
+In our transformation, it is important to highlight that every `Right` shall include a `rightsOf` (or
+equivalent) property that links it to an enabling `Right` of `rightType: Copyright`. With use on an
+immutable ledger in mind, the `rightsOf` property implements support for `lcc:SourceRight`s–albeit in
+a "backwards" relation in comparison to the RRM's definition–a `Right` containing a `rightsOf`
 property is the derivation while the pointed-to entity is the `lcc:SourceRight`.
 
 #### Copyright Semantics
 
-Although RRM `Right`s are capable of representing both full copyrights as well as derived licenses
-to `Creation`s, we split these two concepts into different entities to better represent them within
-distributed ledgers. We base the structure of the `Copyright` entity on the `Right` entity's, but as
-only a subset of the `Right`'s properties pertain to `Copyright`s (e.g. "territory", "validFrom",
-etc.), we do not require implementations to subtype `Copyright`s from `Right`s. However,
-semantically, and for the purposes of discussion, we treat `Copyright`s as a subtype of `Right`s.
-Similarly to `Right`s, we propose that `Copyright`s be stored on decentralized ledgers for
-maintaining ownership and provenance.
+RRM `Rights` are capable of representing both full Copyright as well as derived licenses. As Copyright,
+we define the original group of rights assigned to a creator (or creators) by law. In the last
+paragraph, we introduced the property `rightType`. It can be used to describe either a license with
+`rightType: License` or a Copyright with `rightType: Copyright`. Similarly to `Right`s, we propose
+that Rights of `rightType: Copyright`s be stored on decentralized ledgers for maintaining ownership and
+provenance.
 
 We propose:
 
@@ -1476,7 +1476,8 @@ We propose:
 // In JSON-LD
 {
     "@context": "http://coalaip.schema/",
-    "@type": "Copyright",
+    "@type": "Right",
+    "rightType": "Copyright",
     "rightsOf": "<URI pointing to a Creation (usually a Manifestation)>",
     "territory": "<URI pointing to a Place>",
     "validFrom": {
@@ -1493,6 +1494,7 @@ We propose:
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
     "@type": "Copyright",
+    "rightType": "Copyright",
     "rightsOf": { "/": "<hash pointing to a Creation (usually a Manifestation)>" },
     "territory": { "/": "<hash pointing to a Place>" },
     "validFrom": {
@@ -1506,23 +1508,23 @@ We propose:
 }
 ```
 
-For implementations, we recommend that `Copyright`s be automatically registered with their
+For implementations, we recommend that `rightType: Copyright`s be automatically registered with their
 `Manifestation`s so as to immediately state the `Manifestation`'s copyright holder and allow other
-`Right`s to be derived from the `Copyright`. Given that multiple `Copyright`s may be needed, e.g.
-for multiple regions, there is no limit to the number of `Copyright`s that can be attached to a
-given `Manifestation` (for potential conflicts, see [`Assertion`s](#the-rrm-assertion-entity) and
-[`RightsConflict`s](#the-rrm-rightsconflict-entity).
+`Right`s to be derived from the `rightType: Copyright`. Given that multiple `rightType: Copyright`s
+may be needed, e.g. for multiple regions, there is no limit to the number of `rightType: Copyright`s
+that can be attached to a given `Manifestation` (for potential conflicts, see [`Assertion`s](#the-rrm-assertion-entity)
+and [`RightsConflict`s](#the-rrm-rightsconflict-entity).
 
 #### The Notion of Ownership
 
-Given that `Right`s and `Copyright`s are designed to be stored on decentralized ledgers, we propose
-to link these entities with their related rightsholding `Party`s by cryptographic ownership.
-Assuming the ledger natively supports cryptographic ownership of assets, this results in only the
-owners of a `Right` or `Copyright` on the ledger to be maintained as the rightsholders. Moreover,
-this means that only these owners are able to repurpose the `Right` by, for example, initiating a
-[`RightsAssignment`](#the-rrm-rightsassignment) to a another `Party`. Ledgers should be chosen so
-that all forms (e.g. transfers, loans, consignments, etc.) of these transactions (i.e. RRM
-`RightsAssignment`s) can be stored in an ordered fashion to maintain each right's chain of
+Given that `Right`s and Rights of `rightType: Copyright` are designed to be stored on decentralized
+ledgers, we propose to link these entities with their related rightsholding `Party`s by cryptographic
+ownership. Assuming the ledger natively supports cryptographic ownership of assets, this results in
+only the owners of a `Right` or `rightType: Copyright` on the ledger to be maintained as the rightsholders.
+Moreover, this means that only these owners are able to repurpose the `Right` by, for example,
+initiating a [`RightsAssignment`](#the-rrm-rightsassignment) to a another `Party`. Ledgers should
+be chosen so that all forms (e.g. transfers, loans, consignments, etc.) of these transactions
+(i.e. RRM `RightsAssignment`s) can be stored in an ordered fashion to maintain each right's chain of
 provenance.
 
 With RRM `Right`s modelled in such a fashion, any digital creator that wants to register and
@@ -1532,16 +1534,16 @@ distribute the `Right`s of a `Manifestation` to interested `Party`s must:
 1. Register their `Creation` as a `Work` on a global registry and link it to their `Party`
    identifier;
 1. Register `Manifestation`s to the `Work` on a global registry;
-1. Register a `Copyright` for the `Manifestation` on a global registry;
-1. Derive any number of `Right`s tailored to interested `Party`s from the `Copyright` and register
-   them on a global registry; and
+1. Register a `Right` of `rightType: Copyright` for the `Manifestation` on a global registry;
+1. Derive any number of `Right`s tailored to interested `Party`s from the `rightType: Copyright`
+   and register them on a global registry; and
 1. Register `RightAssignment`s to assign these `Right`s to interested `Party`s.
 
 
 The above steps highlight how a `Right` is not only limited to registration; with the use of a
 ledger, `Right`s also contain properties of ownership and can be transferred from one `Party` to
-another via `RightsAssignment`s. The owner of a `Right` or `Copyright` on the ledger is maintained
-to be the rightsholder.
+another via `RightsAssignment`s. The owner of a `Right` or `Right` of `rightType: Copyright` on
+the ledger is maintained to be the rightsholder.
 
 However, there are a few edge cases to consider when licensing information is stored this way:
 
@@ -1556,9 +1558,9 @@ However, there are a few edge cases to consider when licensing information is st
 
 It is important to note that with these ownership semantics for copyrights and licenses, the
 ownership of a `Work` or `Manifestation` is essentially meaningless: these entities simply contain
-information about a creative work and are used as pointers for `Copyright`s and `Right`s. As such,
-storing `Work`s and `Manifestation`s in ledgers is unnecessary and an immutable data store, e.g.
-IPFS, can be used instead if cross-protocol links are supported (i.e. multiaddr).
+information about a creative work and are used as pointers for `Right`s. As such, storing `Work`s
+and `Manifestation`s in ledgers is unnecessary and an immutable data store, e.g. IPFS, can be used
+instead if cross-protocol links are supported (i.e. multiaddr).
 
 
 ### The RRM `RightsAssignment` Entity

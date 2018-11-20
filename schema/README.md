@@ -502,16 +502,6 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
 `Copyright`](#link-me), we define our own classes with the following vocabulary:
 
 ```javascript
-// Copyright Class
-{
-    "@id": "<coalaip placeholder>/Copyright",
-    "@type": "rdfs:Class",
-    "rdfs:subClassOf": {
-        "@id": "schema:Intangible"
-    },
-    ...
-}
-
 // Right Class
 {
     "@id": "<coalaip placeholder>/Right",
@@ -582,7 +572,7 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     "@id": "<coalaip placeholder>/rightsOf",
     "@type": "rdf:Property",
     "schema:domainIncludes": {
-        "@id": "coala:Copyright"
+        "@id": "coala:Right"
     },
     "schema:rangeIncludes": {
         "@id": "schema:CreativeWork"
@@ -593,34 +583,13 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     ...
 }
 
-// Source Property
-{
-    "@id": "<coalaip placeholder>/source",
-    "@type": "rdf:Property",
-    "schema:domainIncludes": {
-        "@id": "coala:Right"
-    },
-    "schema:rangeIncludes": {
-        "@id": "coala:Copyright"
-    },
-    "owl:equivalentProperty": {
-        "@id": "dc:source"
-    },
-    ...
-}
-
 // Territory Property
 {
     "@id": "<coalaip placeholder>/territory",
     "@type": "rdf:Property",
-    "schema:domainIncludes": [
-        {
-            "@id": "coala:Copyright"
-        },
-        {
+    "schema:domainIncludes": {
             "@id": "coala:Right"
-        }
-    ],
+    },
     "schema:rangeIncludes": {
         "@id": "schema:Place"
     },
@@ -649,9 +618,6 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     "@type": "rdf:Property",
     "schema:domainIncludes": [
         {
-            "@id": "coala:Copyright"
-        },
-        {
             "@id": "coala:Right"
         },
         {
@@ -677,9 +643,6 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
     "@id": "<coalaip placeholder>/validThrough",
     "@type": "rdf:Property",
     "schema:domainIncludes": [
-        {
-            "@id": "coala:Copyright"
-        },
         {
             "@id": "coala:Right"
         },
@@ -711,7 +674,7 @@ As no existing schema.org vocabulary fits the RRM's notion of a `Right` or [COAL
   registrar of a `Right`
 - `schema.org/license` can be used to provide a URL to the legal license document covering a `Right`
 
-An example of a `Copyright` and a derived `Right`:
+An example of a `rightType: Copyright` and a derived `Right`:
 
 ```javascript
 // Note: We assume that the data will be put on an immutable ledger, forcing all links to point "backwards."
@@ -724,8 +687,9 @@ An example of a `Copyright` and a derived `Right`:
         "http://schema.org/",
         "<coalaip placeholder>"
     ],
-    "@type": "<coalaip placeholder>/Copyright",
+    "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
+    "rightType": "Copyright",
     "rightsOf": "<URI pointing to a CreativeWork object (usually should be a Manifestation)>",
     "territory": "<URI pointing to a Place object>",
     "validFrom": "2016-01-01",
@@ -740,7 +704,7 @@ An example of a `Copyright` and a derived `Right`:
     ],
     "@type": "<coalaip placeholder>/Right",
     "@id": "<URI pointing to this object>",
-    "source": "<URI pointing to a Copyright object>",
+    "rightsOf": "<URI pointing to a Copyright object>",
     "usageType": ["all", "copy", "play"],
     "territory": "<URI pointing to a Place object>",
     "rightContext": ["inflight", "inpublic", "commercialuse"],
@@ -759,7 +723,7 @@ An example of a `Copyright` and a derived `Right`:
         "http://schema.org/",
         "<coalaip placeholder>"
     ],
-    "@type": "<coalaip placeholder>/Copyright",
+    "@type": "<coalaip placeholder>/Right",
     "rightsOf": { "/": "<hash pointing to a CreativeWork object (that should be a Manifestation)>" },
     "territory": { "/": "<hash pointing to a Place object>" },
     "validFrom": "2016-01-01",
@@ -773,7 +737,7 @@ An example of a `Copyright` and a derived `Right`:
         { "/": "<hash pointing to COALA IP's context>" }
     ],
     "@type": "<coalaip placeholder>/Right",
-    "source": { "/": "<hash pointing to a Copyright object>" },
+    "rightsOf": { "/": "<hash pointing to a Copyright object>" },
     "usageType": ["all", "copy", "play"],
     "territory": { "/": "<hash pointing to a Place object>" },
     "rightContext": ["inflight", "inpublic", "commercialuse"],
