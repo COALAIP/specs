@@ -1493,7 +1493,7 @@ We propose:
 // In IPLD
 {
     "@context": { "/": "<hash pointing to coalaip.schema's context>" },
-    "@type": "Copyright",
+    "@type": "Right",
     "rightType": "Copyright",
     "rightsOf": { "/": "<hash pointing to a Creation (usually a Manifestation)>" },
     "territory": { "/": "<hash pointing to a Place>" },
