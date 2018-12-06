@@ -1789,17 +1789,74 @@ silently changed after-the-fact as any changes will cause their IPLD hashes to a
 
 ### The RRM `RightsConflict` Entity
 
-TODO:
+As mentioned in the section earlier, COALA IP's entities are created by independent users
+rather than trusted central authorities. We are hence not able to determine whether or not
+a `Right` registration is valid. There might be cases where two or more `Right`s are
+conflicting with each other or where a sublicense is wrongly derived. In these cases, the
+RRM recommends the implementation of a `RightsConflict` entity to counteract fraudulent
+claims. These `RightsConflict` entities provide a healing mechanism for the ontology and,
+using a staking approach, a way to settle conflicts through a private arbitration court
+directly on the blockchain.
 
-- See other introductory sections of LCC entities. Use same structure to describe the entity
+The RRM's minimum set of required properties include:
 
+- **ConflictStatus**: The status of the `RightsConflict` (e.g. unresolved, resolved)
+- **ValidPeriod**: Defines the time period during which the `RightsConflict` is maintained
+  (e.g from 01.01.2011 to 01.01.2015).
+
+
+Additionally, an RRM `RightsConflict` can have the following outgoing references:
+
+- Links to `Right` (`2 - n`; 2-to-many): *ConflictingRight*
 
 #### Proposed Transformation
 
-TODO:
+As we assume that all data is stored on immutable ledgers, we propose to not store
+the property `ConflictStatus` within the `RightsConflict` JSON. Instead we recommend
+encoding it as a status that is part of an private arbitration game. Additionally,
+we propose to embed `ValidPeriod` as is described in the RRM. As there may be two
+`Right`s linked in the `RightsConflict` entitiy, we propose the following syntax:
 
-- See other introductory sections of LCC entities. Use same structure to do the transformation
+```javascript
+// In JSON-LD
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "RightsConflict",
+    "supersedingRight": "<URL pointing to the correct Right>",
+    "conflictingRight": "<URL poiting to the conflicting Right>"
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    },
 
+}
+
+// In IPLD
+{
+    "@context": "http://coalaip.schema/",
+    "@type": "RightsConflict",
+    "supersedingRight": "<hash pointing to the correct Right>",
+    "conflictingRight": "<hash poiting to the conflicting Right>"
+    "validFrom": {
+        "@type": "Date",
+        "@value": "2016-01-01"
+    },
+    "validTo": {
+        "@type": "Date",
+        "@value": "2017-01-01"
+    },
+
+}
+```
+
+In case of a private arbitration blockchain court like [Kleros.io](https://kleros.io/)
+and [Mattereum.com](https://www.mattereum.com/) both `Right`s in question should be
+taken into escrow and, depending on the court's outcome, one of them should be sent
+to a non-retrievable address so that the `Right` gets "burned".
 
 ### Generating Verifiable Claims
 
