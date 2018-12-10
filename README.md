@@ -1418,7 +1418,7 @@ following to satisfy the consolidated requirements of:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "rightsOf": "<URI pointing to a Copyright>",
+    "rightsOf": "<URI pointing to a Right of rightType: Copyright>",
     "license": "<URI pointing to a license on an immutable ledger>"
 }
 ```
@@ -1450,7 +1450,7 @@ this in mind, the implementation in IPLD (on IPFS) is favoured:
         "@type": "Date",
         "@value": "2017-01-01"
     },
-    "rightsOf": { "/": "<hash pointing to a Copyright>" },
+    "rightsOf": { "/": "<hash pointing to a Right of rightType: Copyright>" },
     "license": { "/": "<hash pointing to a license>" }
 }
 ```
