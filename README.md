@@ -1850,5 +1850,5 @@ Thank you for reading!
 Contributors to this document, in alphabetical order:
 
 - Tim Daubenschuetz: tim.daubenschuetz@gmail.com, tim@ascribe.io
-- Greg McMullen: greg@ipdb.foundation, gmcmullen@gmail.com
+- Greg McMullen: gmcmullen@gmail.com
 - Brett Sun: qisheng.brett.sun@gmail.com, brett@bigchaindb.com
