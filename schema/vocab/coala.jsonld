@@ -27,18 +27,6 @@
             "rdfs:label": "Manifestation"
         },
         {
-            "@id": "coala:Copyright",
-            "@type": "rdfs:Class",
-            "rdfs:subClassOf": {
-                "@id": "schema:Intangible"
-            },
-            "owl:equivalentClass": {
-                "@id": "dc:RightsStatement"
-            },
-            "rdfs:comment": "Describes the full copyright for a Creation.",
-            "rdfs:label": "Copyright"
-        },
-        {
             "@id": "coala:DigitalFingerprint",
             "@type": "rdfs:Class",
             "rdfs:subClassOf": {
@@ -69,19 +57,24 @@
             "rdfs:label": "RightsTransferAction"
         },
         {
-            "@id": "coala:source",
+            "@id": "coala:rightsOf",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
-                "@id": "coala:Right"
+                "@id": "coala:Manifestation"
             },
-            "schema:rangeIncludes": {
-                "@id": "schema:Copyright"
-            },
+            "schema:rangeIncludes": [
+                {
+                    "@id": "schema:CreativeWork"
+                },
+                {
+                    "@id": "coala:Right"
+                }
+            ],
             "owl:equivalentProperty": {
-                "@id": "dc:source"
+                "@id": "dc:rights"
             },
-            "rdfs:comment": "The source object upon which another object was derived from. For example, the source Copyright upon which a narrower Right was allowed by.",
-            "rdfs:label": "source"
+            "rdfs:comment": "The rightsOf object upon which a Right was derived from. In many cases a Manifestation of another Right",
+            "rdfs:label": "rightsOf"
         },
         {
             "@id": "coala:asserter",
@@ -232,31 +225,23 @@
             "rdfs:label": "rightContext"
         },
         {
-            "@id": "coala:rightsOf",
+            "@id": "coala:rightType",
             "@type": "rdf:Property",
             "schema:domainIncludes": {
-                "@id": "coala:Copyright"
+                "@id": "coala:Right"
             },
             "schema:rangeIncludes": {
-                "@id": "schema:CreativeWork"
+                "@id": "schema:Text"
             },
-            "owl:equivalentProperty": {
-                "@id": "dc:rights"
-            },
-            "rdfs:comment": "The Creation upon which a Copyright is concerned with.",
-            "rdfs:label": "rightsOf"
+            "rdfs:comment": "Defines the type of the Right (e.g. Copyright, License)",
+            "rdfs:label": "rightType"
         },
         {
             "@id": "coala:territory",
             "@type": "rdf:Property",
-            "schema:domainIncludes": [
-                {
-                    "@id": "coala:Copyright"
-                },
-                {
-                    "@id": "coala:Right"
-                }
-            ],
+            "schema:domainIncludes":{
+                "@id": "coala:Right"
+            },
             "schema:rangeIncludes": {
                 "@id": "schema:Place"
             },
@@ -303,9 +288,6 @@
             "@type": "rdf:Property",
             "schema:domainIncludes": [
                 {
-                    "@id": "coala:Copyright"
-                },
-                {
                     "@id": "coala:Right"
                 },
                 {
@@ -330,9 +312,6 @@
             "@id": "coala:validThrough",
             "@type": "rdf:Property",
             "schema:domainIncludes": [
-                {
-                    "@id": "coala:Copyright"
-                },
                 {
                     "@id": "coala:Right"
                 },
